@@ -1,18 +1,8 @@
-import {
-	Container,
-	DiscogsButton,
-	LoginContainer,
-	Logo,
-	StyledDiscogsLogo,
-} from './styles';
+import { Container, DiscogsButton, LoginContainer, Logo } from './styles';
 import PrimaryLogo from '../../assets/primary_logo.png';
-import DiscogsLogo from '../../assets/discogs_logo.png';
+import DiscogsIcon from './DiscogsIcon';
 
 export default () => {
-	const DiscogsIcon = () => (
-		<StyledDiscogsLogo src={DiscogsLogo} alt='DiscogsIcon' />
-	);
-
 	return (
 		<Container>
 			<LoginContainer>
