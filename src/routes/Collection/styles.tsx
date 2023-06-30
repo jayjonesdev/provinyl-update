@@ -1,4 +1,14 @@
-import { Menu, MenuItem, styled } from '@mui/material';
+import {
+	Dialog,
+	DialogActions,
+	DialogContent,
+	DialogContentText,
+	DialogTitle,
+	Divider,
+	Menu,
+	MenuItem,
+	styled,
+} from '@mui/material';
 
 export const StyledProvinylLogo = styled('img')`
 	height: 50px;
@@ -18,4 +28,60 @@ export const StyledMenuItem = styled(MenuItem)(
 
 export const StyledMenu = styled(Menu)`
 	margin-top: 45px;
+`;
+
+export const StyledDialogTitle = styled(DialogTitle)(
+	({ theme }) => `
+background-color: ${theme.palette.primary.main};
+color: ${theme.palette.text.secondary};
+`
+);
+
+export const StyledDialog = styled(Dialog)`
+	border-radius: 5px;
+`;
+
+export const StyledDialogContent = styled(DialogContent)(
+	({ theme }) => `
+background-color: ${theme.palette.background.default};
+`
+);
+
+export const StyledDialogActions = styled(DialogActions)(
+	({ theme }) => `
+background-color: ${theme.palette.background.default};
+`
+);
+
+export const StyledDialogContentText = styled(DialogContentText)(
+	({ theme }) => `
+color: ${theme.palette.text.primary};
+padding-top: ${theme.spacing()};
+display: flex;
+flex-direction: column;
+`
+);
+
+export const StyledDivider = styled(Divider)(
+	({ theme }) => `
+background-color: ${theme.palette.primary.main};
+height: 2px;
+margin-top: 5px;
+margin-bottom: 5px;
+`
+);
+
+export const InstagramLink = styled('div')`
+	display: flex;
+	align-items: center;
+`;
+
+export const Container = styled('div')`
+	padding: 20px 35px;
+`;
+
+export const ButtonBar = styled('div')`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
 `;

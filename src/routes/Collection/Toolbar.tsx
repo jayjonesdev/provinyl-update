@@ -4,19 +4,26 @@ import theme from '../../theme';
 import { StyledMenuItem, StyledProvinylLogo, StyledMenu } from './styles';
 import ProvinylLogo from '../../assets/secondary_logo_small.png';
 import { useState } from 'react';
-import { type MenuOptions } from '../../types';
-import { EMAIL, PAYPAL_LINK } from '../../constants';
+import { type MenuOptions } from '../../helpers/types';
+import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
+import InformationDialog from './InformationDialog';
 
-export default () => {
+export default ({
+	value,
+	numOfItems,
+}: {
+	value: string;
+	numOfItems: string;
+}) => {
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
 
-	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
+	const handleDialogClose = () => setDialogOpen(false);
+
+	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) =>
 		setAnchorElUser(event.currentTarget);
-	};
 
-	const handleCloseUserMenu = () => {
-		setAnchorElUser(null);
-	};
+	const handleCloseUserMenu = () => setAnchorElUser(null);
 
 	const logout = () => {
 		handleCloseUserMenu();
@@ -33,7 +40,10 @@ export default () => {
 		},
 		{
 			label: 'Information',
-			onClick: () => {},
+			onClick: () => {
+				setDialogOpen(true);
+				handleCloseUserMenu();
+			},
 		},
 		{
 			label: 'Contact',
@@ -109,6 +119,12 @@ export default () => {
 					))}
 				</StyledMenu>
 			</Toolbar>
+			<InformationDialog
+				value={value}
+				numOfItems={numOfItems}
+				open={dialogOpen}
+				handleClose={handleDialogClose}
+			/>
 		</AppBar>
 	);
 };
