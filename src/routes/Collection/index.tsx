@@ -1,9 +1,7 @@
-import { Button, IconButton, InputAdornment, TextField } from '@mui/material';
 import Toolbar from './Toolbar';
 import { useState } from 'react';
-import { Add, Search, ViewDay, ViewList } from '@mui/icons-material';
-import { ButtonBar, Container } from './styles';
 import { ViewType } from '../../helpers/enum';
+import SearchBar from './SearchBar';
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -14,48 +12,15 @@ export default () => {
 		else setViewType(ViewType.GRID);
 	};
 
-	const ViewTypeIcon = () =>
-		viewType === ViewType.GRID ? <ViewList /> : <ViewDay />;
-
 	return (
 		<div>
 			<Toolbar value='485' numOfItems='23,245' />
-			<Container>
-				<ButtonBar>
-					<TextField
-						data-testid='search-field'
-						placeholder='Search collection...'
-						margin='dense'
-						onChange={(e) => setSearchValue(e.target.value)}
-						sx={{ width: '35%' }}
-						InputProps={{
-							startAdornment: (
-								<InputAdornment position='start'>
-									<IconButton onClick={() => {}}>
-										<Search />
-									</IconButton>
-								</InputAdornment>
-							),
-						}}
-						variant='outlined'
-						value={searchValue}
-					/>
-					<div>
-						<Button
-							variant='contained'
-							size='large'
-							sx={{ mr: 2 }}
-							onClick={toggleViewType}
-							startIcon={<ViewTypeIcon />}
-						>
-							View {viewType === ViewType.GRID ? 'List' : 'Grid'}
-						</Button>
-						<Button variant='contained' size='large' startIcon={<Add />}>
-							Add By Type
-						</Button>
-					</div>
-				</ButtonBar>
-			</Container>
+			<SearchBar
+				value={searchValue}
+				viewType={viewType}
+				onChange={(value) => setSearchValue(value)}
+				toggleView={toggleViewType}
+			/>
 		</div>
 	);
 };
