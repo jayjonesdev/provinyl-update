@@ -26,6 +26,7 @@ export default () => {
 						data-testid='search-field'
 						placeholder='Search collection...'
 						margin='dense'
+						onChange={(e) => setSearchValue(e.target.value)}
 						sx={{ width: '35%' }}
 						InputProps={{
 							startAdornment: (
