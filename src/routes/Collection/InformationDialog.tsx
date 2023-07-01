@@ -33,10 +33,11 @@ export default ({
 			<StyledDialogContent>
 				<StyledDialogContentText>
 					<Typography variant='body1'>
-						<b># of items in your collection: </b>22,458
+						<b># of items in your collection: </b>
+						{value}
 					</Typography>
 					<Typography variant='body1'>
-						<b>Collection value in USD ($): </b>400.87
+						<b>Collection value in USD: </b>${numOfItems}
 					</Typography>
 					<StyledDivider />
 					<InstagramLink>

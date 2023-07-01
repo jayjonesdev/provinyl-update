@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { type MenuOptions } from '../../helpers/types';
 import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
 import InformationDialog from './InformationDialog';
+import LogoutDialog from './LogoutDialog';
 
 export default ({
 	value,
@@ -17,8 +18,10 @@ export default ({
 }) => {
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+	const [logoutOpen, setLogoutOpen] = useState<boolean>(false);
 
 	const handleDialogClose = () => setDialogOpen(false);
+	const handleLogoutClose = () => setLogoutOpen(false);
 
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) =>
 		setAnchorElUser(event.currentTarget);
@@ -26,7 +29,7 @@ export default ({
 	const handleCloseUserMenu = () => setAnchorElUser(null);
 
 	const logout = () => {
-		handleCloseUserMenu();
+		setLogoutOpen(false);
 		window.location.assign('/Login');
 	};
 
@@ -54,77 +57,90 @@ export default ({
 		},
 		{
 			label: 'Logout',
-			onClick: logout,
+			onClick: () => {
+				setLogoutOpen(true);
+				handleCloseUserMenu();
+			},
 		},
 	];
 
 	return (
-		<AppBar position='static'>
-			<Toolbar>
-				<StyledProvinylLogo
-					src={ProvinylLogo}
-					alt='logo'
-					onClick={() => window.location.assign('/')}
-				/>
-				<Typography
-					variant='h6'
-					component='div'
-					sx={{ marginLeft: theme.spacing(2), flexGrow: 1 }}
-				>
-					Your Collection
-				</Typography>
-				<IconButton
-					size='large'
-					edge='start'
-					color='inherit'
-					aria-label='link'
-					sx={{ mr: 2 }}
-				>
-					<Link />
-				</IconButton>
-				<IconButton
-					size='large'
-					edge='start'
-					color='inherit'
-					aria-label='menu'
-					onClick={handleOpenUserMenu}
-				>
-					<AccountCircle />
-				</IconButton>
-				<StyledMenu
-					sx={{
-						'& .MuiMenu-paper': {
-							backgroundColor: theme.palette.primary.main,
-							color: '#fff',
-						},
-					}}
-					id='menu-appbar'
-					anchorEl={anchorElUser}
-					anchorOrigin={{
-						vertical: 'top',
-						horizontal: 'right',
-					}}
-					keepMounted
-					transformOrigin={{
-						vertical: 'top',
-						horizontal: 'right',
-					}}
-					open={Boolean(anchorElUser)}
-					onClose={handleCloseUserMenu}
-				>
-					{MENU_OPTIONS.map((menuOption) => (
-						<StyledMenuItem key={menuOption.label} onClick={menuOption.onClick}>
-							<Typography textAlign='center'>{menuOption.label}</Typography>
-						</StyledMenuItem>
-					))}
-				</StyledMenu>
-			</Toolbar>
+		<>
+			<AppBar position='static'>
+				<Toolbar>
+					<StyledProvinylLogo
+						src={ProvinylLogo}
+						alt='logo'
+						onClick={() => window.location.assign('/')}
+					/>
+					<Typography
+						variant='h6'
+						component='div'
+						sx={{ marginLeft: theme.spacing(2), flexGrow: 1 }}
+					>
+						Your Collection
+					</Typography>
+					<IconButton
+						size='large'
+						edge='start'
+						color='inherit'
+						aria-label='link'
+						sx={{ mr: 2 }}
+					>
+						<Link />
+					</IconButton>
+					<IconButton
+						size='large'
+						edge='start'
+						color='inherit'
+						aria-label='menu'
+						onClick={handleOpenUserMenu}
+					>
+						<AccountCircle />
+					</IconButton>
+					<StyledMenu
+						sx={{
+							'& .MuiMenu-paper': {
+								backgroundColor: theme.palette.primary.main,
+								color: '#fff',
+							},
+						}}
+						id='menu-appbar'
+						anchorEl={anchorElUser}
+						anchorOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						keepMounted
+						transformOrigin={{
+							vertical: 'top',
+							horizontal: 'right',
+						}}
+						open={Boolean(anchorElUser)}
+						onClose={handleCloseUserMenu}
+					>
+						{MENU_OPTIONS.map((menuOption) => (
+							<StyledMenuItem
+								key={menuOption.label}
+								onClick={menuOption.onClick}
+							>
+								<Typography textAlign='center'>{menuOption.label}</Typography>
+							</StyledMenuItem>
+						))}
+					</StyledMenu>
+				</Toolbar>
+			</AppBar>
 			<InformationDialog
 				value={value}
 				numOfItems={numOfItems}
 				open={dialogOpen}
 				handleClose={handleDialogClose}
 			/>
-		</AppBar>
+			<LogoutDialog
+				open={logoutOpen}
+				handleClose={handleLogoutClose}
+				handleAction={logout}
+			/>
+		</>
 	);
 };
