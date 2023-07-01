@@ -5,6 +5,7 @@ import {
 	DialogContentText,
 	DialogTitle,
 	Divider,
+	FormHelperText,
 	Menu,
 	MenuItem,
 	styled,
@@ -84,4 +85,16 @@ export const ButtonBar = styled('div')`
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
+`;
+
+export const StyledHelperText = styled(FormHelperText)(
+	({ theme }) => `
+color: ${theme.palette.text.primary};
+`
+);
+
+export const SearchContainer = styled('div')`
+	display: flex;
+	margin-top: 15px;
+	align-items: flex-start;
 `;

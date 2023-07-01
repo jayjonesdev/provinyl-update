@@ -22,6 +22,7 @@ export default ({
 			keepMounted
 			onClose={handleClose}
 			aria-describedby='logout-dialog'
+            fullWidth
 		>
 			<StyledDialogTitle>Logout</StyledDialogTitle>
 			<StyledDialogContent>

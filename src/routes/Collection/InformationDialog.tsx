@@ -28,6 +28,7 @@ export default ({
 			keepMounted
 			onClose={handleClose}
 			aria-describedby='information-dialog'
+            fullWidth
 		>
 			<StyledDialogTitle>Information</StyledDialogTitle>
 			<StyledDialogContent>

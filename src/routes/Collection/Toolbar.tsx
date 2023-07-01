@@ -17,10 +17,10 @@ export default ({
 	numOfItems: string;
 }) => {
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
-	const [dialogOpen, setDialogOpen] = useState<boolean>(false);
+	const [informationOpen, setInformationOpen] = useState<boolean>(false);
 	const [logoutOpen, setLogoutOpen] = useState<boolean>(false);
 
-	const handleDialogClose = () => setDialogOpen(false);
+	const handleDialogClose = () => setInformationOpen(false);
 	const handleLogoutClose = () => setLogoutOpen(false);
 
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) =>
@@ -44,7 +44,7 @@ export default ({
 		{
 			label: 'Information',
 			onClick: () => {
-				setDialogOpen(true);
+				setInformationOpen(true);
 				handleCloseUserMenu();
 			},
 		},
@@ -133,7 +133,7 @@ export default ({
 			<InformationDialog
 				value={value}
 				numOfItems={numOfItems}
-				open={dialogOpen}
+				open={informationOpen}
 				handleClose={handleDialogClose}
 			/>
 			<LogoutDialog

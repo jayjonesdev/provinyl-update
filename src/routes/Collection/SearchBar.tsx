@@ -2,7 +2,8 @@ import { Add, Search, ViewDay, ViewList } from '@mui/icons-material';
 import { TextField, InputAdornment, IconButton, Button } from '@mui/material';
 import { ViewType } from '../../helpers/enum';
 import { ButtonBar, Container } from './styles';
-import LogoutDialog from './LogoutDialog';
+import AddRecordDialog from './AddRecordDialog';
+import { useState } from 'react';
 
 export default ({
 	value,
@@ -15,6 +16,11 @@ export default ({
 	onChange: (value: string) => void;
 	toggleView: () => void;
 }) => {
+	const [addRecordOpen, setAddRecordOpen] = useState<boolean>(false);
+
+	const openAddRecordDialog = () => setAddRecordOpen(true);
+	const closeAddRecordDialog = () => setAddRecordOpen(false);
+
 	const ViewTypeIcon = () =>
 		viewType === ViewType.GRID ? <ViewList /> : <ViewDay />;
 
@@ -50,13 +56,24 @@ export default ({
 						>
 							View {viewType === ViewType.GRID ? 'List' : 'Grid'}
 						</Button>
-						<Button variant='contained' size='large' startIcon={<Add />}>
+						<Button
+							variant='contained'
+							size='large'
+							onClick={openAddRecordDialog}
+							startIcon={<Add />}
+						>
 							Add Record
 						</Button>
 					</div>
 				</ButtonBar>
 			</Container>
-			
+			<AddRecordDialog
+				open={addRecordOpen}
+				handleClose={closeAddRecordDialog}
+				handleAction={function (): void {
+					throw new Error('Function not implemented.');
+				}}
+			/>
 		</>
 	);
 };
