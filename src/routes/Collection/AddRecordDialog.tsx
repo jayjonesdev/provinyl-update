@@ -43,7 +43,7 @@ export default ({
 			<StyledDialogContent>
 				<SearchContainer>
 					<TextField
-						data-testid='search-field'
+						data-testid='add-record-search-field'
 						placeholder='Search...'
 						sx={{ flexGrow: 1, mr: 2 }}
 						onChange={(e) => setSearchValue(e.target.value)}

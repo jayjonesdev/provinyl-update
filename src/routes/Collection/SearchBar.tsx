@@ -29,7 +29,7 @@ export default ({
 			<Container>
 				<ButtonBar>
 					<TextField
-						data-testid='search-field'
+						data-testid='collection-search-field'
 						placeholder='Search collection...'
 						margin='dense'
 						onChange={(e) => onChange(e.target.value)}
