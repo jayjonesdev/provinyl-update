@@ -48,6 +48,7 @@ export default ({
 					/>
 					<div>
 						<Button
+							data-testid='toggle-view-type-btn'
 							variant='contained'
 							size='large'
 							sx={{ mr: 2 }}

@@ -29,7 +29,7 @@ export default ({
 	handleAction: () => void;
 }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
-	const [searchType, setSearchType] = useState<SearchType | null>();
+	const [searchType, setSearchType] = useState<SearchType | null>(null);
 
 	return (
 		<StyledDialog
