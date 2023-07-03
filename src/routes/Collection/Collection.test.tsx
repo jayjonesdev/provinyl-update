@@ -22,4 +22,25 @@ describe('Collection Page', () => {
 		});
 		expect(searchField).toHaveValue('A Tribe Called Quest');
 	});
+
+	it('show user menu', () => {
+		const menuBtn = screen.getByTestId('menu-button');
+
+		expect(screen.getByRole('menu', { hidden: true })).toBeInTheDocument();
+		fireEvent.click(menuBtn);
+		expect(screen.getByRole('menu', { hidden: false })).toBeInTheDocument();
+	});
+
+	it('displays information dialog', () => {
+		const menuBtn = screen.getByTestId('menu-button');
+		fireEvent.click(menuBtn);
+		const informationBtn = screen
+			.getAllByRole('menuitem')
+			.filter((button) => button.textContent === 'Information')[0];
+
+		fireEvent.click(informationBtn);
+		expect(screen.getByRole('dialog', { hidden: false }).innerHTML).toContain(
+			'Information'
+		);
+	});
 });

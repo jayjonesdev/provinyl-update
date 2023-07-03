@@ -90,6 +90,7 @@ export default ({
 						<Link />
 					</IconButton>
 					<IconButton
+						data-testid='menu-button'
 						size='large'
 						edge='start'
 						color='inherit'
@@ -116,6 +117,7 @@ export default ({
 							vertical: 'top',
 							horizontal: 'right',
 						}}
+						data-testid='menu'
 						open={Boolean(anchorElUser)}
 						onClose={handleCloseUserMenu}
 					>

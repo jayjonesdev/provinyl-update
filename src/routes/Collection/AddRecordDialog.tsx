@@ -29,7 +29,22 @@ export default ({
 	handleAction: () => void;
 }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
-	const [searchType, setSearchType] = useState<SearchType | null>(null);
+	const [searchType, setSearchType] = useState<SearchType | ''>('');
+
+	const reset = () => {
+		setSearchValue('');
+		setSearchType('');
+	};
+
+	const closeDialog = () => {
+		reset();
+		handleClose();
+	};
+
+	const search = () => {
+		reset();
+		handleAction();
+	};
 
 	return (
 		<StyledDialog
@@ -76,10 +91,10 @@ export default ({
 				</SearchContainer>
 			</StyledDialogContent>
 			<StyledDialogActions>
-				<Button onClick={handleClose} variant='outlined'>
+				<Button onClick={closeDialog} variant='outlined'>
 					Close
 				</Button>
-				<Button onClick={handleAction} variant='contained'>
+				<Button onClick={search} variant='contained'>
 					Search
 				</Button>
 			</StyledDialogActions>

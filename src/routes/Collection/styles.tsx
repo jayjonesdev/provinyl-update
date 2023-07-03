@@ -2,7 +2,6 @@ import {
 	Dialog,
 	DialogActions,
 	DialogContent,
-	DialogContentText,
 	DialogTitle,
 	Divider,
 	FormHelperText,
@@ -54,7 +53,7 @@ background-color: ${theme.palette.background.default};
 `
 );
 
-export const StyledDialogContentText = styled(DialogContentText)(
+export const StyledDialogContentText = styled('div')(
 	({ theme }) => `
 color: ${theme.palette.text.primary};
 padding-top: ${theme.spacing()};
