@@ -6,6 +6,7 @@ import { Container, StyledDivider } from './styles';
 import Table from './Table';
 import { releases } from '../../testData';
 import { type TableData } from '../../helpers/types';
+import { removeDiacritics } from '../../helpers';
 
 const rows: TableData[] = releases.map((release) => {
 	const { basic_information: basicInformation } = release;
@@ -28,13 +29,6 @@ const rows: TableData[] = releases.map((release) => {
 		catno: catnos.join(', '),
 	};
 });
-
-// TODO: move to helpers folder
-const removeDiacritics = (text: string) =>
-	text
-		.normalize('NFD')
-		.replace(/\p{Diacritic}/gu, '')
-		.toLowerCase();
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
