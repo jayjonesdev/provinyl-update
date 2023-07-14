@@ -44,8 +44,12 @@ export default () => {
 	useEffect(() => {
 		let filteredData = rows;
 		if (searchValue.length > 0) {
-			filteredData = rows.filter((row) =>
-				removeDiacritics(row.artist).includes(removeDiacritics(searchValue))
+			filteredData = rows.filter(
+				(row) =>
+					removeDiacritics(row.artist).includes(
+						removeDiacritics(searchValue)
+					) ||
+					removeDiacritics(row.title).includes(removeDiacritics(searchValue))
 			);
 		}
 		setData(filteredData);
@@ -58,6 +62,7 @@ export default () => {
 
 	return (
 		<div>
+			{/* TODO: Get collection information */}
 			<Toolbar value='485' numOfItems='23,245' />
 			<Container>
 				<SearchBar
