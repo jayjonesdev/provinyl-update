@@ -7,6 +7,7 @@ import {
 	FormHelperText,
 	Menu,
 	MenuItem,
+	TableHead,
 	styled,
 } from '@mui/material';
 
@@ -97,3 +98,9 @@ export const SearchContainer = styled('div')`
 	margin-top: 15px;
 	align-items: flex-start;
 `;
+
+export const StyledTableHead = styled(TableHead)(
+	({ theme }) => `
+background-color: ${theme.palette.secondary.light};
+`
+);
