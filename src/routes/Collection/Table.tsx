@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
 import { type TableColumn, type TableData } from '../../helpers/types';
-import { releases } from '../../testData';
 import { StyledTable, StyledTableHead, StyledTableRow } from './styles';
 
 const columns: TableColumn[] = [
@@ -44,28 +43,6 @@ const columns: TableColumn[] = [
 		dataKey: 'catno',
 	},
 ];
-
-const rows: TableData[] = releases.map((release) => {
-	const { basic_information: basicInformation } = release;
-	const labels: string[] = [];
-	const catnos: string[] = [];
-
-	// TODO: remove dupes
-	basicInformation.labels.forEach((label) => {
-		labels.push(label.name);
-		catnos.push(label.catno);
-	});
-
-	// TODO: Refactor artist filtering, currently doing two loops through the artist array
-	return {
-		title: basicInformation.title,
-		artist: basicInformation.artists.map((artist) => artist.name).join(', '),
-		year: basicInformation.year,
-		labels: labels.join(', '),
-		genres: basicInformation.genres.join(', '),
-		catno: catnos.join(', '),
-	};
-});
 
 const VirtuosoTableComponents: TableComponents<TableData> = {
 	Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
@@ -115,12 +92,12 @@ const rowContent = (_index: number, row: TableData) => (
 	</React.Fragment>
 );
 
-export default () => {
+export default ({ data }: { data: TableData[] }) => {
 	return (
 		// TODO: Make table full height
 		<Paper style={{ width: '100%', height: 800 }}>
 			<TableVirtuoso
-				data={rows}
+				data={data}
 				components={VirtuosoTableComponents}
 				fixedHeaderContent={fixedHeaderContent}
 				itemContent={rowContent}

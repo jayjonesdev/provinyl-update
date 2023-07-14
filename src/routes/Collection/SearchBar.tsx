@@ -1,4 +1,10 @@
-import { Add, Search, ViewDay, ViewList } from '@mui/icons-material';
+import {
+	Add,
+	CloseOutlined,
+	Search,
+	ViewDay,
+	ViewList,
+} from '@mui/icons-material';
 import { TextField, InputAdornment, IconButton, Button } from '@mui/material';
 import { ViewType } from '../../helpers/enum';
 import { ButtonBar } from './styles';
@@ -9,11 +15,13 @@ export default ({
 	value,
 	viewType,
 	onChange,
+	onClear,
 	toggleView,
 }: {
 	value: string;
 	viewType: ViewType;
 	onChange: (value: string) => void;
+	onClear: () => void;
 	toggleView: () => void;
 }) => {
 	const [addRecordOpen, setAddRecordOpen] = useState<boolean>(false);
@@ -37,8 +45,15 @@ export default ({
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position='start'>
-									<IconButton onClick={() => {}}>
+									<IconButton>
 										<Search />
+									</IconButton>
+								</InputAdornment>
+							),
+							endAdornment: value.length > 0 && (
+								<InputAdornment position='end'>
+									<IconButton onClick={onClear}>
+										<CloseOutlined />
 									</IconButton>
 								</InputAdornment>
 							),
