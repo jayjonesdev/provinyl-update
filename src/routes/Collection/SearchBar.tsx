@@ -1,7 +1,7 @@
 import { Add, Search, ViewDay, ViewList } from '@mui/icons-material';
 import { TextField, InputAdornment, IconButton, Button } from '@mui/material';
 import { ViewType } from '../../helpers/enum';
-import { ButtonBar, Container } from './styles';
+import { ButtonBar } from './styles';
 import AddRecordDialog from './AddRecordDialog';
 import { useState } from 'react';
 
@@ -26,7 +26,7 @@ export default ({
 
 	return (
 		<>
-			<Container>
+			<div>
 				<ButtonBar>
 					<TextField
 						data-testid='collection-search-field'
@@ -67,7 +67,7 @@ export default ({
 						</Button>
 					</div>
 				</ButtonBar>
-			</Container>
+			</div>
 			<AddRecordDialog
 				open={addRecordOpen}
 				handleClose={closeAddRecordDialog}
