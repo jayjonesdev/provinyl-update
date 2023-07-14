@@ -15,7 +15,7 @@ export interface TableColumn {
 	dataKey: keyof TableData;
 	label: string;
 	numeric?: boolean;
-	width: number;
+	width: string;
 	sort?: 'ASC' | 'DESC' | null;
 }
 

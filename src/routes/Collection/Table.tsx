@@ -12,33 +12,33 @@ import { StyledTable, StyledTableHead, StyledTableRow } from './styles';
 
 const columns: TableColumn[] = [
 	{
-		width: 200,
+		width: '20%',
 		label: 'Album',
 		dataKey: 'title',
 	},
 	{
-		width: 120,
+		width: '10%',
 		label: 'Artist',
 		dataKey: 'artist',
 	},
 	{
-		width: 20,
+		width: '5%',
 		label: 'Year',
 		dataKey: 'year',
 		numeric: true,
 	},
 	{
-		width: 120,
+		width: '17%',
 		label: 'Labels',
 		dataKey: 'labels',
 	},
 	{
-		width: 110,
+		width: '9.5%',
 		label: 'Genres',
 		dataKey: 'genres',
 	},
 	{
-		width: 120,
+		width: '10%',
 		label: 'Catalog #',
 		dataKey: 'catno',
 	},
@@ -94,8 +94,7 @@ const rowContent = (_index: number, row: TableData) => (
 
 export default ({ data }: { data: TableData[] }) => {
 	return (
-		// TODO: Make table full height
-		<Paper style={{ width: '100%', height: 800 }}>
+		<Paper style={{ height: window.screen.height * 0.85 }}>
 			<TableVirtuoso
 				data={data}
 				components={VirtuosoTableComponents}
