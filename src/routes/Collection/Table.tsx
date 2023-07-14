@@ -1,15 +1,15 @@
 import * as React from 'react';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import {
+	TableBody,
+	TableCell,
+	TableContainer,
+	TableRow,
+	Paper,
+} from '@mui/material';
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
 import { type TableColumn, type TableData } from '../../helpers/types';
 import { releases } from '../../testData';
-import { StyledTableHead } from './styles';
+import { StyledTable, StyledTableHead, StyledTableRow } from './styles';
 
 const columns: TableColumn[] = [
 	{
@@ -34,7 +34,7 @@ const columns: TableColumn[] = [
 		dataKey: 'labels',
 	},
 	{
-		width: 90,
+		width: 110,
 		label: 'Genres',
 		dataKey: 'genres',
 	},
@@ -71,14 +71,9 @@ const VirtuosoTableComponents: TableComponents<TableData> = {
 	Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
 		<TableContainer component={Paper} {...props} ref={ref} />
 	)),
-	Table: (props) => (
-		<Table
-			{...props}
-			sx={{ borderCollapse: 'separate', tableLayout: 'fixed' }}
-		/>
-	),
+	Table: (props) => <StyledTable {...props} />,
 	TableHead: (props) => <StyledTableHead {...props} />,
-	TableRow: (props) => <TableRow {...props} />,
+	TableRow: (props) => <StyledTableRow {...props} />,
 	TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
 		<TableBody {...props} ref={ref} />
 	)),
@@ -91,7 +86,11 @@ const fixedHeaderContent = () => (
 				key={column.dataKey}
 				variant='head'
 				align={column.numeric ?? false ? 'right' : 'left'}
-				style={{ width: column.width, color: 'white' }}
+				style={{
+					width: column.width,
+					color: 'white',
+					fontWeight: 600,
+				}}
 			>
 				{column.label}
 			</TableCell>
@@ -118,6 +117,7 @@ const rowContent = (_index: number, row: TableData) => (
 
 export default () => {
 	return (
+		// TODO: Make table full height
 		<Paper style={{ width: '100%', height: 800 }}>
 			<TableVirtuoso
 				data={rows}

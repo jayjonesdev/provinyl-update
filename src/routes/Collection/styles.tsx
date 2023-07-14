@@ -7,7 +7,9 @@ import {
 	FormHelperText,
 	Menu,
 	MenuItem,
+	Table,
 	TableHead,
+	TableRow,
 	styled,
 } from '@mui/material';
 
@@ -102,5 +104,20 @@ export const SearchContainer = styled('div')`
 export const StyledTableHead = styled(TableHead)(
 	({ theme }) => `
 background-color: ${theme.palette.secondary.light};
+`
+);
+
+export const StyledTable = styled(Table)`
+	border-collapse: 'separate';
+	table-layout: 'fixed';
+`;
+
+export const StyledTableRow = styled(TableRow)(
+	({ theme }) => `
+cursor: pointer;
+&:hover > td {
+	background-color: ${theme.palette.primary.main};
+	color: #fff;
+}
 `
 );
