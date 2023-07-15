@@ -4,41 +4,21 @@ import { ViewType } from '../../helpers/enum';
 import SearchBar from './SearchBar';
 import { Container, StyledDivider } from './styles';
 import Table from './Table';
-import { releases } from '../../testData';
 import { type TableData } from '../../helpers/types';
-import { removeDiacritics } from '../../helpers';
-
-const rows: TableData[] = releases.map((release) => {
-	const { basic_information: basicInformation } = release;
-	const labels = new Set<string>();
-	const catnos = new Set<string>();
-
-	basicInformation.labels.forEach((label) => {
-		labels.add(label.name);
-		catnos.add(label.catno);
-	});
-
-	return {
-		title: basicInformation.title,
-		artist: basicInformation.artists
-			.reduce((artists, artist) => `${artists}, ${artist.name}`, '')
-			.slice(1),
-		year: basicInformation.year,
-		labels: [...new Set(labels)].join(', '),
-		genres: basicInformation.genres.join(', '),
-		catno: [...new Set(catnos)].join(', '),
-	};
-});
+import { getTableData, removeDiacritics } from '../../helpers';
+import { releases } from '../../testData';
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
 	const [viewType, setViewType] = useState<ViewType>(ViewType.GRID);
-	const [data, setData] = useState<TableData[]>(rows);
+	// TODO: Set data after API call
+	const [data, setData] = useState<TableData[]>(getTableData(releases));
+	const [filteredData, setFilteredData] = useState<TableData[]>([]);
 
 	useEffect(() => {
-		let filteredData = rows;
+		let filteredData = data;
 		if (searchValue.length > 0) {
-			filteredData = rows.filter(
+			filteredData = data.filter(
 				(row) =>
 					removeDiacritics(row.artist).includes(
 						removeDiacritics(searchValue)
@@ -46,8 +26,8 @@ export default () => {
 					removeDiacritics(row.title).includes(removeDiacritics(searchValue))
 			);
 		}
-		setData(filteredData);
-	}, [searchValue]);
+		setFilteredData(filteredData);
+	}, [searchValue, data]);
 
 	const toggleViewType = () => {
 		if (viewType === ViewType.GRID) setViewType(ViewType.LIST);
@@ -67,7 +47,7 @@ export default () => {
 					toggleView={toggleViewType}
 				/>
 				<StyledDivider />
-				<Table data={data} />
+				<Table data={filteredData} />
 			</Container>
 		</div>
 	);
