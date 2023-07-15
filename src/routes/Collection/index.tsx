@@ -10,13 +10,12 @@ import { removeDiacritics } from '../../helpers';
 
 const rows: TableData[] = releases.map((release) => {
 	const { basic_information: basicInformation } = release;
-	const labels: string[] = [];
-	const catnos: string[] = [];
+	const labels = new Set<string>();
+	const catnos = new Set<string>();
 
-	// TODO: remove dupes
 	basicInformation.labels.forEach((label) => {
-		labels.push(label.name);
-		catnos.push(label.catno);
+		labels.add(label.name);
+		catnos.add(label.catno);
 	});
 
 	// TODO: Refactor artist filtering, currently doing two loops through the artist array
@@ -24,9 +23,9 @@ const rows: TableData[] = releases.map((release) => {
 		title: basicInformation.title,
 		artist: basicInformation.artists.map((artist) => artist.name).join(', '),
 		year: basicInformation.year,
-		labels: labels.join(', '),
+		labels: [...new Set(labels)].join(', '),
 		genres: basicInformation.genres.join(', '),
-		catno: catnos.join(', '),
+		catno: [...new Set(catnos)].join(', '),
 	};
 });
 

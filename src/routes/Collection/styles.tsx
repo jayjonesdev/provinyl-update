@@ -127,7 +127,7 @@ export const StyledCell = styled(TableCell)(
 	({ theme }) => `
 font-weight: 500;
 color: ${theme.palette.primary.main};
-line-height: 1;
+line-height: 1.25;
 &:hover > td {
 	color: #fff;
 }
