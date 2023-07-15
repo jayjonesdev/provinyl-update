@@ -87,7 +87,7 @@ export default ({
 						aria-label='link'
 						sx={{ mr: 2 }}
 					>
-						<Link />
+						<Link fontSize='large' />
 					</IconButton>
 					<IconButton
 						data-testid='menu-button'
@@ -97,7 +97,7 @@ export default ({
 						aria-label='menu'
 						onClick={handleOpenUserMenu}
 					>
-						<AccountCircle />
+						<AccountCircle fontSize='large' />
 					</IconButton>
 					<StyledMenu
 						sx={{
