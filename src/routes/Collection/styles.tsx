@@ -8,6 +8,7 @@ import {
 	Menu,
 	MenuItem,
 	Table,
+	TableCell,
 	TableHead,
 	TableRow,
 	styled,
@@ -117,6 +118,17 @@ export const StyledTableRow = styled(TableRow)(
 cursor: pointer;
 &:hover > td {
 	background-color: ${theme.palette.primary.main};
+	color: #fff;
+}
+`
+);
+
+export const StyledCell = styled(TableCell)(
+	({ theme }) => `
+font-weight: 500;
+color: ${theme.palette.primary.main};
+line-height: 1;
+&:hover > td {
 	color: #fff;
 }
 `

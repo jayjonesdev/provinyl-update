@@ -1,4 +1,4 @@
-import * as React from 'react';
+import { forwardRef } from 'react';
 import {
 	TableBody,
 	TableCell,
@@ -8,7 +8,12 @@ import {
 } from '@mui/material';
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
 import { type TableColumn, type TableData } from '../../helpers/types';
-import { StyledTable, StyledTableHead, StyledTableRow } from './styles';
+import {
+	StyledCell,
+	StyledTable,
+	StyledTableHead,
+	StyledTableRow,
+} from './styles';
 
 const columns: TableColumn[] = [
 	{
@@ -45,13 +50,13 @@ const columns: TableColumn[] = [
 ];
 
 const VirtuosoTableComponents: TableComponents<TableData> = {
-	Scroller: React.forwardRef<HTMLDivElement>((props, ref) => (
+	Scroller: forwardRef<HTMLDivElement>((props, ref) => (
 		<TableContainer component={Paper} {...props} ref={ref} />
 	)),
 	Table: (props) => <StyledTable {...props} />,
 	TableHead: (props) => <StyledTableHead {...props} />,
 	TableRow: (props) => <StyledTableRow {...props} />,
-	TableBody: React.forwardRef<HTMLTableSectionElement>((props, ref) => (
+	TableBody: forwardRef<HTMLTableSectionElement>((props, ref) => (
 		<TableBody {...props} ref={ref} />
 	)),
 };
@@ -66,7 +71,8 @@ const fixedHeaderContent = () => (
 				style={{
 					width: column.width,
 					color: 'white',
-					fontWeight: 600,
+					fontWeight: 800,
+					fontSize: 16,
 				}}
 			>
 				{column.label}
@@ -78,18 +84,18 @@ const fixedHeaderContent = () => (
 const getYear = (year: number) => (year === 0 ? '' : year);
 
 const rowContent = (_index: number, row: TableData) => (
-	<React.Fragment>
+	<>
 		{columns.map((column) => (
-			<TableCell
+			<StyledCell
 				key={column.dataKey}
 				align={column.numeric ?? false ? 'right' : 'left'}
 			>
 				{column.dataKey === 'year'
 					? getYear(row[column.dataKey])
 					: row[column.dataKey]}
-			</TableCell>
+			</StyledCell>
 		))}
-	</React.Fragment>
+	</>
 );
 
 export default ({ data }: { data: TableData[] }) => {

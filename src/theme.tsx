@@ -23,7 +23,7 @@ export default createTheme({
 	typography: {
 		fontFamily: ['Avenir', 'Roboto'].join(','),
 		// htmlFontSize: 14,
-		fontSize: 16,
+		// fontSize: 14,
 		button: {
 			textTransform: 'none',
 		},
