@@ -18,10 +18,11 @@ const rows: TableData[] = releases.map((release) => {
 		catnos.add(label.catno);
 	});
 
-	// TODO: Refactor artist filtering, currently doing two loops through the artist array
 	return {
 		title: basicInformation.title,
-		artist: basicInformation.artists.map((artist) => artist.name).join(', '),
+		artist: basicInformation.artists
+			.reduce((artists, artist) => `${artists}, ${artist.name}`, '')
+			.slice(1),
 		year: basicInformation.year,
 		labels: [...new Set(labels)].join(', '),
 		genres: basicInformation.genres.join(', '),
