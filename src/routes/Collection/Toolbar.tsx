@@ -125,6 +125,11 @@ export default ({
 							<StyledMenuItem
 								key={menuOption.label}
 								onClick={menuOption.onClick}
+								sx={{
+									':hover': {
+										backgroundColor: theme.palette.primary.light,
+									},
+								}}
 							>
 								<Typography textAlign='center'>{menuOption.label}</Typography>
 							</StyledMenuItem>

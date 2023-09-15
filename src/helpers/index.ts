@@ -26,5 +26,6 @@ export const getTableData = (data: Release[]): TableData[] =>
 			labels: [...new Set(labels)].join(', '),
 			genres: basicInformation.genres.join(', '),
 			catno: [...new Set(catnos)].join(', '),
+			releaseId: basicInformation.id, // TODO: Check if it is id or master_id
 		};
 	});

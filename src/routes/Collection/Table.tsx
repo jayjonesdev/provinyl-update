@@ -1,4 +1,4 @@
-import { forwardRef } from 'react';
+import { forwardRef, useState } from 'react';
 import {
 	TableBody,
 	TableCell,
@@ -14,6 +14,7 @@ import {
 	StyledTableHead,
 	StyledTableRow,
 } from './styles';
+import ViewRecordDialog from './ViewRecordDialog';
 
 const columns: TableColumn[] = [
 	{
@@ -83,22 +84,32 @@ const fixedHeaderContent = () => (
 
 const getYear = (year: number) => (year === 0 ? '' : year);
 
-const rowContent = (_index: number, row: TableData) => (
-	<>
-		{columns.map((column) => (
-			<StyledCell
-				key={column.dataKey}
-				align={column.numeric ?? false ? 'right' : 'left'}
-			>
-				{column.dataKey === 'year'
-					? getYear(row[column.dataKey])
-					: row[column.dataKey]}
-			</StyledCell>
-		))}
-	</>
-);
-
 export default ({ data }: { data: TableData[] }) => {
+	const [informationDialog, setInformationDialog] = useState<boolean>(false);
+	const [releaseId, setReleaseId] = useState<number>(0);
+	const showInformation = (id: number) => {
+		toggleInformationDialog();
+		setReleaseId(id);
+	};
+	const toggleInformationDialog = () =>
+		setInformationDialog(!informationDialog);
+
+	const rowContent = (_index: number, row: TableData) => (
+		<>
+			{columns.map((column) => (
+				<StyledCell
+					key={column.dataKey}
+					align={column.numeric ?? false ? 'right' : 'left'}
+					onClick={() => showInformation(row.releaseId)}
+				>
+					{column.dataKey === 'year'
+						? getYear(row[column.dataKey])
+						: row[column.dataKey].toString().replace(/ *\([^)]*\) */g, '')}
+				</StyledCell>
+			))}
+		</>
+	);
+
 	return (
 		<Paper style={{ height: window.screen.height * 0.85 }}>
 			<TableVirtuoso
@@ -106,6 +117,11 @@ export default ({ data }: { data: TableData[] }) => {
 				components={VirtuosoTableComponents}
 				fixedHeaderContent={fixedHeaderContent}
 				itemContent={rowContent}
+			/>
+			<ViewRecordDialog
+				open={informationDialog}
+				id={releaseId}
+				onClose={toggleInformationDialog}
 			/>
 		</Paper>
 	);

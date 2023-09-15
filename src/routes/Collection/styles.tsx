@@ -133,3 +133,10 @@ line-height: 1.25;
 }
 `
 );
+
+export const AlbumArtwork = styled('img')`
+	width: 300px;
+	height: 300px;
+	border-radius: 5px;
+	margin-top: 25px;
+`;

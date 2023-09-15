@@ -10,6 +10,7 @@ export type TableData = {
 	labels: string;
 	genres: string;
 	catno: string;
+	releaseId: number;
 };
 export interface TableColumn {
 	dataKey: keyof TableData;
@@ -97,4 +98,32 @@ export type Artist = {
 export type Note = {
 	field_id: number;
 	value: string;
+};
+
+type Track = {
+	position: string;
+	title: string;
+	duration: string;
+};
+
+type Image = {
+	type: 'primary' | 'secondary';
+	uri: string;
+	resource_url: string;
+	width: number;
+	height: number;
+};
+
+export type ReleaseDetail = {
+	id: number;
+	artist: Artist[];
+	labels: Label[];
+	resource_url: string;
+	master_id: number;
+	master_url: string;
+	title: string;
+	genres: string[];
+	tracklist: Track[];
+	thumb: string;
+	images: Image[];
 };
