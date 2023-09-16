@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef, useRef, useState } from 'react';
 import {
 	TableBody,
 	TableCell,
@@ -6,7 +6,11 @@ import {
 	TableRow,
 	Paper,
 } from '@mui/material';
-import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
+import {
+	TableVirtuoso,
+	type TableComponents,
+	VirtuosoHandle,
+} from 'react-virtuoso';
 import { type TableColumn, type TableData } from '../../helpers/types';
 import {
 	StyledCell,
@@ -55,7 +59,9 @@ const VirtuosoTableComponents: TableComponents<TableData> = {
 		<TableContainer component={Paper} {...props} ref={ref} />
 	)),
 	Table: (props) => <StyledTable {...props} />,
-	TableHead: (props) => <StyledTableHead {...props} />,
+	TableHead: forwardRef((props, ref) => (
+		<StyledTableHead {...props} ref={ref} />
+	)),
 	TableRow: (props) => <StyledTableRow {...props} />,
 	TableBody: forwardRef<HTMLTableSectionElement>((props, ref) => (
 		<TableBody {...props} ref={ref} />
