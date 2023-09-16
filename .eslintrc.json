@@ -5,12 +5,10 @@
     },
     "extends": [
       "plugin:react/recommended",
-      "standard-with-typescript",
       "plugin:react-hooks/recommended",
       "react-app",
       "prettier"
     ],
-    "overrides": [],
     "parserOptions": {
       "ecmaVersion": "latest",
       "sourceType": "module",
