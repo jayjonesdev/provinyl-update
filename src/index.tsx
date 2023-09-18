@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -6,17 +6,24 @@ import { RouterProvider } from 'react-router-dom';
 import router from './router';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './theme';
+import { AppContextProvider } from './AppContext';
 
 const root = ReactDOM.createRoot(
 	document.getElementById('root') as HTMLElement
 );
+
+const Parent = ({children}: {children: ReactNode}) => 
+ (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? <React.Fragment>{children}</React.Fragment> : <React.StrictMode>{children}</React.StrictMode>;
+
 root.render(
-	<React.StrictMode>
+	<Parent>
+		<AppContextProvider>
 		<ThemeProvider theme={theme}>
 			<CssBaseline />
 			<RouterProvider router={router} />
 		</ThemeProvider>
-	</React.StrictMode>
+		</AppContextProvider>
+	</Parent>
 );
 
 // If you want to start measuring performance in your app, pass a function

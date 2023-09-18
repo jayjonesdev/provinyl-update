@@ -35,10 +35,10 @@ export default ({
 				<StyledDialogContentText>
 					<Typography variant='body1'>
 						<b># of items in your collection: </b>
-						{value}
+						{numOfItems}
 					</Typography>
 					<Typography variant='body1'>
-						<b>Collection value in USD: </b>${numOfItems}
+						<b>Collection value in USD: </b>{value}
 					</Typography>
 					<StyledDivider />
 					<InstagramLink>

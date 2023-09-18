@@ -1,6 +1,7 @@
 import { Container, DiscogsButton, LoginContainer, Logo } from './styles';
 import PrimaryLogo from '../../assets/primary_logo.png';
 import DiscogsIcon from './DiscogsIcon';
+import { login } from '../../api/auth';
 
 export default () => {
 	return (
@@ -11,7 +12,8 @@ export default () => {
 					startIcon={<DiscogsIcon />}
 					size='large'
 					variant='outlined'
-					href='/collection'
+					// href='/collection'
+					onClick={login}
 				>
 					Login with Discogs
 				</DiscogsButton>

@@ -1,4 +1,4 @@
-import { forwardRef, useRef, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import {
 	TableBody,
 	TableCell,
@@ -6,11 +6,7 @@ import {
 	TableRow,
 	Paper,
 } from '@mui/material';
-import {
-	TableVirtuoso,
-	type TableComponents,
-	VirtuosoHandle,
-} from 'react-virtuoso';
+import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
 import { type TableColumn, type TableData } from '../../helpers/types';
 import {
 	StyledCell,
@@ -110,7 +106,7 @@ export default ({ data }: { data: TableData[] }) => {
 				>
 					{column.dataKey === 'year'
 						? getYear(row[column.dataKey])
-						: row[column.dataKey].toString().replace(/ *\([^)]*\) */g, '')}
+						: row[column.dataKey]}
 				</StyledCell>
 			))}
 		</>

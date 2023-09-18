@@ -10,3 +10,8 @@ export enum SearchType {
 	ARTIST = 'Artist',
 	TRACK = 'Track',
 }
+
+export enum AppReducerActions {
+	UpdateUserInfo = 'UPDATE_USER_INFO',
+	UpdateCollectionInfo = 'UPDATE_COLLECTION_INFO',
+}

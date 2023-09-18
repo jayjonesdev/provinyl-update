@@ -1,3 +1,5 @@
+import { AppReducerActions } from './enum';
+
 export type MenuOptions = {
 	label: string;
 	onClick: () => void;
@@ -127,3 +129,49 @@ export type ReleaseDetail = {
 	thumb: string;
 	images: Image[];
 };
+
+export type AppStateType = {
+	user: UserInfoType;
+	collection: CollectionInfoType;
+};
+
+export type UserInfoType = {
+	id: number;
+	username: string;
+	resource_url: string;
+	consumer_name: string;
+};
+
+export type CollectionInfoType = {
+	value: string;
+	numberOfItems: number;
+};
+
+export type AppActionType = UserInfoActionType | UserCollectionActionType;
+
+export interface UserInfoActionType {
+	type: AppReducerActions.UpdateUserInfo;
+	user: UserInfoType;
+}
+
+export interface UserCollectionActionType {
+	type: AppReducerActions.UpdateCollectionInfo;
+	collection: CollectionInfoType;
+}
+
+export interface UserCollection {
+	pages: number;
+	items: UserCollectionItem[];
+}
+
+export interface UserCollectionItem {
+	title: string;
+	artist: string;
+	year: number;
+	labels: string;
+	genres: string;
+	catno: string;
+	releaseId: number;
+	imageUrl: string;
+	instanceId: number;
+}

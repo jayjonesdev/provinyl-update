@@ -1,19 +1,21 @@
 import Toolbar from './Toolbar';
 import { useEffect, useState } from 'react';
-import { ViewType } from '../../helpers/enum';
+import { AppReducerActions, ViewType } from '../../helpers/enum';
 import SearchBar from './SearchBar';
 import { Container, StyledDivider } from './styles';
 import Table from './Table';
-import { type TableData } from '../../helpers/types';
-import { getTableData, removeDiacritics } from '../../helpers';
-import { releases } from '../../testData';
+import { UserCollectionItem } from '../../helpers/types';
+import { removeDiacritics } from '../../helpers';
+import { getUserCollection, getUserCollectionValue, getUserInfo } from '../../api/user';
+import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
 	const [viewType, setViewType] = useState<ViewType>(ViewType.GRID);
-	// TODO: Set data after API call
-	const [data, setData] = useState<TableData[]>(getTableData(releases));
-	const [filteredData, setFilteredData] = useState<TableData[]>([]);
+	const [data, setData] = useState<UserCollectionItem[]>([]);
+	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
+	const { user: {username }, collection: {value, numberOfItems} } = useAppState();
+	const dispatch = useAppDispatch();
 
 	useEffect(() => {
 		let filteredData = data;
@@ -34,11 +36,29 @@ export default () => {
 		else setViewType(ViewType.GRID);
 	};
 
+	// TODO: Create loading screen
+	useEffect(() => {
+		if (username.length === 0) {
+			getUserInfo().then(userInfo => dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }));
+		} else {
+			(async () => {
+				let value = '', numberOfItems = 0;
+
+				await getUserCollection(username).then(collection => {
+					setData(collection.items);
+					numberOfItems = collection.items.length
+				});
+				await getUserCollectionValue(username).then(collectionValue => value = collectionValue);
+				dispatch({ type: AppReducerActions.UpdateCollectionInfo, collection: {value, numberOfItems}})		
+			})();
+		}
+	}, [username]);
+
 	return (
 		<div>
 			{/* TODO: Get collection information */}
-			<Toolbar value='485' numOfItems='23,245' />
-			<Container>
+			<Toolbar value={value} numOfItems={numberOfItems.toString()} />
+			{<Container>
 				<SearchBar
 					value={searchValue}
 					viewType={viewType}
@@ -48,7 +68,7 @@ export default () => {
 				/>
 				<StyledDivider />
 				<Table data={filteredData} />
-			</Container>
+			</Container>}
 		</div>
 	);
 };
