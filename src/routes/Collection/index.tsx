@@ -10,7 +10,7 @@ import {
 	getUserCollection,
 	getUserCollectionValue,
 	getUserInfo,
-} from '../../api/user';
+} from '../../api';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 
 export default () => {

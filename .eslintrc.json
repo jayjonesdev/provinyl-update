@@ -84,6 +84,11 @@
 		"@typescript-eslint/restrict-template-expressions": "off",
 		"@typescript-eslint/no-shadow": "off",
 		"no-useless-escape": "off",
-		"@typescript-eslint/no-unsafe-return": "off"
+		"@typescript-eslint/no-unsafe-return": "off",
+		"@typescript-eslint/default-param-last": "off",
+		"no-case-declarations": "off",
+		"@typescript-eslint/no-unsafe-assignment": "off",
+		"@typescript-eslint/no-unsafe-member-access": "off",
+		"@typescript-eslint/no-unsafe-argument": "off"
 	}
 }

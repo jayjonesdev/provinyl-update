@@ -175,3 +175,15 @@ export interface UserCollectionItem {
 	imageUrl: string;
 	instanceId: number;
 }
+
+export interface ReleaseDetails {
+	title: string;
+	artist: string;
+	genres: string;
+	releaseDate: string;
+	id: number;
+	coverArtUri: string;
+	labels: string;
+	uri: string;
+	year: number;
+}

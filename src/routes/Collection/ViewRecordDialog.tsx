@@ -2,12 +2,16 @@ import { useEffect, useState } from 'react';
 import {
 	AlbumArtwork,
 	StyledDialog,
+	StyledDialogActions,
 	StyledDialogContent,
 	StyledDialogTitle,
 	StyledDivider,
 } from './styles';
 
 import { releaseDetail as mockDetails } from '../../testData';
+import { getReleaseDetails } from '../../api';
+import { Button } from '@mui/material';
+import { ReleaseDetails } from '../../helpers/types';
 
 export default ({
 	id,
@@ -18,10 +22,19 @@ export default ({
 	open: boolean;
 	onClose: () => void;
 }) => {
-	const [details, setDetails] = useState<any>();
+	const [details, setDetails] = useState<ReleaseDetails>();
 
-	useEffect(() => setDetails(mockDetails), []);
+	useEffect(() => {
+		if (open) {
+			(async () => {
+				await getReleaseDetails(id).then((releaseDetails) =>
+					setDetails(releaseDetails),
+				);
+			})();
+		}
+	}, [id]);
 
+	// TODO: Loading state
 	return (
 		<StyledDialog
 			open={open}
@@ -31,10 +44,10 @@ export default ({
 			fullWidth
 			id={`record-information-dialog-${id}`}
 		>
-			<StyledDialogTitle>{details.title}</StyledDialogTitle>
+			<StyledDialogTitle>{details?.title}</StyledDialogTitle>
 			<StyledDialogContent>
 				<div style={{ display: 'flex' }}>
-					<AlbumArtwork src={details.images[0].uri} />
+					<AlbumArtwork src={details?.coverArtUri} />
 					<StyledDivider orientation="vertical" />
 				</div>
 				{/* <SearchContainer>
@@ -71,14 +84,11 @@ export default ({
 					</FormControl>
 				</SearchContainer> */}
 			</StyledDialogContent>
-			{/* <StyledDialogActions>
-				<Button onClick={closeDialog} variant='outlined'>
+			<StyledDialogActions>
+				<Button onClick={onClose} variant="contained">
 					Close
 				</Button>
-				<Button onClick={search} variant='contained'>
-					Search
-				</Button>
-			</StyledDialogActions> */}
+			</StyledDialogActions>
 		</StyledDialog>
 	);
 };
