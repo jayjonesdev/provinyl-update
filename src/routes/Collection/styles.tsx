@@ -27,7 +27,7 @@ export const StyledMenuItem = styled(MenuItem)(
     background-color: ${theme.palette.secondary.light};
     color: white;
 }
-`
+`,
 );
 
 export const StyledMenu = styled(Menu)`
@@ -38,7 +38,7 @@ export const StyledDialogTitle = styled(DialogTitle)(
 	({ theme }) => `
 background-color: ${theme.palette.primary.main};
 color: ${theme.palette.text.secondary};
-`
+`,
 );
 
 export const StyledDialog = styled(Dialog)`
@@ -48,13 +48,13 @@ export const StyledDialog = styled(Dialog)`
 export const StyledDialogContent = styled(DialogContent)(
 	({ theme }) => `
 background-color: ${theme.palette.background.default};
-`
+`,
 );
 
 export const StyledDialogActions = styled(DialogActions)(
 	({ theme }) => `
 background-color: ${theme.palette.background.default};
-`
+`,
 );
 
 export const StyledDialogContentText = styled('div')(
@@ -63,7 +63,7 @@ color: ${theme.palette.text.primary};
 padding-top: ${theme.spacing()};
 display: flex;
 flex-direction: column;
-`
+`,
 );
 
 export const StyledDivider = styled(Divider)(
@@ -72,7 +72,7 @@ background-color: ${theme.palette.primary.main};
 height: 2px;
 margin-top: 5px;
 margin-bottom: 5px;
-`
+`,
 );
 
 export const InstagramLink = styled('div')`
@@ -93,7 +93,7 @@ export const ButtonBar = styled('div')`
 export const StyledHelperText = styled(FormHelperText)(
 	({ theme }) => `
 color: ${theme.palette.text.primary};
-`
+`,
 );
 
 export const SearchContainer = styled('div')`
@@ -105,7 +105,7 @@ export const SearchContainer = styled('div')`
 export const StyledTableHead = styled(TableHead)(
 	({ theme }) => `
 background-color: ${theme.palette.secondary.light};
-`
+`,
 );
 
 export const StyledTable = styled(Table)`
@@ -120,7 +120,7 @@ cursor: pointer;
 	background-color: ${theme.palette.primary.main};
 	color: #fff;
 }
-`
+`,
 );
 
 export const StyledCell = styled(TableCell)(
@@ -131,7 +131,7 @@ line-height: 1.25;
 &:hover > td {
 	color: #fff;
 }
-`
+`,
 );
 
 export const AlbumArtwork = styled('img')`

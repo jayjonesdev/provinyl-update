@@ -14,7 +14,7 @@ describe('Collection Page', () => {
 		expect(toggleViewTypeBtn.textContent).toEqual('View Grid');
 	});
 
-	it('search field change', async () => {
+	it('search field change', () => {
 		const searchField = screen.getByPlaceholderText('Search collection...');
 
 		fireEvent.change(searchField, {
@@ -40,7 +40,7 @@ describe('Collection Page', () => {
 
 		fireEvent.click(informationBtn);
 		expect(screen.getByRole('dialog', { hidden: false }).innerHTML).toContain(
-			'Information'
+			'Information',
 		);
 	});
 });

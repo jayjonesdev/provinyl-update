@@ -6,7 +6,11 @@ import { Container, StyledDivider } from './styles';
 import Table from './Table';
 import { UserCollectionItem } from '../../helpers/types';
 import { removeDiacritics } from '../../helpers';
-import { getUserCollection, getUserCollectionValue, getUserInfo } from '../../api/user';
+import {
+	getUserCollection,
+	getUserCollectionValue,
+	getUserInfo,
+} from '../../api/user';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 
 export default () => {
@@ -14,7 +18,10 @@ export default () => {
 	const [viewType, setViewType] = useState<ViewType>(ViewType.GRID);
 	const [data, setData] = useState<UserCollectionItem[]>([]);
 	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
-	const { user: {username }, collection: {value, numberOfItems} } = useAppState();
+	const {
+		user: { username },
+		collection: { value, numberOfItems },
+	} = useAppState();
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -23,9 +30,9 @@ export default () => {
 			filteredData = data.filter(
 				(row) =>
 					removeDiacritics(row.artist).includes(
-						removeDiacritics(searchValue)
+						removeDiacritics(searchValue),
 					) ||
-					removeDiacritics(row.title).includes(removeDiacritics(searchValue))
+					removeDiacritics(row.title).includes(removeDiacritics(searchValue)),
 			);
 		}
 		setFilteredData(filteredData);
@@ -39,17 +46,25 @@ export default () => {
 	// TODO: Create loading screen
 	useEffect(() => {
 		if (username.length === 0) {
-			getUserInfo().then(userInfo => dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }));
+			getUserInfo().then((userInfo) =>
+				dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }),
+			);
 		} else {
 			(async () => {
-				let value = '', numberOfItems = 0;
+				let value = '',
+					numberOfItems = 0;
 
-				await getUserCollection(username).then(collection => {
+				await getUserCollection(username).then((collection) => {
 					setData(collection.items);
-					numberOfItems = collection.items.length
+					numberOfItems = collection.items.length;
 				});
-				await getUserCollectionValue(username).then(collectionValue => value = collectionValue);
-				dispatch({ type: AppReducerActions.UpdateCollectionInfo, collection: {value, numberOfItems}})		
+				await getUserCollectionValue(username).then(
+					(collectionValue) => (value = collectionValue),
+				);
+				dispatch({
+					type: AppReducerActions.UpdateCollectionInfo,
+					collection: { value, numberOfItems },
+				});
 			})();
 		}
 	}, [username]);
@@ -58,17 +73,19 @@ export default () => {
 		<div>
 			{/* TODO: Get collection information */}
 			<Toolbar value={value} numOfItems={numberOfItems.toString()} />
-			{<Container>
-				<SearchBar
-					value={searchValue}
-					viewType={viewType}
-					onChange={(value) => setSearchValue(value)}
-					onClear={() => setSearchValue('')}
-					toggleView={toggleViewType}
-				/>
-				<StyledDivider />
-				<Table data={filteredData} />
-			</Container>}
+			{
+				<Container>
+					<SearchBar
+						value={searchValue}
+						viewType={viewType}
+						onChange={(value) => setSearchValue(value)}
+						onClear={() => setSearchValue('')}
+						toggleView={toggleViewType}
+					/>
+					<StyledDivider />
+					<Table data={filteredData} />
+				</Container>
+			}
 		</div>
 	);
 };

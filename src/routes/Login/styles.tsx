@@ -22,11 +22,11 @@ export const DiscogsButton = styled(Button)`
 	background-color: black;
 	text-align: center;
 	color: white;
-    font-weight: 800;
+	font-weight: 800;
 	&:hover {
 		background-color: grey;
-	};
-    width: 40%;
+	}
+	width: 40%;
 `;
 
 export const StyledDiscogsLogo = styled('img')`

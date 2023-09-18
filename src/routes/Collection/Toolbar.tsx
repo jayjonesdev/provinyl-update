@@ -66,38 +66,38 @@ export default ({
 
 	return (
 		<>
-			<AppBar position='static'>
+			<AppBar position="static">
 				<Toolbar>
 					<StyledProvinylLogo
 						src={ProvinylLogo}
-						alt='logo'
+						alt="logo"
 						onClick={() => window.location.assign('/')}
 					/>
 					<Typography
-						variant='h6'
-						component='div'
+						variant="h6"
+						component="div"
 						sx={{ marginLeft: theme.spacing(2), flexGrow: 1 }}
 					>
 						Your Collection
 					</Typography>
 					<IconButton
-						size='large'
-						edge='start'
-						color='inherit'
-						aria-label='link'
+						size="large"
+						edge="start"
+						color="inherit"
+						aria-label="link"
 						sx={{ mr: 2 }}
 					>
-						<Link fontSize='large' />
+						<Link fontSize="large" />
 					</IconButton>
 					<IconButton
-						data-testid='menu-button'
-						size='large'
-						edge='start'
-						color='inherit'
-						aria-label='menu'
+						data-testid="menu-button"
+						size="large"
+						edge="start"
+						color="inherit"
+						aria-label="menu"
 						onClick={handleOpenUserMenu}
 					>
-						<AccountCircle fontSize='large' />
+						<AccountCircle fontSize="large" />
 					</IconButton>
 					<StyledMenu
 						sx={{
@@ -106,7 +106,7 @@ export default ({
 								color: '#fff',
 							},
 						}}
-						id='menu-appbar'
+						id="menu-appbar"
 						anchorEl={anchorElUser}
 						anchorOrigin={{
 							vertical: 'top',
@@ -117,7 +117,7 @@ export default ({
 							vertical: 'top',
 							horizontal: 'right',
 						}}
-						data-testid='menu'
+						data-testid="menu"
 						open={Boolean(anchorElUser)}
 						onClose={handleCloseUserMenu}
 					>
@@ -131,7 +131,7 @@ export default ({
 									},
 								}}
 							>
-								<Typography textAlign='center'>{menuOption.label}</Typography>
+								<Typography textAlign="center">{menuOption.label}</Typography>
 							</StyledMenuItem>
 						))}
 					</StyledMenu>

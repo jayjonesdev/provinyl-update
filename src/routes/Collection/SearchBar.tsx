@@ -37,35 +37,35 @@ export default ({
 			<div>
 				<ButtonBar>
 					<TextField
-						data-testid='collection-search-field'
-						placeholder='Search collection...'
-						margin='dense'
+						data-testid="collection-search-field"
+						placeholder="Search collection..."
+						margin="dense"
 						onChange={(e) => onChange(e.target.value)}
 						sx={{ width: '35%' }}
 						InputProps={{
 							startAdornment: (
-								<InputAdornment position='start'>
+								<InputAdornment position="start">
 									<IconButton>
 										<Search />
 									</IconButton>
 								</InputAdornment>
 							),
 							endAdornment: value.length > 0 && (
-								<InputAdornment position='end'>
+								<InputAdornment position="end">
 									<IconButton onClick={onClear}>
 										<CloseOutlined />
 									</IconButton>
 								</InputAdornment>
 							),
 						}}
-						variant='outlined'
+						variant="outlined"
 						value={value}
 					/>
 					<div>
 						<Button
-							data-testid='toggle-view-type-btn'
-							variant='contained'
-							size='large'
+							data-testid="toggle-view-type-btn"
+							variant="contained"
+							size="large"
 							sx={{ mr: 2 }}
 							onClick={toggleView}
 							startIcon={<ViewTypeIcon />}
@@ -73,8 +73,8 @@ export default ({
 							View {viewType === ViewType.GRID ? 'List' : 'Grid'}
 						</Button>
 						<Button
-							variant='contained'
-							size='large'
+							variant="contained"
+							size="large"
 							onClick={openAddRecordDialog}
 							startIcon={<Add />}
 						>

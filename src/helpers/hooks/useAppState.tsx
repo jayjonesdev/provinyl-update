@@ -1,10 +1,10 @@
-import { useContext } from "react"
-import { AppDispatchContext, AppStatContext } from "../../AppContext"
+import { useContext } from 'react';
+import { AppDispatchContext, AppStatContext } from '../../AppContext';
 
 export const useAppState = () => {
-    return useContext(AppStatContext);
-}
+	return useContext(AppStatContext);
+};
 
 export const useAppDispatch = () => {
-    return useContext(AppDispatchContext)
-}
+	return useContext(AppDispatchContext);
+};

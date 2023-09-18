@@ -51,32 +51,32 @@ export default ({
 			open={open}
 			keepMounted
 			onClose={handleClose}
-			aria-describedby='add-record-dialog'
+			aria-describedby="add-record-dialog"
 			fullWidth
 		>
 			<StyledDialogTitle>Add Record</StyledDialogTitle>
 			<StyledDialogContent>
 				<SearchContainer>
 					<TextField
-						data-testid='add-record-search-field'
-						placeholder='Search...'
+						data-testid="add-record-search-field"
+						placeholder="Search..."
 						sx={{ flexGrow: 1, mr: 2 }}
 						onChange={(e) => setSearchValue(e.target.value)}
 						InputProps={{
 							startAdornment: (
-								<InputAdornment position='start'>
+								<InputAdornment position="start">
 									<IconButton onClick={() => {}}>
 										<Search />
 									</IconButton>
 								</InputAdornment>
 							),
 						}}
-						variant='outlined'
+						variant="outlined"
 						value={searchValue}
 					/>
 					<FormControl>
 						<Select
-							id='search-type-select'
+							id="search-type-select"
 							value={searchType}
 							onChange={(e) => setSearchType(e.target.value as SearchType)}
 						>
@@ -91,10 +91,10 @@ export default ({
 				</SearchContainer>
 			</StyledDialogContent>
 			<StyledDialogActions>
-				<Button onClick={closeDialog} variant='outlined'>
+				<Button onClick={closeDialog} variant="outlined">
 					Close
 				</Button>
-				<Button onClick={search} variant='contained'>
+				<Button onClick={search} variant="contained">
 					Search
 				</Button>
 			</StyledDialogActions>

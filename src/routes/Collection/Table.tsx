@@ -69,7 +69,7 @@ const fixedHeaderContent = () => (
 		{columns.map((column) => (
 			<TableCell
 				key={column.dataKey}
-				variant='head'
+				variant="head"
 				align={column.numeric ?? false ? 'right' : 'left'}
 				style={{
 					width: column.width,
@@ -89,12 +89,12 @@ const getYear = (year: number) => (year === 0 ? '' : year);
 export default ({ data }: { data: TableData[] }) => {
 	const [informationDialog, setInformationDialog] = useState<boolean>(false);
 	const [releaseId, setReleaseId] = useState<number>(0);
+	const toggleInformationDialog = () =>
+		setInformationDialog(!informationDialog);
 	const showInformation = (id: number) => {
 		toggleInformationDialog();
 		setReleaseId(id);
 	};
-	const toggleInformationDialog = () =>
-		setInformationDialog(!informationDialog);
 
 	const rowContent = (_index: number, row: TableData) => (
 		<>

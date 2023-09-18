@@ -10,8 +10,8 @@ export default () => {
 				<Logo src={PrimaryLogo} />
 				<DiscogsButton
 					startIcon={<DiscogsIcon />}
-					size='large'
-					variant='outlined'
+					size="large"
+					variant="outlined"
 					// href='/collection'
 					onClick={login}
 				>

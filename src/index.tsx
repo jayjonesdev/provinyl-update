@@ -9,21 +9,25 @@ import theme from './theme';
 import { AppContextProvider } from './AppContext';
 
 const root = ReactDOM.createRoot(
-	document.getElementById('root') as HTMLElement
+	document.getElementById('root') as HTMLElement,
 );
 
-const Parent = ({children}: {children: ReactNode}) => 
- (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') ? <React.Fragment>{children}</React.Fragment> : <React.StrictMode>{children}</React.StrictMode>;
+const Parent = ({ children }: { children: ReactNode }) =>
+	!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? (
+		<React.Fragment>{children}</React.Fragment>
+	) : (
+		<React.StrictMode>{children}</React.StrictMode>
+	);
 
 root.render(
 	<Parent>
 		<AppContextProvider>
-		<ThemeProvider theme={theme}>
-			<CssBaseline />
-			<RouterProvider router={router} />
-		</ThemeProvider>
+			<ThemeProvider theme={theme}>
+				<CssBaseline />
+				<RouterProvider router={router} />
+			</ThemeProvider>
 		</AppContextProvider>
-	</Parent>
+	</Parent>,
 );
 
 // If you want to start measuring performance in your app, pass a function

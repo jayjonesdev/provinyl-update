@@ -27,32 +27,33 @@ export default ({
 			open={open}
 			keepMounted
 			onClose={handleClose}
-			aria-describedby='information-dialog'
-            fullWidth
+			aria-describedby="information-dialog"
+			fullWidth
 		>
 			<StyledDialogTitle>Information</StyledDialogTitle>
 			<StyledDialogContent>
 				<StyledDialogContentText>
-					<Typography variant='body1'>
+					<Typography variant="body1">
 						<b># of items in your collection: </b>
 						{numOfItems}
 					</Typography>
-					<Typography variant='body1'>
-						<b>Collection value in USD: </b>{value}
+					<Typography variant="body1">
+						<b>Collection value in USD: </b>
+						{value}
 					</Typography>
 					<StyledDivider />
 					<InstagramLink>
 						<IconButton
-							edge='start'
-							color='inherit'
-							aria-label='instagram-link'
+							edge="start"
+							color="inherit"
+							aria-label="instagram-link"
 							onClick={() => window.open(INSTAGRAM_LINK, '_blank')}
 						>
 							<Instagram />
 						</IconButton>
-						<Typography variant='body2'>Visit us on Instagram</Typography>
+						<Typography variant="body2">Visit us on Instagram</Typography>
 					</InstagramLink>
-					<Typography variant='subtitle2'>
+					<Typography variant="subtitle2">
 						<i>
 							This application uses Discogs&#39; API but is not affiliated with,
 							sponsored or endorsed by Discogs. &#39;Discogs&#39; is a trademark
@@ -62,7 +63,7 @@ export default ({
 				</StyledDialogContentText>
 			</StyledDialogContent>
 			<StyledDialogActions>
-				<Button onClick={handleClose} variant='contained'>
+				<Button onClick={handleClose} variant="contained">
 					Close
 				</Button>
 			</StyledDialogActions>

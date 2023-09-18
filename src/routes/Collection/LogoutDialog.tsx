@@ -21,22 +21,22 @@ export default ({
 			open={open}
 			keepMounted
 			onClose={handleClose}
-			aria-describedby='logout-dialog'
-            fullWidth
+			aria-describedby="logout-dialog"
+			fullWidth
 		>
 			<StyledDialogTitle>Logout</StyledDialogTitle>
 			<StyledDialogContent>
 				<StyledDialogContentText>
-					<Typography variant='body1'>
+					<Typography variant="body1">
 						Are you sure you want to logout?
 					</Typography>
 				</StyledDialogContentText>
 			</StyledDialogContent>
 			<StyledDialogActions>
-				<Button onClick={handleClose} variant='outlined'>
+				<Button onClick={handleClose} variant="outlined">
 					Cancel
 				</Button>
-				<Button onClick={handleAction} variant='contained'>
+				<Button onClick={handleAction} variant="contained">
 					Logout
 				</Button>
 			</StyledDialogActions>

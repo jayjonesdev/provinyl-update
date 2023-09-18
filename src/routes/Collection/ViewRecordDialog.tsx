@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
 	AlbumArtwork,
 	StyledDialog,
@@ -6,10 +6,8 @@ import {
 	StyledDialogTitle,
 	StyledDivider,
 } from './styles';
-import { type ReleaseDetail } from '../../helpers/types';
 
 import { releaseDetail as mockDetails } from '../../testData';
-import { Divider } from '@mui/material';
 
 export default ({
 	id,
@@ -29,14 +27,15 @@ export default ({
 			open={open}
 			keepMounted
 			onClose={onClose}
-			aria-describedby='view-record-dialog'
+			aria-describedby="view-record-dialog"
 			fullWidth
+			id={`record-information-dialog-${id}`}
 		>
-			<StyledDialogTitle>{details?.title}</StyledDialogTitle>
+			<StyledDialogTitle>{details.title}</StyledDialogTitle>
 			<StyledDialogContent>
-				<div style={{display: 'flex'}}>
-					<AlbumArtwork src={details?.images[0].uri} />
-					<StyledDivider orientation='vertical'  />
+				<div style={{ display: 'flex' }}>
+					<AlbumArtwork src={details.images[0].uri} />
+					<StyledDivider orientation="vertical" />
 				</div>
 				{/* <SearchContainer>
 					<TextField
