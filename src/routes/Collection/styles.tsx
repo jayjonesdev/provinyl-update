@@ -1,5 +1,6 @@
 import {
 	Box,
+	CircularProgress,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -14,7 +15,10 @@ import {
 	TableRow,
 	styled,
 } from '@mui/material';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
+import {
+	LazyLoadImage,
+	LazyLoadImageProps,
+} from 'react-lazy-load-image-component';
 
 export const StyledProvinylLogo = styled('img')`
 	height: 50px;
@@ -136,7 +140,25 @@ line-height: 1.25;
 `,
 );
 
-export const AlbumArtwork = styled(LazyLoadImage)`
+const SpinnerContainer = styled(Box)`
+	display: flex;
+	width: 300px;
+	height: 300px;
+	justify-content: center;
+	align-items: center;
+`;
+
+export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
+	<LazyLoadImage
+		placeholder={
+			<SpinnerContainer>
+				<CircularProgress />
+			</SpinnerContainer>
+		}
+		effect="blur"
+		{...props}
+	/>
+))`
 	width: 300px;
 	height: 300px;
 	border-radius: 5px;
@@ -154,11 +176,4 @@ export const GridTile = styled('div')`
 	&:hover {
 		cursor: pointer;
 	}
-`;
-
-export const SpinnerContainer = styled(Box)`
-	display: flex;
-	width: 300px;
-	height: 300px;
-	align-items: center;
 `;

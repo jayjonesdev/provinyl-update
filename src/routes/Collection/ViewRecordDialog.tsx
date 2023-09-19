@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
 	AlbumArtwork,
-	SpinnerContainer,
 	StyledDialog,
 	StyledDialogActions,
 	StyledDialogContent,
@@ -10,7 +9,7 @@ import {
 } from './styles';
 
 import { getReleaseDetails } from '../../api';
-import { Button, CircularProgress } from '@mui/material';
+import { Button } from '@mui/material';
 import { ReleaseDetails } from '../../helpers/types';
 import { useAppState } from '../../helpers/hooks/useAppState';
 
@@ -46,14 +45,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 						alignContent: 'baseline',
 					}}
 				>
-					<AlbumArtwork
-						src={currentRelease.imageUrl}
-						placeholder={
-							<SpinnerContainer>
-								<CircularProgress />
-							</SpinnerContainer>
-						}
-					/>
+					<AlbumArtwork src={currentRelease.imageUrl} />
 					<StyledDivider orientation="vertical" />
 					<div>TEST</div>
 				</div>
