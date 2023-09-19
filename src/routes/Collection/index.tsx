@@ -12,17 +12,27 @@ import {
 	getUserInfo,
 } from '../../api';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
+import Grid from './Grid';
+import ViewRecordDialog from './ViewRecordDialog';
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
 	const [viewType, setViewType] = useState<ViewType>(ViewType.GRID);
 	const [data, setData] = useState<UserCollectionItem[]>([]);
 	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
+	const [informationDialog, setInformationDialog] = useState<boolean>(false);
 	const {
 		user: { username },
 		collection: { value, numberOfItems },
 	} = useAppState();
 	const dispatch = useAppDispatch();
+
+	const toggleInformationDialog = () =>
+		setInformationDialog(!informationDialog);
+	const showInformation = (item: UserCollectionItem) => {
+		toggleInformationDialog();
+		dispatch({ type: AppReducerActions.SetCurrentRelease, release: item });
+	};
 
 	useEffect(() => {
 		let filteredData = data;
@@ -83,7 +93,16 @@ export default () => {
 						toggleView={toggleViewType}
 					/>
 					<StyledDivider />
-					<Table data={filteredData} />
+					{viewType === ViewType.LIST && (
+						<Table data={filteredData} onItemClick={showInformation} />
+					)}
+					{viewType === ViewType.GRID && (
+						<Grid data={filteredData} onItemClick={showInformation} />
+					)}
+					<ViewRecordDialog
+						open={informationDialog}
+						onClose={toggleInformationDialog}
+					/>
 				</Container>
 			}
 		</div>

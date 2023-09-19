@@ -133,6 +133,7 @@ export type ReleaseDetail = {
 export type AppStateType = {
 	user: UserInfoType;
 	collection: CollectionInfoType;
+	currentRelease: UserCollectionItem;
 };
 
 export type UserInfoType = {
@@ -147,7 +148,10 @@ export type CollectionInfoType = {
 	numberOfItems: number;
 };
 
-export type AppActionType = UserInfoActionType | UserCollectionActionType;
+export type AppActionType =
+	| UserInfoActionType
+	| UserCollectionActionType
+	| CurrentReleaseActionType;
 
 export interface UserInfoActionType {
 	type: AppReducerActions.UpdateUserInfo;
@@ -157,6 +161,11 @@ export interface UserInfoActionType {
 export interface UserCollectionActionType {
 	type: AppReducerActions.UpdateCollectionInfo;
 	collection: CollectionInfoType;
+}
+
+export interface CurrentReleaseActionType {
+	type: AppReducerActions.SetCurrentRelease;
+	release: UserCollectionItem;
 }
 
 export interface UserCollection {

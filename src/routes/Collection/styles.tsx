@@ -1,4 +1,5 @@
 import {
+	Box,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -13,6 +14,7 @@ import {
 	TableRow,
 	styled,
 } from '@mui/material';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 export const StyledProvinylLogo = styled('img')`
 	height: 50px;
@@ -67,11 +69,11 @@ flex-direction: column;
 );
 
 export const StyledDivider = styled(Divider)(
-	({ theme }) => `
+	({ theme, orientation = 'horizontal' }) => `
 background-color: ${theme.palette.primary.main};
-height: 2px;
-margin-top: 5px;
-margin-bottom: 5px;
+height: ${orientation === 'horizontal' ? '2px' : 'inherit'};
+margin: ${orientation === 'horizontal' ? '.5em 0px .5em 0' : '20px 10px'};
+width: ${orientation === 'horizontal' ? 'inherit' : '2px'};
 `,
 );
 
@@ -134,9 +136,29 @@ line-height: 1.25;
 `,
 );
 
-export const AlbumArtwork = styled('img')`
+export const AlbumArtwork = styled(LazyLoadImage)`
 	width: 300px;
 	height: 300px;
 	border-radius: 5px;
 	margin-top: 25px;
+`;
+
+// 300px is the width of the album artwork
+export const GridContainer = styled('div')`
+	display: grid;
+	width: 100%;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+`;
+
+export const GridTile = styled('div')`
+	&:hover {
+		cursor: pointer;
+	}
+`;
+
+export const SpinnerContainer = styled(Box)`
+	display: flex;
+	width: 300px;
+	height: 300px;
+	align-items: center;
 `;

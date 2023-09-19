@@ -12,6 +12,17 @@ export const initialState: AppStateType = {
 		value: '',
 		numberOfItems: 0,
 	},
+	currentRelease: {
+		title: '',
+		artist: '',
+		year: 0,
+		labels: '',
+		genres: '',
+		catno: '',
+		releaseId: 0,
+		imageUrl: '',
+		instanceId: 0,
+	},
 };
 
 export const AppReducer = (
@@ -35,6 +46,13 @@ export const AppReducer = (
 				collection,
 			};
 
+		case AppReducerActions.SetCurrentRelease:
+			const { release } = action;
+
+			return {
+				...state,
+				currentRelease: release,
+			};
 		default:
 			return state;
 	}

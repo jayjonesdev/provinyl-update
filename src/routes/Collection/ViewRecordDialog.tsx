@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
 	AlbumArtwork,
+	SpinnerContainer,
 	StyledDialog,
 	StyledDialogActions,
 	StyledDialogContent,
@@ -8,31 +9,24 @@ import {
 	StyledDivider,
 } from './styles';
 
-import { releaseDetail as mockDetails } from '../../testData';
 import { getReleaseDetails } from '../../api';
-import { Button } from '@mui/material';
+import { Button, CircularProgress } from '@mui/material';
 import { ReleaseDetails } from '../../helpers/types';
+import { useAppState } from '../../helpers/hooks/useAppState';
 
-export default ({
-	id,
-	open,
-	onClose,
-}: {
-	id: number;
-	open: boolean;
-	onClose: () => void;
-}) => {
+export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 	const [details, setDetails] = useState<ReleaseDetails>();
+	const { currentRelease } = useAppState();
 
 	useEffect(() => {
 		if (open) {
 			(async () => {
-				await getReleaseDetails(id).then((releaseDetails) =>
-					setDetails(releaseDetails),
+				await getReleaseDetails(currentRelease.releaseId).then(
+					(releaseDetails) => setDetails(releaseDetails),
 				);
 			})();
 		}
-	}, [id]);
+	}, [open]);
 
 	// TODO: Loading state
 	return (
@@ -42,13 +36,26 @@ export default ({
 			onClose={onClose}
 			aria-describedby="view-record-dialog"
 			fullWidth
-			id={`record-information-dialog-${id}`}
+			id={`record-information-dialog-${currentRelease.releaseId}`}
 		>
 			<StyledDialogTitle>{details?.title}</StyledDialogTitle>
 			<StyledDialogContent>
-				<div style={{ display: 'flex' }}>
-					<AlbumArtwork src={details?.coverArtUri} />
+				<div
+					style={{
+						display: 'flex',
+						alignContent: 'baseline',
+					}}
+				>
+					<AlbumArtwork
+						src={currentRelease.imageUrl}
+						placeholder={
+							<SpinnerContainer>
+								<CircularProgress />
+							</SpinnerContainer>
+						}
+					/>
 					<StyledDivider orientation="vertical" />
+					<div>TEST</div>
 				</div>
 				{/* <SearchContainer>
 					<TextField

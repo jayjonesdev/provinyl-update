@@ -1,4 +1,4 @@
-import { forwardRef, useState } from 'react';
+import { forwardRef } from 'react';
 import {
 	TableBody,
 	TableCell,
@@ -7,14 +7,13 @@ import {
 	Paper,
 } from '@mui/material';
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
-import { type TableColumn, type TableData } from '../../helpers/types';
+import { UserCollectionItem, type TableColumn } from '../../helpers/types';
 import {
 	StyledCell,
 	StyledTable,
 	StyledTableHead,
 	StyledTableRow,
 } from './styles';
-import ViewRecordDialog from './ViewRecordDialog';
 
 const columns: TableColumn[] = [
 	{
@@ -50,7 +49,7 @@ const columns: TableColumn[] = [
 	},
 ];
 
-const VirtuosoTableComponents: TableComponents<TableData> = {
+const VirtuosoTableComponents: TableComponents<UserCollectionItem> = {
 	Scroller: forwardRef<HTMLDivElement>((props, ref) => (
 		<TableContainer component={Paper} {...props} ref={ref} />
 	)),
@@ -86,23 +85,20 @@ const fixedHeaderContent = () => (
 
 const getYear = (year: number) => (year === 0 ? '' : year);
 
-export default ({ data }: { data: TableData[] }) => {
-	const [informationDialog, setInformationDialog] = useState<boolean>(false);
-	const [releaseId, setReleaseId] = useState<number>(0);
-	const toggleInformationDialog = () =>
-		setInformationDialog(!informationDialog);
-	const showInformation = (id: number) => {
-		toggleInformationDialog();
-		setReleaseId(id);
-	};
-
-	const rowContent = (_index: number, row: TableData) => (
+export default ({
+	data,
+	onItemClick,
+}: {
+	data: UserCollectionItem[];
+	onItemClick: (item: UserCollectionItem) => void;
+}) => {
+	const rowContent = (_index: number, row: UserCollectionItem) => (
 		<>
 			{columns.map((column) => (
 				<StyledCell
 					key={column.dataKey}
 					align={column.numeric ?? false ? 'right' : 'left'}
-					onClick={() => showInformation(row.releaseId)}
+					onClick={() => onItemClick(row)}
 				>
 					{column.dataKey === 'year'
 						? getYear(row[column.dataKey])
@@ -119,11 +115,6 @@ export default ({ data }: { data: TableData[] }) => {
 				components={VirtuosoTableComponents}
 				fixedHeaderContent={fixedHeaderContent}
 				itemContent={rowContent}
-			/>
-			<ViewRecordDialog
-				open={informationDialog}
-				id={releaseId}
-				onClose={toggleInformationDialog}
 			/>
 		</Paper>
 	);
