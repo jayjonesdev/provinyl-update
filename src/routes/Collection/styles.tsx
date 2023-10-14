@@ -1,11 +1,12 @@
 import {
 	Box,
-	CircularProgress,
 	Dialog,
 	DialogActions,
 	DialogContent,
 	DialogTitle,
 	Divider,
+	DividerOwnProps,
+	DividerProps,
 	FormHelperText,
 	Menu,
 	MenuItem,
@@ -13,8 +14,10 @@ import {
 	TableCell,
 	TableHead,
 	TableRow,
+	Theme,
 	styled,
 } from '@mui/material';
+import { CommonProps } from '@mui/material/OverridableComponent';
 import {
 	LazyLoadImage,
 	LazyLoadImageProps,
@@ -140,7 +143,15 @@ line-height: 1.25;
 `,
 );
 
-const SpinnerContainer = styled(Box)`
+export const SpinnerContainer = styled(Box)`
+	display: flex;
+	width: 100%;
+	margin-top: 64px;
+	justify-content: center;
+	align-items: center;
+`;
+
+export const AlbumArtworkSpinnerContainer = styled(Box)`
 	display: flex;
 	width: 300px;
 	height: 300px;
@@ -150,12 +161,12 @@ const SpinnerContainer = styled(Box)`
 
 export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 	<LazyLoadImage
-		placeholder={
-			<SpinnerContainer>
-				<CircularProgress />
-			</SpinnerContainer>
-		}
+		// placeholder={
+		// 	<img src="https://www.tehlin.com/public/images/images-empty.png" />
+		// }
+		// placeholderSrc="https://www.tehlin.com/public/images/images-empty.png"
 		effect="blur"
+		loading="lazy"
 		{...props}
 	/>
 ))`
@@ -169,6 +180,7 @@ export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 export const GridContainer = styled('div')`
 	display: grid;
 	width: 100%;
+	padding: 0;
 	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 `;
 

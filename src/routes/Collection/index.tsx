@@ -2,7 +2,7 @@ import Toolbar from './Toolbar';
 import { useEffect, useState } from 'react';
 import { AppReducerActions, ViewType } from '../../helpers/enum';
 import SearchBar from './SearchBar';
-import { Container, StyledDivider } from './styles';
+import { Container, SpinnerContainer, StyledDivider } from './styles';
 import Table from './Table';
 import { UserCollectionItem } from '../../helpers/types';
 import { removeDiacritics } from '../../helpers';
@@ -14,6 +14,7 @@ import {
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
 import ViewRecordDialog from './ViewRecordDialog';
+import { CircularProgress } from '@mui/material';
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -21,6 +22,7 @@ export default () => {
 	const [data, setData] = useState<UserCollectionItem[]>([]);
 	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
 	const [informationDialog, setInformationDialog] = useState<boolean>(false);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const {
 		user: { username },
 		collection: { value, numberOfItems },
@@ -30,8 +32,8 @@ export default () => {
 	const toggleInformationDialog = () =>
 		setInformationDialog(!informationDialog);
 	const showInformation = (item: UserCollectionItem) => {
-		toggleInformationDialog();
 		dispatch({ type: AppReducerActions.SetCurrentRelease, release: item });
+		toggleInformationDialog();
 	};
 
 	useEffect(() => {
@@ -53,8 +55,8 @@ export default () => {
 		else setViewType(ViewType.GRID);
 	};
 
-	// TODO: Create loading screen
 	useEffect(() => {
+		setIsLoading(true);
 		if (username.length === 0) {
 			getUserInfo().then((userInfo) =>
 				dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }),
@@ -75,13 +77,13 @@ export default () => {
 					type: AppReducerActions.UpdateCollectionInfo,
 					collection: { value, numberOfItems },
 				});
+				setIsLoading(false);
 			})();
 		}
 	}, [username]);
 
 	return (
 		<div>
-			{/* TODO: Get collection information */}
 			<Toolbar value={value} numOfItems={numberOfItems.toString()} />
 			{
 				<Container>
@@ -93,11 +95,19 @@ export default () => {
 						toggleView={toggleViewType}
 					/>
 					<StyledDivider />
-					{viewType === ViewType.LIST && (
-						<Table data={filteredData} onItemClick={showInformation} />
-					)}
-					{viewType === ViewType.GRID && (
-						<Grid data={filteredData} onItemClick={showInformation} />
+					{isLoading ? (
+						<SpinnerContainer>
+							<CircularProgress />
+						</SpinnerContainer>
+					) : (
+						<>
+							{viewType === ViewType.LIST && (
+								<Table data={filteredData} onItemClick={showInformation} />
+							)}
+							{viewType === ViewType.GRID && (
+								<Grid data={filteredData} onItemClick={showInformation} />
+							)}
+						</>
 					)}
 					<ViewRecordDialog
 						open={informationDialog}

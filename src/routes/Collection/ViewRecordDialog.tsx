@@ -37,17 +37,29 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 			fullWidth
 			id={`record-information-dialog-${currentRelease.releaseId}`}
 		>
-			<StyledDialogTitle>{details?.title}</StyledDialogTitle>
+			<StyledDialogTitle>{currentRelease.title}</StyledDialogTitle>
 			<StyledDialogContent>
 				<div
 					style={{
 						display: 'flex',
-						alignContent: 'baseline',
+						alignItems: 'baseline',
 					}}
 				>
 					<AlbumArtwork src={currentRelease.imageUrl} />
-					<StyledDivider orientation="vertical" />
-					<div>TEST</div>
+					<StyledDivider orientation="vertical" style={{ height: '300px' }} />
+					<div
+						style={{
+							display: 'flex',
+							flexDirection: 'column',
+							alignSelf: 'start',
+							marginTop: '20px',
+						}}
+					>
+						<span>{currentRelease.artist}</span>
+						<span>{currentRelease.catno}</span>
+						<span>{currentRelease.labels}</span>
+						<span>{currentRelease.genres}</span>
+					</div>
 				</div>
 				{/* <SearchContainer>
 					<TextField
