@@ -160,15 +160,7 @@ export const AlbumArtworkSpinnerContainer = styled(Box)`
 `;
 
 export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
-	<LazyLoadImage
-		// placeholder={
-		// 	<img src="https://www.tehlin.com/public/images/images-empty.png" />
-		// }
-		// placeholderSrc="https://www.tehlin.com/public/images/images-empty.png"
-		effect="blur"
-		loading="lazy"
-		{...props}
-	/>
+	<LazyLoadImage effect="blur" loading="lazy" {...props} />
 ))`
 	width: 300px;
 	height: 300px;
@@ -178,10 +170,9 @@ export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 
 // 300px is the width of the album artwork
 export const GridContainer = styled('div')`
-	display: grid;
-	width: 100%;
-	padding: 0;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
 `;
 
 export const GridTile = styled('div')`
