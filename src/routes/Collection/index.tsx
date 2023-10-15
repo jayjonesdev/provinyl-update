@@ -13,7 +13,7 @@ import {
 } from '../../api';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
-import ViewRecordDialog from './ViewRecordDialog';
+import ViewRecordDialog from './ViewReleaseDialog';
 import { CircularProgress } from '@mui/material';
 
 export default () => {

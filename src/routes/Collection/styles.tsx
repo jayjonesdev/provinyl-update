@@ -5,8 +5,6 @@ import {
 	DialogContent,
 	DialogTitle,
 	Divider,
-	DividerOwnProps,
-	DividerProps,
 	FormHelperText,
 	Menu,
 	MenuItem,
@@ -14,10 +12,8 @@ import {
 	TableCell,
 	TableHead,
 	TableRow,
-	Theme,
 	styled,
 } from '@mui/material';
-import { CommonProps } from '@mui/material/OverridableComponent';
 import {
 	LazyLoadImage,
 	LazyLoadImageProps,
@@ -78,9 +74,9 @@ flex-direction: column;
 export const StyledDivider = styled(Divider)(
 	({ theme, orientation = 'horizontal' }) => `
 background-color: ${theme.palette.primary.main};
-height: ${orientation === 'horizontal' ? '2px' : 'inherit'};
+height: ${orientation === 'horizontal' ? '2px' : 'auto'};
 margin: ${orientation === 'horizontal' ? '.5em 0px .5em 0' : '20px 10px'};
-width: ${orientation === 'horizontal' ? 'inherit' : '2px'};
+width: ${orientation === 'horizontal' ? 'auto' : '2px'};
 `,
 );
 
@@ -160,10 +156,14 @@ export const AlbumArtworkSpinnerContainer = styled(Box)`
 `;
 
 export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
-	<LazyLoadImage effect="blur" loading="lazy" {...props} />
+	<LazyLoadImage
+		effect="blur"
+		loading="lazy"
+		width={300}
+		height={300}
+		{...props}
+	/>
 ))`
-	width: 300px;
-	height: 300px;
 	border-radius: 5px;
 	margin-top: 25px;
 `;

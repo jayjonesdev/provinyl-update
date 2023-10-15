@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import ReactDOM from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
 import { RouterProvider } from 'react-router-dom';
@@ -8,9 +8,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './theme';
 import { AppContextProvider } from './AppContext';
 
-const root = ReactDOM.createRoot(
-	document.getElementById('root') as HTMLElement,
-);
+const root = createRoot(document.getElementById('root') as HTMLElement);
 
 const Parent = ({ children }: { children: ReactNode }) =>
 	!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? (

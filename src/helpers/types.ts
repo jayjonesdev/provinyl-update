@@ -195,4 +195,21 @@ export interface ReleaseDetails {
 	labels: string;
 	uri: string;
 	year: number;
+	trackList: ReleaseTrack[];
+	musicVideos: Video[];
+}
+
+export interface Video {
+	description: string;
+	duration: number;
+	embed: boolean;
+	title: string;
+	uri: string;
+}
+
+export interface ReleaseTrack {
+	duration: string;
+	position: string;
+	title: string;
+	featuredArtists: string;
 }
