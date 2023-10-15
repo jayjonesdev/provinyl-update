@@ -3,7 +3,13 @@ import Typography from '@mui/material/Typography';
 import { ReleaseDetails } from '../../helpers/types';
 import { useAppState } from '../../helpers/hooks/useAppState';
 import { Button } from '@mui/material';
-import { Accordion, AccordionDetails, AccordionSummary } from './styles';
+import {
+	Accordion,
+	AccordionDetails,
+	AccordionSummary,
+	EmbeddedMusicVideo,
+	MusicVideoContainer,
+} from './styles';
 
 const Detail = ({ title, desc }: { title: string; desc: string | number }) => (
 	<Typography variant="body1">
@@ -84,9 +90,6 @@ export default ({
 				expanded={expanded === 'musicVideo'}
 				onChange={handleChange('musicVideo')}
 				disabled={isLoading}
-				// style={{
-				// 	height: expanded === 'musicVideo' ? '300px' : '64px',
-				// }}
 			>
 				<AccordionSummary
 					aria-controls="musicVideo-content"
@@ -95,54 +98,34 @@ export default ({
 					<Typography variant="h6">Music Videos</Typography>
 				</AccordionSummary>
 				<AccordionDetails>
-					<div
-						style={{
-							overflow: 'scroll',
-							position: 'relative',
-							height: '400px',
-						}}
-					>
-						{releaseDetails.musicVideos ? (
-							releaseDetails.musicVideos.map((video) => {
-								return (
-									<div
-										style={{
-											display: 'flex',
-											flexDirection: 'column',
-											justifyContent: 'center',
-										}}
-										key={video.uri}
-									>
-										<Typography variant="body1">
-											<b>{video.title}</b>
-										</Typography>
-										{video.embed ? (
-											<iframe
-												style={{ aspectRatio: '16/9' }}
-												src={`https://www.youtube.com/embed/${
-													video.uri.split('=')[1]
-												}`}
-												title={video.title}
-												allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-												allowFullScreen
-											/>
-										) : (
-											<Button
-												variant="outlined"
-												onClick={() => window.open(video.uri, '_blank')}
-											>
-												Watch Video
-											</Button>
-										)}
-									</div>
-								);
-							})
-						) : (
-							<Typography variant="body1">
-								There are no music videos.
-							</Typography>
-						)}
-					</div>
+					{releaseDetails.musicVideos ? (
+						releaseDetails.musicVideos.map((video) => {
+							return (
+								<MusicVideoContainer key={video.uri}>
+									<Typography variant="body1">
+										<b>{video.title}</b>
+									</Typography>
+									{video.embed ? (
+										<EmbeddedMusicVideo
+											src={`https://www.youtube.com/embed/${
+												video.uri.split('=')[1]
+											}`}
+											title={video.title}
+										/>
+									) : (
+										<Button
+											variant="outlined"
+											onClick={() => window.open(video.uri, '_blank')}
+										>
+											Watch Video
+										</Button>
+									)}
+								</MusicVideoContainer>
+							);
+						})
+					) : (
+						<Typography variant="body1">There are no music videos.</Typography>
+					)}
 				</AccordionDetails>
 			</Accordion>
 		</div>

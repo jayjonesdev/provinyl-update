@@ -24,6 +24,7 @@ import {
 	LazyLoadImage,
 	LazyLoadImageProps,
 } from 'react-lazy-load-image-component';
+import { IframeHTMLAttributes } from 'react';
 
 export const StyledProvinylLogo = styled('img')`
 	height: 50px;
@@ -222,4 +223,26 @@ export const AccordionSummary = styled((props: AccordionSummaryProps) => (
 export const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 	padding: theme.spacing(2),
 	borderTop: '1px solid rgba(0, 0, 0, .125)',
+	overflow: 'scroll',
+	position: 'relative',
+	maxHeight: '400px',
 }));
+
+export const MusicVideoContainer = styled('div')`
+	display: 'flex',
+	flex-direction: 'column',
+	justify-content: 'center',
+`;
+
+export const EmbeddedMusicVideo = styled(
+	(props: IframeHTMLAttributes<HTMLElement>) => (
+		<iframe
+			allow="encrypted-media; picture-in-picture; web-share"
+			allowFullScreen
+			loading="lazy"
+			{...props}
+		/>
+	),
+)`
+	aspect-ratio: '16/9';
+`;
