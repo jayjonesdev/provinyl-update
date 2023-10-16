@@ -1,3 +1,4 @@
+import { AlertColor } from '@mui/material';
 import { AppReducerActions } from './enum';
 
 export type MenuOptions = {
@@ -134,6 +135,13 @@ export type AppStateType = {
 	user: UserInfoType;
 	collection: CollectionInfoType;
 	currentRelease: UserCollectionItem;
+	snackbar: SnackbarType;
+};
+
+export type SnackbarType = {
+	message: string;
+	open: boolean;
+	severity: AlertColor;
 };
 
 export type UserInfoType = {
@@ -146,12 +154,15 @@ export type UserInfoType = {
 export type CollectionInfoType = {
 	value: string;
 	numberOfItems: number;
+	releases: UserCollectionItem[];
 };
 
 export type AppActionType =
 	| UserInfoActionType
 	| UserCollectionActionType
-	| CurrentReleaseActionType;
+	| CurrentReleaseActionType
+	| SetSnackbarActionType
+	| RemoveReleaseActionType;
 
 export interface UserInfoActionType {
 	type: AppReducerActions.UpdateUserInfo;
@@ -166,6 +177,16 @@ export interface UserCollectionActionType {
 export interface CurrentReleaseActionType {
 	type: AppReducerActions.SetCurrentRelease;
 	release: UserCollectionItem;
+}
+
+export interface SetSnackbarActionType {
+	type: AppReducerActions.SetSnackbar;
+	snackbar: SnackbarType;
+}
+
+export interface RemoveReleaseActionType {
+	type: AppReducerActions.RemoveRelease;
+	releaseId: number;
 }
 
 export interface UserCollection {

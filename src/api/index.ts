@@ -23,6 +23,15 @@ export const getUserCollectionValue = async (
 
 export const getUserInfo = async (): Promise<UserInfoType> => api('/user/info');
 
+export const removeReleaseFromCollection = async (
+	username: string,
+	releaseId: string,
+	instanceId: string,
+): Promise<UserCollection> =>
+	api.delete(
+		`/user/${username}/collection/release/${releaseId}/instance/${instanceId}`,
+	);
+
 // Auth Routes
 export const login = () => {
 	window.location.href = `${

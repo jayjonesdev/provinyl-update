@@ -13,8 +13,8 @@ import {
 } from '../../api';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
-import ViewRecordDialog from './ViewReleaseDialog';
-import { CircularProgress } from '@mui/material';
+import ViewReleaseDialog from './ViewReleaseDialog';
+import { Alert, CircularProgress, Fade, Snackbar } from '@mui/material';
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -23,18 +23,32 @@ export default () => {
 	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
 	const [informationDialog, setInformationDialog] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+
 	const {
 		user: { username },
-		collection: { value, numberOfItems },
+		collection: { value, numberOfItems, releases },
+		snackbar,
 	} = useAppState();
+	const {
+		open: showSnackbar,
+		message: snackbarMessage,
+		severity: snackbarSeverity,
+	} = snackbar;
 	const dispatch = useAppDispatch();
 
 	const toggleInformationDialog = () =>
 		setInformationDialog(!informationDialog);
+
 	const showInformation = (item: UserCollectionItem) => {
 		dispatch({ type: AppReducerActions.SetCurrentRelease, release: item });
 		toggleInformationDialog();
 	};
+
+	const closeSnackbar = () =>
+		dispatch({
+			type: AppReducerActions.SetSnackbar,
+			snackbar: { ...snackbar, open: false },
+		});
 
 	useEffect(() => {
 		let filteredData = data;
@@ -50,6 +64,10 @@ export default () => {
 		setFilteredData(filteredData);
 	}, [searchValue, data]);
 
+	useEffect(() => {
+		setData(releases);
+	}, [releases]);
+
 	const toggleViewType = () => {
 		if (viewType === ViewType.GRID) setViewType(ViewType.LIST);
 		else setViewType(ViewType.GRID);
@@ -64,10 +82,11 @@ export default () => {
 		} else {
 			(async () => {
 				let value = '',
-					numberOfItems = 0;
+					numberOfItems = 0,
+					releases = [] as UserCollectionItem[];
 
 				await getUserCollection(username).then((collection) => {
-					setData(collection.items);
+					releases = collection.items;
 					numberOfItems = collection.items.length;
 				});
 				await getUserCollectionValue(username).then(
@@ -75,7 +94,7 @@ export default () => {
 				);
 				dispatch({
 					type: AppReducerActions.UpdateCollectionInfo,
-					collection: { value, numberOfItems },
+					collection: { value, numberOfItems, releases },
 				});
 				setIsLoading(false);
 			})();
@@ -85,21 +104,21 @@ export default () => {
 	return (
 		<div>
 			<Toolbar value={value} numOfItems={numberOfItems.toString()} />
-			{
-				<Container>
-					<SearchBar
-						value={searchValue}
-						viewType={viewType}
-						onChange={(value) => setSearchValue(value)}
-						onClear={() => setSearchValue('')}
-						toggleView={toggleViewType}
-					/>
-					<StyledDivider />
-					{isLoading ? (
-						<SpinnerContainer>
-							<CircularProgress />
-						</SpinnerContainer>
-					) : (
+			{isLoading ? (
+				<SpinnerContainer>
+					<CircularProgress />
+				</SpinnerContainer>
+			) : (
+				<Fade in={!isLoading}>
+					<Container>
+						<SearchBar
+							value={searchValue}
+							viewType={viewType}
+							onChange={(value) => setSearchValue(value)}
+							onClear={() => setSearchValue('')}
+							toggleView={toggleViewType}
+						/>
+						<StyledDivider />
 						<>
 							{viewType === ViewType.LIST && (
 								<Table data={filteredData} onItemClick={showInformation} />
@@ -108,13 +127,28 @@ export default () => {
 								<Grid data={filteredData} onItemClick={showInformation} />
 							)}
 						</>
-					)}
-					<ViewRecordDialog
-						open={informationDialog}
-						onClose={toggleInformationDialog}
-					/>
-				</Container>
-			}
+						<ViewReleaseDialog
+							open={informationDialog}
+							onClose={toggleInformationDialog}
+						/>
+					</Container>
+				</Fade>
+			)}
+			<Snackbar
+				open={showSnackbar}
+				autoHideDuration={6000}
+				onClose={closeSnackbar}
+				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+			>
+				<Alert
+					onClose={closeSnackbar}
+					severity={snackbarSeverity}
+					variant="filled"
+					sx={{ width: '100%' }}
+				>
+					{snackbarMessage}
+				</Alert>
+			</Snackbar>
 		</div>
 	);
 };

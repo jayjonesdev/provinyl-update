@@ -1,5 +1,5 @@
 import { AppReducerActions } from './helpers/enum';
-import { AppActionType, AppStateType } from './helpers/types';
+import { AppActionType, AppStateType, SnackbarType } from './helpers/types';
 
 export const initialState: AppStateType = {
 	user: {
@@ -11,6 +11,7 @@ export const initialState: AppStateType = {
 	collection: {
 		value: '',
 		numberOfItems: 0,
+		releases: [],
 	},
 	currentRelease: {
 		title: '',
@@ -23,6 +24,7 @@ export const initialState: AppStateType = {
 		imageUrl: '',
 		instanceId: 0,
 	},
+	snackbar: {} as SnackbarType,
 };
 
 export const AppReducer = (
@@ -53,6 +55,29 @@ export const AppReducer = (
 				...state,
 				currentRelease: release,
 			};
+
+		case AppReducerActions.SetSnackbar:
+			const { snackbar } = action;
+			return {
+				...state,
+				snackbar,
+			};
+
+		case AppReducerActions.RemoveRelease:
+			const { releaseId } = action;
+
+			const updatedCollection = [...state.collection.releases].filter(
+				(release) => release.releaseId !== releaseId,
+			);
+
+			return {
+				...state,
+				collection: {
+					...state.collection,
+					releases: updatedCollection,
+				},
+			};
+
 		default:
 			return state;
 	}

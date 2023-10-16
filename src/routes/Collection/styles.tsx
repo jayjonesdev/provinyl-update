@@ -260,10 +260,3 @@ export const ViewReleaseContainer = styled('div')`
 	flex-direction: row;
 	min-height: 450px;
 `;
-
-// styled('div')`
-// 	display: flex;
-// 	flex-direction: column;
-// 	justify-content: center;
-// 	align-items: center;
-// `;
