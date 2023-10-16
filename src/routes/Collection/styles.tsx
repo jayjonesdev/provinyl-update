@@ -166,8 +166,8 @@ export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 	<LazyLoadImage
 		effect="blur"
 		loading="lazy"
-		width={300}
-		height={300}
+		width={props.width ?? 300}
+		height={props.height ?? 300}
 		{...props}
 	/>
 ))`
@@ -245,4 +245,18 @@ export const EmbeddedMusicVideo = styled(
 	),
 )`
 	aspect-ratio: '16/9';
+`;
+
+export const ReleaseDetailsContainer = styled('div')`
+	display: 'flex'
+	flex-direction: 'column';
+	margin-top: '25px';
+	align-items: 'stretch';
+	margin-left: '10px';
+`;
+
+export const ViewReleaseContainer = styled('div')`
+	display: 'flex';
+	flex-direction: 'row';
+	min-height: 450;
 `;

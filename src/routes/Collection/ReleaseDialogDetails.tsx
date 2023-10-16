@@ -9,6 +9,7 @@ import {
 	AccordionSummary,
 	EmbeddedMusicVideo,
 	MusicVideoContainer,
+	ReleaseDetailsContainer,
 } from './styles';
 
 const Detail = ({ title, desc }: { title: string; desc: string | number }) => (
@@ -33,7 +34,7 @@ export default ({
 		};
 
 	return (
-		<div>
+		<ReleaseDetailsContainer>
 			<Accordion
 				expanded={expanded === 'albumInfo'}
 				onChange={handleChange('albumInfo')}
@@ -128,6 +129,6 @@ export default ({
 					)}
 				</AccordionDetails>
 			</Accordion>
-		</div>
+		</ReleaseDetailsContainer>
 	);
 };

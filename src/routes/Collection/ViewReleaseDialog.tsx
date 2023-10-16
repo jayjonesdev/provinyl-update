@@ -5,6 +5,7 @@ import {
 	StyledDialogActions,
 	StyledDialogContent,
 	StyledDialogTitle,
+	ViewReleaseContainer,
 } from './styles';
 
 import { getReleaseDetails } from '../../api';
@@ -29,7 +30,6 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 		}
 	}, [open]);
 
-	// TODO: Loading state
 	return (
 		<StyledDialog
 			open={open}
@@ -40,34 +40,17 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 		>
 			<StyledDialogTitle>{currentRelease.title}</StyledDialogTitle>
 			<StyledDialogContent>
-				<div
-					style={{
-						display: 'flex',
-						flexDirection: 'row',
-						// alignItems: 'center',
-					}}
-				>
+				<ViewReleaseContainer>
 					<AlbumArtwork
 						src={currentRelease.imageUrl}
 						height={400}
 						width={400}
 					/>
-					<div
-						style={{
-							display: 'flex',
-							flexDirection: 'column',
-							// alignSelf: 'start',
-							marginTop: '25px',
-							alignItems: 'stretch',
-							marginLeft: '10px',
-						}}
-					>
-						<ReleaseDialogDetails
-							releaseDetails={details}
-							isLoading={isLoading}
-						/>
-					</div>
-				</div>
+					<ReleaseDialogDetails
+						releaseDetails={details}
+						isLoading={isLoading}
+					/>
+				</ViewReleaseContainer>
 			</StyledDialogContent>
 			<StyledDialogActions>
 				<Button onClick={onClose} variant="outlined">
