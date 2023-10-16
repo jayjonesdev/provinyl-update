@@ -229,9 +229,9 @@ export const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 }));
 
 export const MusicVideoContainer = styled('div')`
-	display: 'flex',
-	flex-direction: 'column',
-	justify-content: 'center',
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
 `;
 
 export const EmbeddedMusicVideo = styled(
@@ -244,19 +244,26 @@ export const EmbeddedMusicVideo = styled(
 		/>
 	),
 )`
-	aspect-ratio: '16/9';
+	aspect-ratio: 16/9;
 `;
 
 export const ReleaseDetailsContainer = styled('div')`
-	display: 'flex'
-	flex-direction: 'column';
-	margin-top: '25px';
-	align-items: 'stretch';
-	margin-left: '10px';
+	display: flex;
+	flex-direction: column;
+	margin-top: 25px;
+	align-items: stretch;
+	margin-left: 10px;
 `;
 
 export const ViewReleaseContainer = styled('div')`
-	display: 'flex';
-	flex-direction: 'row';
-	min-height: 450;
+	display: flex;
+	flex-direction: row;
+	min-height: 450px;
 `;
+
+// styled('div')`
+// 	display: flex;
+// 	flex-direction: column;
+// 	justify-content: center;
+// 	align-items: center;
+// `;
