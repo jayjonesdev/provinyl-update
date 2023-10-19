@@ -45,6 +45,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 			currentRelease.instanceId.toString(),
 		).then(() => {
 			setIsLoading(false);
+			toggleRemove();
 			onClose();
 			dispatch({
 				type: AppReducerActions.RemoveRelease,
@@ -71,7 +72,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 		>
 			<StyledDialogTitle>{currentRelease.title}</StyledDialogTitle>
 			<StyledDialogContent>
-				<ViewReleaseContainer>
+				<ViewReleaseContainer style={{ paddingTop: 25 }}>
 					<AlbumArtwork
 						src={currentRelease.imageUrl}
 						height={400}

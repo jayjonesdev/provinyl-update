@@ -1,6 +1,12 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import { ReleaseDetails, UserCollection, UserInfoType } from '../helpers/types';
+import {
+	DatabaseSearchResponse,
+	ReleaseDetails,
+	ReleaseSearchType,
+	UserCollection,
+	UserInfoType,
+} from '../helpers/types';
 
 const api = axios.create({
 	baseURL: `${process.env.REACT_APP_SERVICES_URL}`,
@@ -32,6 +38,12 @@ export const removeReleaseFromCollection = async (
 		`/user/${username}/collection/release/${releaseId}/instance/${instanceId}`,
 	);
 
+export const addReleaseToCollection = async (
+	username: string,
+	releaseId: number,
+): Promise<number> =>
+	api.post(`/user/${username}/collection/release/${releaseId}`);
+
 // Auth Routes
 export const login = () => {
 	window.location.href = `${
@@ -42,3 +54,10 @@ export const login = () => {
 // Release Routes
 export const getReleaseDetails = (id: number): Promise<ReleaseDetails> =>
 	api(`/release/details/${id}`);
+
+// Database Routes
+export const searchDatabase = (
+	query: string,
+	type: ReleaseSearchType,
+): Promise<DatabaseSearchResponse[]> =>
+	api(`/database/search/${query}/type/${type}`);

@@ -11,12 +11,7 @@ import {
 	MusicVideoContainer,
 	ReleaseDetailsContainer,
 } from './styles';
-
-const Detail = ({ title, desc }: { title: string; desc: string | number }) => (
-	<Typography variant="body1">
-		<b>{title}:</b> {desc}
-	</Typography>
-);
+import Detail from './Detail';
 
 export default ({
 	releaseDetails,
@@ -46,7 +41,7 @@ export default ({
 					<Typography variant="h6">Album Information</Typography>
 				</AccordionSummary>
 				<AccordionDetails>
-					<Detail title="Artists" desc={release.artist} />
+					<Detail title="Artist" desc={release.artist} />
 					<Detail title="Title" desc={release.title} />
 					<Detail
 						title="Year"

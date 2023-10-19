@@ -105,6 +105,7 @@ export const ButtonBar = styled('div')`
 export const StyledHelperText = styled(FormHelperText)(
 	({ theme }) => `
 color: ${theme.palette.text.primary};
+font-weight: 600;
 `,
 );
 
@@ -172,7 +173,6 @@ export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 	/>
 ))`
 	border-radius: 5px;
-	margin-top: 25px;
 `;
 
 // 300px is the width of the album artwork
@@ -183,6 +183,7 @@ export const GridContainer = styled('div')`
 `;
 
 export const GridTile = styled('div')`
+	margin-top: 25px;
 	&:hover {
 		cursor: pointer;
 	}
@@ -237,7 +238,7 @@ export const MusicVideoContainer = styled('div')`
 export const EmbeddedMusicVideo = styled(
 	(props: IframeHTMLAttributes<HTMLElement>) => (
 		<iframe
-			allow="encrypted-media; picture-in-picture; web-share"
+			allow="encrypted-media; picture-in-picture;"
 			allowFullScreen
 			loading="lazy"
 			{...props}
@@ -250,7 +251,6 @@ export const EmbeddedMusicVideo = styled(
 export const ReleaseDetailsContainer = styled('div')`
 	display: flex;
 	flex-direction: column;
-	margin-top: 25px;
 	align-items: stretch;
 	margin-left: 10px;
 `;

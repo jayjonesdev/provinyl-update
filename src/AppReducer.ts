@@ -1,5 +1,11 @@
+import { binaryInsertion } from './helpers';
 import { AppReducerActions } from './helpers/enum';
-import { AppActionType, AppStateType, SnackbarType } from './helpers/types';
+import {
+	AppActionType,
+	AppStateType,
+	SnackbarType,
+	UserCollectionItem,
+} from './helpers/types';
 
 export const initialState: AppStateType = {
 	user: {
@@ -26,6 +32,8 @@ export const initialState: AppStateType = {
 	},
 	snackbar: {} as SnackbarType,
 };
+
+let updatedCollection: UserCollectionItem[] = [];
 
 export const AppReducer = (
 	state: AppStateType = initialState,
@@ -66,10 +74,32 @@ export const AppReducer = (
 		case AppReducerActions.RemoveRelease:
 			const { releaseId } = action;
 
-			const updatedCollection = [...state.collection.releases].filter(
+			updatedCollection = [...state.collection.releases].filter(
 				(release) => release.releaseId !== releaseId,
 			);
 
+			return {
+				...state,
+				collection: {
+					...state.collection,
+					releases: updatedCollection,
+				},
+			};
+
+		case AppReducerActions.AddRelease:
+			const { release: newRelease } = action;
+
+			updatedCollection = [...state.collection.releases];
+
+			const index = updatedCollection.findIndex(
+				(item) => item.artist > newRelease.artist,
+			);
+
+			if (index === -1) {
+				updatedCollection.push(newRelease);
+			} else {
+				updatedCollection.splice(index, 0, newRelease);
+			}
 			return {
 				...state,
 				collection: {

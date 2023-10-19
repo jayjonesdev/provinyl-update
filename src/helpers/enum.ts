@@ -17,4 +17,5 @@ export enum AppReducerActions {
 	SetCurrentRelease = 'SET_CURRENT_RELEASE',
 	SetSnackbar = 'SET_SNACKBAR',
 	RemoveRelease = 'REMOVE_RELEASE',
+	AddRelease = 'ADD_RELEASE',
 }

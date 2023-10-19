@@ -18,22 +18,31 @@ import {
 import { Search } from '@mui/icons-material';
 import { useState } from 'react';
 import { SearchType } from '../../helpers/enum';
+import { searchDatabase } from '../../api';
+import { DatabaseSearchResponse, ReleaseSearchType } from '../../helpers/types';
+import SearchResult from './SearchResult';
+
+const getSearchTypeKey = (value: SearchType): ReleaseSearchType =>
+	Object.keys(SearchType)[
+		Object.values(SearchType).indexOf(value)
+	] as ReleaseSearchType;
 
 export default ({
 	open,
 	handleClose,
-	handleAction,
 }: {
 	open: boolean;
 	handleClose: () => void;
-	handleAction: () => void;
 }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
-	const [searchType, setSearchType] = useState<SearchType | ''>('');
+	const [searchType, setSearchType] = useState<ReleaseSearchType>(
+		getSearchTypeKey(SearchType.ALBUM_TITLE),
+	);
+	const [releases, setReleases] = useState<DatabaseSearchResponse[]>([]);
 
 	const reset = () => {
 		setSearchValue('');
-		setSearchType('');
+		setSearchType(getSearchTypeKey(SearchType.ALBUM_TITLE));
 	};
 
 	const closeDialog = () => {
@@ -41,9 +50,11 @@ export default ({
 		handleClose();
 	};
 
-	const search = () => {
-		reset();
-		handleAction();
+	const search = async () => {
+		await searchDatabase(searchValue, searchType).then((results) => {
+			setReleases(results);
+		});
+		// reset();
 	};
 
 	return (
@@ -78,7 +89,9 @@ export default ({
 						<Select
 							id="search-type-select"
 							value={searchType}
-							onChange={(e) => setSearchType(e.target.value as SearchType)}
+							onChange={(e) => {
+								setSearchType(e.target.value as ReleaseSearchType);
+							}}
 						>
 							{Object.entries(SearchType).map(([key, value]) => (
 								<MenuItem key={key} value={key}>
@@ -89,12 +102,22 @@ export default ({
 						<StyledHelperText>Please select a search type</StyledHelperText>
 					</FormControl>
 				</SearchContainer>
+				<div style={{ maxHeight: 350, overflow: 'scroll', marginTop: 5 }}>
+					{releases.length > 0 &&
+						releases.map((release) => (
+							<SearchResult key={release.releaseId} release={release} />
+						))}
+				</div>
 			</StyledDialogContent>
 			<StyledDialogActions>
 				<Button onClick={closeDialog} variant="outlined">
 					Close
 				</Button>
-				<Button onClick={search} variant="contained">
+				<Button
+					onClick={search}
+					variant="contained"
+					disabled={searchType.length === 0 || searchValue.length === 0}
+				>
 					Search
 				</Button>
 			</StyledDialogActions>

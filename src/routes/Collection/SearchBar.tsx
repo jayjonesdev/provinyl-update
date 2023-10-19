@@ -8,8 +8,8 @@ import {
 import { TextField, InputAdornment, IconButton, Button } from '@mui/material';
 import { ViewType } from '../../helpers/enum';
 import { ButtonBar } from './styles';
-import AddRecordDialog from './AddRecordDialog';
 import { useState } from 'react';
+import AddReleaseDialog from './AddReleaseDialog';
 
 export default ({
 	value,
@@ -24,10 +24,10 @@ export default ({
 	onClear: () => void;
 	toggleView: () => void;
 }) => {
-	const [addRecordOpen, setAddRecordOpen] = useState<boolean>(false);
-
-	const openAddRecordDialog = () => setAddRecordOpen(true);
-	const closeAddRecordDialog = () => setAddRecordOpen(false);
+	const [addReleaseDialogOpen, setAddReleaseDialogOpen] =
+		useState<boolean>(false);
+	const toggleAddReleaseDialog = () =>
+		setAddReleaseDialogOpen(!addReleaseDialogOpen);
 
 	const ViewTypeIcon = () =>
 		viewType === ViewType.GRID ? <ViewList /> : <ViewDay />;
@@ -75,7 +75,7 @@ export default ({
 						<Button
 							variant="contained"
 							size="large"
-							onClick={openAddRecordDialog}
+							onClick={toggleAddReleaseDialog}
 							startIcon={<Add />}
 						>
 							Add Record
@@ -83,12 +83,9 @@ export default ({
 					</div>
 				</ButtonBar>
 			</div>
-			<AddRecordDialog
-				open={addRecordOpen}
-				handleClose={closeAddRecordDialog}
-				handleAction={function (): void {
-					throw new Error('Function not implemented.');
-				}}
+			<AddReleaseDialog
+				open={addReleaseDialogOpen}
+				handleClose={toggleAddReleaseDialog}
 			/>
 		</>
 	);

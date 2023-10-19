@@ -1,5 +1,5 @@
 import { AlertColor } from '@mui/material';
-import { AppReducerActions } from './enum';
+import { AppReducerActions, SearchType } from './enum';
 
 export type MenuOptions = {
 	label: string;
@@ -162,7 +162,8 @@ export type AppActionType =
 	| UserCollectionActionType
 	| CurrentReleaseActionType
 	| SetSnackbarActionType
-	| RemoveReleaseActionType;
+	| RemoveReleaseActionType
+	| AddReleaseActionType;
 
 export interface UserInfoActionType {
 	type: AppReducerActions.UpdateUserInfo;
@@ -187,6 +188,11 @@ export interface SetSnackbarActionType {
 export interface RemoveReleaseActionType {
 	type: AppReducerActions.RemoveRelease;
 	releaseId: number;
+}
+
+export interface AddReleaseActionType {
+	type: AppReducerActions.AddRelease;
+	release: UserCollectionItem;
 }
 
 export interface UserCollection {
@@ -233,4 +239,18 @@ export interface ReleaseTrack {
 	position: string;
 	title: string;
 	featuredArtists: string;
+}
+
+export type ReleaseSearchType = keyof typeof SearchType;
+
+export interface DatabaseSearchResponse {
+	artist: string;
+	title: string;
+	year: number;
+	labels: string;
+	genres: string;
+	imageUrl: string;
+	catno: string;
+	releaseId: number;
+	country: string;
 }
