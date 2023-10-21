@@ -43,6 +43,7 @@ export default ({
 	const reset = () => {
 		setSearchValue('');
 		setSearchType(getSearchTypeKey(SearchType.ALBUM_TITLE));
+		setReleases([]);
 	};
 
 	const closeDialog = () => {

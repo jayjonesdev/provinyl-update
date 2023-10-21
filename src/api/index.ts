@@ -60,4 +60,4 @@ export const searchDatabase = (
 	query: string,
 	type: ReleaseSearchType,
 ): Promise<DatabaseSearchResponse[]> =>
-	api(`/database/search/${query}/type/${type}`);
+	api(`/database/search/${encodeURIComponent(query)}/type/${type}`);
