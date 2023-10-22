@@ -5,6 +5,7 @@ import {
 	ReleaseDetails,
 	ReleaseSearchType,
 	UserCollection,
+	UserCollectionItem,
 	UserInfoType,
 } from '../helpers/types';
 
@@ -22,6 +23,10 @@ api.interceptors.response.use((response) => response.data);
 export const getUserCollection = async (
 	username: string,
 ): Promise<UserCollection> => api(`/user/${username}/collection`);
+
+export const getUserWantList = async (
+	username: string,
+): Promise<UserCollectionItem[]> => api(`/user/${username}/wantlist`);
 
 export const getUserCollectionValue = async (
 	username: string,

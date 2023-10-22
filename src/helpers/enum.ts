@@ -1,6 +1,6 @@
 export enum ViewType {
 	GRID = 'GRID',
-	LIST = 'LIST',
+	TABLE = 'TABLE',
 }
 
 export enum SearchType {
@@ -18,4 +18,6 @@ export enum AppReducerActions {
 	SetSnackbar = 'SET_SNACKBAR',
 	RemoveRelease = 'REMOVE_RELEASE',
 	AddRelease = 'ADD_RELEASE',
+	UpdateView = 'UPDATE_VIEW',
+	ShowWantList = 'SHOW_WANT_LIST',
 }

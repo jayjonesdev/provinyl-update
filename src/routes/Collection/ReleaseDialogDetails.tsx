@@ -50,6 +50,15 @@ export default ({
 					<Detail title="Labels" desc={release.labels} />
 					<Detail title="Genres" desc={release.genres} />
 					<Detail title="Catalog #" desc={release.catno} />
+					<Typography variant="subtitle2" style={{ marginTop: 10 }}>
+						<a
+							target="_blank"
+							rel="noopener noreferrer"
+							href={`https://www.discogs.com/release/${release.releaseId}`}
+						>
+							View release on Discogs.
+						</a>
+					</Typography>
 				</AccordionDetails>
 			</Accordion>
 			<Accordion

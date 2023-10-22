@@ -1,5 +1,5 @@
 import { AlertColor } from '@mui/material';
-import { AppReducerActions, SearchType } from './enum';
+import { AppReducerActions, SearchType, ViewType } from './enum';
 
 export type MenuOptions = {
 	label: string;
@@ -136,6 +136,12 @@ export type AppStateType = {
 	collection: CollectionInfoType;
 	currentRelease: UserCollectionItem;
 	snackbar: SnackbarType;
+	ui: UIStateType;
+};
+
+export type UIStateType = {
+	viewType: ViewType;
+	wantList: boolean;
 };
 
 export type SnackbarType = {
@@ -155,6 +161,7 @@ export type CollectionInfoType = {
 	value: string;
 	numberOfItems: number;
 	releases: UserCollectionItem[];
+	wantList: UserCollectionItem[];
 };
 
 export type AppActionType =
@@ -163,11 +170,23 @@ export type AppActionType =
 	| CurrentReleaseActionType
 	| SetSnackbarActionType
 	| RemoveReleaseActionType
-	| AddReleaseActionType;
+	| AddReleaseActionType
+	| UpdateViewActionType
+	| ShowWantListActionType;
 
 export interface UserInfoActionType {
 	type: AppReducerActions.UpdateUserInfo;
 	user: UserInfoType;
+}
+
+export interface UpdateViewActionType {
+	type: AppReducerActions.UpdateView;
+	viewType: ViewType;
+}
+
+export interface ShowWantListActionType {
+	type: AppReducerActions.ShowWantList;
+	wantList: boolean;
 }
 
 export interface UserCollectionActionType {
@@ -210,6 +229,7 @@ export interface UserCollectionItem {
 	releaseId: number;
 	imageUrl: string;
 	instanceId: number;
+	wantList?: boolean;
 }
 
 export interface ReleaseDetails {

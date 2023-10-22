@@ -83,7 +83,7 @@ const fixedHeaderContent = () => (
 	</TableRow>
 );
 
-const getYear = (year: number) => (year === 0 ? '' : year);
+const getYear = (year: number) => (year === 0 ? 'N/A' : year);
 
 export default ({
 	data,
@@ -109,7 +109,7 @@ export default ({
 	);
 
 	return (
-		<Paper style={{ height: window.screen.height * 0.85 }}>
+		<Paper style={{ height: window.screen.height * 0.74 }}>
 			<TableVirtuoso
 				data={data}
 				components={VirtuosoTableComponents}

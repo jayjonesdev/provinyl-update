@@ -1,5 +1,4 @@
-import { binaryInsertion } from './helpers';
-import { AppReducerActions } from './helpers/enum';
+import { AppReducerActions, ViewType } from './helpers/enum';
 import {
 	AppActionType,
 	AppStateType,
@@ -18,6 +17,7 @@ export const initialState: AppStateType = {
 		value: '',
 		numberOfItems: 0,
 		releases: [],
+		wantList: [],
 	},
 	currentRelease: {
 		title: '',
@@ -31,6 +31,10 @@ export const initialState: AppStateType = {
 		instanceId: 0,
 	},
 	snackbar: {} as SnackbarType,
+	ui: {
+		viewType: ViewType.GRID,
+		wantList: false,
+	},
 };
 
 let updatedCollection: UserCollectionItem[] = [];
@@ -105,6 +109,28 @@ export const AppReducer = (
 				collection: {
 					...state.collection,
 					releases: updatedCollection,
+				},
+			};
+
+		case AppReducerActions.UpdateView:
+			const { viewType } = action;
+
+			return {
+				...state,
+				ui: {
+					...state.ui,
+					viewType,
+				},
+			};
+
+		case AppReducerActions.ShowWantList:
+			const { wantList } = action;
+
+			return {
+				...state,
+				ui: {
+					...state.ui,
+					wantList,
 				},
 			};
 

@@ -10,6 +10,7 @@ import {
 	getUserCollection,
 	getUserCollectionValue,
 	getUserInfo,
+	getUserWantList,
 } from '../../api';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
@@ -18,7 +19,6 @@ import { Alert, CircularProgress, Fade, Snackbar } from '@mui/material';
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
-	const [viewType, setViewType] = useState<ViewType>(ViewType.GRID);
 	const [data, setData] = useState<UserCollectionItem[]>([]);
 	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
 	const [informationDialog, setInformationDialog] = useState<boolean>(false);
@@ -26,9 +26,11 @@ export default () => {
 
 	const {
 		user: { username },
-		collection: { value, numberOfItems, releases },
+		collection,
+		ui: { viewType, wantList: showWantList },
 		snackbar,
 	} = useAppState();
+	const { value, numberOfItems, releases, wantList } = collection;
 	const {
 		open: showSnackbar,
 		message: snackbarMessage,
@@ -65,13 +67,12 @@ export default () => {
 	}, [searchValue, data]);
 
 	useEffect(() => {
-		setData(releases);
-	}, [releases]);
-
-	const toggleViewType = () => {
-		if (viewType === ViewType.GRID) setViewType(ViewType.LIST);
-		else setViewType(ViewType.GRID);
-	};
+		if (showWantList) {
+			setData(wantList);
+		} else {
+			setData(releases);
+		}
+	}, [releases, wantList]);
 
 	useEffect(() => {
 		setIsLoading(true);
@@ -94,46 +95,64 @@ export default () => {
 				);
 				dispatch({
 					type: AppReducerActions.UpdateCollectionInfo,
-					collection: { value, numberOfItems, releases },
+					collection: { value, numberOfItems, releases, wantList: [] },
 				});
 				setIsLoading(false);
 			})();
 		}
 	}, [username]);
 
+	useEffect(() => {
+		if (showWantList) {
+			if (wantList.length === 0) {
+				(async () => {
+					setIsLoading(true);
+					await getUserWantList(username)
+						.then((items) => {
+							dispatch({
+								type: AppReducerActions.UpdateCollectionInfo,
+								collection: { ...collection, wantList: items },
+							});
+						})
+						.finally(() => setIsLoading(false));
+				})();
+			} else {
+				setData(wantList);
+			}
+		} else {
+			setData(releases);
+		}
+	}, [showWantList]);
+
 	return (
 		<div>
 			<Toolbar value={value} numOfItems={numberOfItems.toString()} />
-			{isLoading ? (
-				<SpinnerContainer>
-					<CircularProgress />
-				</SpinnerContainer>
-			) : (
-				<Fade in={!isLoading}>
-					<Container>
-						<SearchBar
-							value={searchValue}
-							viewType={viewType}
-							onChange={(value) => setSearchValue(value)}
-							onClear={() => setSearchValue('')}
-							toggleView={toggleViewType}
-						/>
-						<StyledDivider />
-						<>
-							{viewType === ViewType.LIST && (
-								<Table data={filteredData} onItemClick={showInformation} />
-							)}
-							{viewType === ViewType.GRID && (
-								<Grid data={filteredData} onItemClick={showInformation} />
-							)}
-						</>
-						<ViewReleaseDialog
-							open={informationDialog}
-							onClose={toggleInformationDialog}
-						/>
-					</Container>
-				</Fade>
-			)}
+			<Container>
+				<SearchBar
+					value={searchValue}
+					onChange={(value) => setSearchValue(value)}
+					onClear={() => setSearchValue('')}
+				/>
+				<StyledDivider />
+				{isLoading ? (
+					<SpinnerContainer>
+						<CircularProgress />
+					</SpinnerContainer>
+				) : (
+					<>
+						{viewType === ViewType.TABLE && (
+							<Table data={filteredData} onItemClick={showInformation} />
+						)}
+						{viewType === ViewType.GRID && (
+							<Grid data={filteredData} onItemClick={showInformation} />
+						)}
+					</>
+				)}
+				<ViewReleaseDialog
+					open={informationDialog}
+					onClose={toggleInformationDialog}
+				/>
+			</Container>
 			<Snackbar
 				open={showSnackbar}
 				autoHideDuration={6000}

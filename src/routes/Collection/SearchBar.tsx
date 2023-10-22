@@ -5,32 +5,54 @@ import {
 	ViewDay,
 	ViewList,
 } from '@mui/icons-material';
-import { TextField, InputAdornment, IconButton, Button } from '@mui/material';
-import { ViewType } from '../../helpers/enum';
+import {
+	TextField,
+	InputAdornment,
+	IconButton,
+	Button,
+	Switch,
+	Typography,
+} from '@mui/material';
+import { AppReducerActions, ViewType } from '../../helpers/enum';
 import { ButtonBar } from './styles';
 import { useState } from 'react';
 import AddReleaseDialog from './AddReleaseDialog';
+import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 
 export default ({
 	value,
-	viewType,
 	onChange,
 	onClear,
-	toggleView,
 }: {
 	value: string;
-	viewType: ViewType;
 	onChange: (value: string) => void;
 	onClear: () => void;
-	toggleView: () => void;
 }) => {
+	const {
+		ui: { viewType, wantList },
+	} = useAppState();
 	const [addReleaseDialogOpen, setAddReleaseDialogOpen] =
 		useState<boolean>(false);
 	const toggleAddReleaseDialog = () =>
 		setAddReleaseDialogOpen(!addReleaseDialogOpen);
+	const dispatch = useAppDispatch();
+
+	const changeView = (viewType: ViewType) =>
+		dispatch({
+			type: AppReducerActions.UpdateView,
+			viewType,
+		});
+
+	const toggleView = () => {
+		if (viewType === ViewType.GRID) changeView(ViewType.TABLE);
+		else changeView(ViewType.GRID);
+	};
 
 	const ViewTypeIcon = () =>
 		viewType === ViewType.GRID ? <ViewList /> : <ViewDay />;
+
+	const toggleWantList = () =>
+		dispatch({ type: AppReducerActions.ShowWantList, wantList: !wantList });
 
 	return (
 		<>
@@ -61,7 +83,21 @@ export default ({
 						variant="outlined"
 						value={value}
 					/>
-					<div>
+					<div style={{ display: 'flex' }}>
+						<div
+							style={{
+								display: 'flex',
+								alignItems: 'center',
+								marginRight: 25,
+							}}
+						>
+							<Switch
+								checked={wantList}
+								onChange={toggleWantList}
+								inputProps={{ 'aria-label': 'controlled' }}
+							/>
+							<Typography>View Want List</Typography>
+						</div>
 						<Button
 							data-testid="toggle-view-type-btn"
 							variant="contained"
@@ -70,7 +106,7 @@ export default ({
 							onClick={toggleView}
 							startIcon={<ViewTypeIcon />}
 						>
-							View {viewType === ViewType.GRID ? 'List' : 'Grid'}
+							View {viewType === ViewType.GRID ? 'Table' : 'Grid'}
 						</Button>
 						<Button
 							variant="contained"

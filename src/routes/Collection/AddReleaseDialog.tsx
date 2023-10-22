@@ -1,5 +1,6 @@
 import {
 	Button,
+	CircularProgress,
 	FormControl,
 	IconButton,
 	InputAdornment,
@@ -9,6 +10,7 @@ import {
 } from '@mui/material';
 import {
 	SearchContainer,
+	SpinnerContainer,
 	StyledDialog,
 	StyledDialogActions,
 	StyledDialogContent,
@@ -39,6 +41,7 @@ export default ({
 		getSearchTypeKey(SearchType.ALBUM_TITLE),
 	);
 	const [releases, setReleases] = useState<DatabaseSearchResponse[]>([]);
+	const [isLoading, setIsLoading] = useState<boolean>(false);
 
 	const reset = () => {
 		setSearchValue('');
@@ -52,10 +55,18 @@ export default ({
 	};
 
 	const search = async () => {
-		await searchDatabase(searchValue, searchType).then((results) => {
-			setReleases(results);
-		});
-		// reset();
+		setIsLoading(true);
+		await searchDatabase(searchValue, searchType)
+			.then((results) => {
+				setReleases(results);
+			})
+			.finally(() => setIsLoading(false));
+	};
+
+	const onEnter = (e: React.KeyboardEvent<HTMLDivElement>) => {
+		if (e.key === 'Enter') {
+			search();
+		}
 	};
 
 	return (
@@ -74,6 +85,7 @@ export default ({
 						placeholder="Search..."
 						sx={{ flexGrow: 1, mr: 2 }}
 						onChange={(e) => setSearchValue(e.target.value)}
+						onKeyDown={onEnter}
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
@@ -103,12 +115,18 @@ export default ({
 						<StyledHelperText>Please select a search type</StyledHelperText>
 					</FormControl>
 				</SearchContainer>
-				<div style={{ maxHeight: 350, overflow: 'scroll', marginTop: 5 }}>
-					{releases.length > 0 &&
-						releases.map((release) => (
-							<SearchResult key={release.releaseId} release={release} />
-						))}
-				</div>
+				{!isLoading ? (
+					<div style={{ maxHeight: 350, overflow: 'scroll', marginTop: 5 }}>
+						{releases.length > 0 &&
+							releases.map((release) => (
+								<SearchResult key={release.releaseId} release={release} />
+							))}
+					</div>
+				) : (
+					<SpinnerContainer>
+						<CircularProgress />
+					</SpinnerContainer>
+				)}
 			</StyledDialogContent>
 			<StyledDialogActions>
 				<Button onClick={closeDialog} variant="outlined">
@@ -117,7 +135,9 @@ export default ({
 				<Button
 					onClick={search}
 					variant="contained"
-					disabled={searchType.length === 0 || searchValue.length === 0}
+					disabled={
+						searchType.length === 0 || searchValue.length === 0 || isLoading
+					}
 				>
 					Search
 				</Button>

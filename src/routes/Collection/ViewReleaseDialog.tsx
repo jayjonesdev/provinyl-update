@@ -19,6 +19,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 	const [details, setDetails] = useState<ReleaseDetails>({} as ReleaseDetails);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [remove, setRemove] = useState<boolean>(false);
+	const [add, setAdd] = useState<boolean>(false);
 	const {
 		currentRelease,
 		user: { username },
@@ -87,6 +88,11 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 			<StyledDialogActions>
 				{!remove ? (
 					<>
+						{currentRelease.wantList && !add && (
+							<Button onClick={() => {}} variant="outlined">
+								Add
+							</Button>
+						)}
 						<Button onClick={toggleRemove} variant="outlined">
 							Remove
 						</Button>
