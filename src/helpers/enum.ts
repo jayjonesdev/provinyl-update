@@ -21,3 +21,8 @@ export enum AppReducerActions {
 	UpdateView = 'UPDATE_VIEW',
 	ShowWantList = 'SHOW_WANT_LIST',
 }
+
+export enum ReleaseListType {
+	Collection = 'COLLECTION',
+	WantList = 'WANT_LIST',
+}

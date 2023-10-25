@@ -17,6 +17,7 @@ const api = axios.create({
 	},
 });
 
+// Add Response failure interceptor and Error Boundary (with refresh button)
 api.interceptors.response.use((response) => response.data);
 
 // User Routes
@@ -48,6 +49,18 @@ export const addReleaseToCollection = async (
 	releaseId: number,
 ): Promise<number> =>
 	api.post(`/user/${username}/collection/release/${releaseId}`);
+
+export const removeReleaseFromWantlist = async (
+	username: string,
+	releaseId: string,
+): Promise<UserCollection> =>
+	api.delete(`/user/${username}/wantlist/release/${releaseId}`);
+
+export const addReleaseToWantlist = async (
+	username: string,
+	releaseId: number,
+): Promise<number> =>
+	api.post(`/user/${username}/wantlist/release/${releaseId}`);
 
 // Auth Routes
 export const login = () => {

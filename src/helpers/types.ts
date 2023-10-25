@@ -1,5 +1,10 @@
 import { AlertColor } from '@mui/material';
-import { AppReducerActions, SearchType, ViewType } from './enum';
+import {
+	AppReducerActions,
+	ReleaseListType,
+	SearchType,
+	ViewType,
+} from './enum';
 
 export type MenuOptions = {
 	label: string;
@@ -207,6 +212,7 @@ export interface SetSnackbarActionType {
 export interface RemoveReleaseActionType {
 	type: AppReducerActions.RemoveRelease;
 	releaseId: number;
+	list: ReleaseListType;
 }
 
 export interface AddReleaseActionType {

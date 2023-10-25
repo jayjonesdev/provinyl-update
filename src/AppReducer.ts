@@ -1,4 +1,4 @@
-import { AppReducerActions, ViewType } from './helpers/enum';
+import { AppReducerActions, ReleaseListType, ViewType } from './helpers/enum';
 import {
 	AppActionType,
 	AppStateType,
@@ -76,18 +76,30 @@ export const AppReducer = (
 			};
 
 		case AppReducerActions.RemoveRelease:
-			const { releaseId } = action;
+			const { releaseId, list } = action;
 
-			updatedCollection = [...state.collection.releases].filter(
-				(release) => release.releaseId !== releaseId,
-			);
+			if (list === ReleaseListType.Collection) {
+				updatedCollection = [...state.collection.releases].filter(
+					(release) => release.releaseId !== releaseId,
+				);
+			} else {
+				updatedCollection = [...state.collection.wantList].filter(
+					(release) => release.releaseId !== releaseId,
+				);
+			}
 
 			return {
 				...state,
-				collection: {
-					...state.collection,
-					releases: updatedCollection,
-				},
+				collection:
+					list === ReleaseListType.Collection
+						? {
+								...state.collection,
+								releases: updatedCollection,
+						  }
+						: {
+								...state.collection,
+								wantList: updatedCollection,
+						  },
 			};
 
 		case AppReducerActions.AddRelease:

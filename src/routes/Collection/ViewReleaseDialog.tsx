@@ -8,12 +8,17 @@ import {
 	ViewReleaseContainer,
 } from './styles';
 
-import { getReleaseDetails, removeReleaseFromCollection } from '../../api';
+import {
+	addReleaseToCollection,
+	getReleaseDetails,
+	removeReleaseFromCollection,
+	removeReleaseFromWantlist,
+} from '../../api';
 import { Button, Typography } from '@mui/material';
 import { ReleaseDetails } from '../../helpers/types';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import ReleaseDialogDetails from './ReleaseDialogDetails';
-import { AppReducerActions } from '../../helpers/enum';
+import { AppReducerActions, ReleaseListType } from '../../helpers/enum';
 
 export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 	const [details, setDetails] = useState<ReleaseDetails>({} as ReleaseDetails);
@@ -38,6 +43,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 	}, [open]);
 
 	const toggleRemove = () => setRemove(!remove);
+	const toggleAdd = () => setAdd(!add);
 	const removeRelease = async () => {
 		setIsLoading(true);
 		await removeReleaseFromCollection(
@@ -51,6 +57,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 			dispatch({
 				type: AppReducerActions.RemoveRelease,
 				releaseId: currentRelease.releaseId,
+				list: ReleaseListType.Collection,
 			});
 			dispatch({
 				type: AppReducerActions.SetSnackbar,
@@ -61,6 +68,63 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 				},
 			});
 		});
+	};
+	const addWantListRelease = async () => {
+		setIsLoading(true);
+		await addReleaseToCollection(username, currentRelease.releaseId).then(
+			async (instanceId) => {
+				dispatch({
+					type: AppReducerActions.AddRelease,
+					release: {
+						...currentRelease,
+						instanceId,
+					},
+				});
+				dispatch({
+					type: AppReducerActions.SetSnackbar,
+					snackbar: {
+						open: true,
+						message: `${currentRelease.title} has been added to your collection.`,
+						severity: 'success',
+					},
+				});
+
+				await removeReleaseFromWantlist(
+					username,
+					currentRelease.releaseId.toString(),
+				).then(() => {
+					dispatch({
+						type: AppReducerActions.RemoveRelease,
+						releaseId: currentRelease.releaseId,
+						list: ReleaseListType.WantList,
+					});
+				});
+				setIsLoading(false);
+				toggleAdd();
+				onClose();
+			},
+		);
+		// await removeReleaseFromWantList(
+		// 	username,
+		// 	currentRelease.releaseId.toString(),
+		// 	currentRelease.instanceId.toString(),
+		// ).then(() => {
+		// 	setIsLoading(false);
+		// 	toggleRemove();
+		// 	onClose();
+		// 	dispatch({
+		// 		type: AppReducerActions.AddRelease,
+		// 		releaseId: currentRelease.releaseId,
+		// 	});
+		// 	dispatch({
+		// 		type: AppReducerActions.SetSnackbar,
+		// 		snackbar: {
+		// 			open: true,
+		// 			message: `${currentRelease.title} has been added to your collection.`,
+		// 			severity: 'success',
+		// 		},
+		// 	});
+		// });
 	};
 
 	return (
@@ -86,10 +150,10 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 				</ViewReleaseContainer>
 			</StyledDialogContent>
 			<StyledDialogActions>
-				{!remove ? (
+				{!remove && !add && (
 					<>
 						{currentRelease.wantList && !add && (
-							<Button onClick={() => {}} variant="outlined">
+							<Button onClick={toggleAdd} variant="outlined">
 								Add
 							</Button>
 						)}
@@ -100,13 +164,14 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 							Close
 						</Button>
 					</>
-				) : (
+				)}
+				{(add || remove) && (
 					<>
 						<Typography variant="body1" marginRight={2} fontWeight={600}>
-							Are you sure you want to remove this release?
+							Are you sure you want to {remove ? 'remove' : 'add'} this release?
 						</Typography>
 						<Button
-							onClick={removeRelease}
+							onClick={remove ? removeRelease : addWantListRelease}
 							variant="contained"
 							color="success"
 							disabled={isLoading}
@@ -114,7 +179,7 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 							Yes
 						</Button>
 						<Button
-							onClick={toggleRemove}
+							onClick={remove ? toggleRemove : toggleAdd}
 							variant="contained"
 							color="error"
 							disabled={isLoading}
