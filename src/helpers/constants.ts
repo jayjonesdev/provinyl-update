@@ -3,3 +3,5 @@ export const EMAIL = 'jayjonesdevelopment@gmail.com';
 export const INSTAGRAM_LINK = 'https://www.instagram.com/provinyl_io/';
 export const ROW_SIZE = 300;
 export const PLACEHOLDER_IMG_SRC = `${process.env.PUBLIC_URL}/assets/placeholder.png`;
+export const DISCOGS_PRIVACY_POLICY =
+	'https://www.discogs.com/settings/privacy';

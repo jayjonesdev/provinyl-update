@@ -8,7 +8,7 @@ import {
 	FormHelperText,
 	Menu,
 	MenuItem,
-	Paper,
+	Popover,
 	Table,
 	TableCell,
 	TableHead,
@@ -261,3 +261,7 @@ export const ViewReleaseContainer = styled('div')`
 	flex-direction: row;
 	min-height: 450px;
 `;
+
+export const StyledPopoverContent = styled('div')(({ theme }) => ({
+	padding: theme.spacing(),
+}));

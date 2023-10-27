@@ -7,6 +7,7 @@ import Table from './Table';
 import { UserCollectionItem } from '../../helpers/types';
 import { removeDiacritics } from '../../helpers';
 import {
+	getPublicUserCollection,
 	getUserCollection,
 	getUserCollectionValue,
 	getUserInfo,
@@ -15,14 +16,16 @@ import {
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
 import ViewReleaseDialog from './ViewReleaseDialog';
-import { Alert, CircularProgress, Fade, Snackbar } from '@mui/material';
+import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
+import { useParams } from 'react-router-dom';
 
-export default () => {
+export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
 	const [data, setData] = useState<UserCollectionItem[]>([]);
 	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
 	const [informationDialog, setInformationDialog] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const { username: readOnlyUsername } = useParams();
 
 	const {
 		user: { username },
@@ -75,32 +78,48 @@ export default () => {
 	}, [releases, wantList]);
 
 	useEffect(() => {
+		let value = '',
+			numberOfItems = 0,
+			releases = [] as UserCollectionItem[];
+
 		setIsLoading(true);
-		if (username.length === 0) {
-			getUserInfo().then((userInfo) =>
-				dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }),
-			);
+		if (!readOnly) {
+			if (username.length === 0) {
+				getUserInfo().then((userInfo) =>
+					dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }),
+				);
+			} else {
+				(async () => {
+					await getUserCollection(username).then((collection) => {
+						releases = collection.items;
+						numberOfItems = collection.items.length;
+					});
+					await getUserCollectionValue(username).then(
+						(collectionValue) => (value = collectionValue),
+					);
+					dispatch({
+						type: AppReducerActions.UpdateCollectionInfo,
+						collection: { value, numberOfItems, releases, wantList: [] },
+					});
+					setIsLoading(false);
+				})();
+			}
 		} else {
 			(async () => {
-				let value = '',
-					numberOfItems = 0,
-					releases = [] as UserCollectionItem[];
-
-				await getUserCollection(username).then((collection) => {
-					releases = collection.items;
-					numberOfItems = collection.items.length;
-				});
-				await getUserCollectionValue(username).then(
-					(collectionValue) => (value = collectionValue),
+				await getPublicUserCollection(readOnlyUsername as string).then(
+					(collection) => {
+						releases = collection.items;
+						numberOfItems = collection.items.length;
+					},
 				);
 				dispatch({
 					type: AppReducerActions.UpdateCollectionInfo,
-					collection: { value, numberOfItems, releases, wantList: [] },
+					collection: { value: '', numberOfItems, releases, wantList: [] },
 				});
 				setIsLoading(false);
 			})();
 		}
-	}, [username]);
+	}, [username, readOnlyUsername, readOnly]);
 
 	useEffect(() => {
 		if (showWantList) {
@@ -124,12 +143,34 @@ export default () => {
 		}
 	}, [showWantList]);
 
+	const DataViewer = () => {
+		if (data.length !== 0) {
+			return (
+				<>
+					{viewType === ViewType.TABLE && (
+						<Table data={filteredData} onItemClick={showInformation} />
+					)}
+					{viewType === ViewType.GRID && (
+						<Grid data={filteredData} onItemClick={showInformation} />
+					)}
+				</>
+			);
+		}
+		return <Typography variant="h6">There are no releases.</Typography>;
+	};
+
 	return (
 		<div>
-			<Toolbar value={value} numOfItems={numberOfItems.toString()} />
+			<Toolbar
+				value={value}
+				numOfItems={numberOfItems.toString()}
+				readOnly={readOnly}
+				username={readOnlyUsername}
+			/>
 			<Container>
 				<SearchBar
 					value={searchValue}
+					readOnly={readOnly}
 					onChange={(value) => setSearchValue(value)}
 					onClear={() => setSearchValue('')}
 				/>
@@ -139,18 +180,12 @@ export default () => {
 						<CircularProgress />
 					</SpinnerContainer>
 				) : (
-					<>
-						{viewType === ViewType.TABLE && (
-							<Table data={filteredData} onItemClick={showInformation} />
-						)}
-						{viewType === ViewType.GRID && (
-							<Grid data={filteredData} onItemClick={showInformation} />
-						)}
-					</>
+					<DataViewer />
 				)}
 				<ViewReleaseDialog
 					open={informationDialog}
 					onClose={toggleInformationDialog}
+					readOnly={readOnly}
 				/>
 			</Container>
 			<Snackbar

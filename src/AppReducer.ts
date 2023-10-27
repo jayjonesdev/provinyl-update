@@ -34,6 +34,7 @@ export const initialState: AppStateType = {
 	ui: {
 		viewType: ViewType.GRID,
 		wantList: false,
+		shareableLinkPopover: false,
 	},
 };
 
@@ -132,6 +133,17 @@ export const AppReducer = (
 				ui: {
 					...state.ui,
 					viewType,
+				},
+			};
+
+		case AppReducerActions.ShowShareableLinkPopover:
+			const { shareableLinkPopover } = action;
+
+			return {
+				...state,
+				ui: {
+					...state.ui,
+					shareableLinkPopover,
 				},
 			};
 

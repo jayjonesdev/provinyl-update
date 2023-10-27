@@ -16,4 +16,8 @@ export default createBrowserRouter([
 		path: '/collection',
 		element: <Collection />,
 	},
+	{
+		path: '/user/collection/:username',
+		element: <Collection readOnly />,
+	},
 ]);

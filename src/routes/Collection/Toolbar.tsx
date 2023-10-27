@@ -8,25 +8,39 @@ import { type MenuOptions } from '../../helpers/types';
 import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
 import InformationDialog from './InformationDialog';
 import LogoutDialog from './LogoutDialog';
+import { useAppDispatch } from '../../helpers/hooks/useAppState';
+import { AppReducerActions } from '../../helpers/enum';
+import ShareableLinkPopover from './ShareableLinkPopover';
 
 export default ({
 	value,
 	numOfItems,
+	readOnly,
+	username,
 }: {
 	value: string;
 	numOfItems: string;
+	readOnly: boolean;
+	username?: string;
 }) => {
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 	const [informationOpen, setInformationOpen] = useState<boolean>(false);
 	const [logoutOpen, setLogoutOpen] = useState<boolean>(false);
+	const [popoverAnchor, setPopoverAnchor] = useState<null | HTMLElement>(null);
+	const dispatch = useAppDispatch();
 
 	const handleDialogClose = () => setInformationOpen(false);
 	const handleLogoutClose = () => setLogoutOpen(false);
-
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) =>
 		setAnchorElUser(event.currentTarget);
-
 	const handleCloseUserMenu = () => setAnchorElUser(null);
+	const showShareableLinkPopover = (event: React.MouseEvent<HTMLElement>) => {
+		setPopoverAnchor(event.currentTarget);
+		dispatch({
+			type: AppReducerActions.ShowShareableLinkPopover,
+			shareableLinkPopover: true,
+		});
+	};
 
 	const logout = () => {
 		setLogoutOpen(false);
@@ -78,63 +92,70 @@ export default ({
 						component="div"
 						sx={{ marginLeft: theme.spacing(2), flexGrow: 1 }}
 					>
-						Your Collection
+						{`${username}'s` ?? 'Your'} Collection
 					</Typography>
-					<IconButton
-						size="large"
-						edge="start"
-						color="inherit"
-						aria-label="link"
-						sx={{ mr: 2 }}
-					>
-						<Link fontSize="large" />
-					</IconButton>
-					<IconButton
-						data-testid="menu-button"
-						size="large"
-						edge="start"
-						color="inherit"
-						aria-label="menu"
-						onClick={handleOpenUserMenu}
-					>
-						<AccountCircle fontSize="large" />
-					</IconButton>
-					<StyledMenu
-						sx={{
-							'& .MuiMenu-paper': {
-								backgroundColor: theme.palette.primary.main,
-								color: '#fff',
-							},
-						}}
-						id="menu-appbar"
-						anchorEl={anchorElUser}
-						anchorOrigin={{
-							vertical: 'top',
-							horizontal: 'right',
-						}}
-						keepMounted
-						transformOrigin={{
-							vertical: 'top',
-							horizontal: 'right',
-						}}
-						data-testid="menu"
-						open={Boolean(anchorElUser)}
-						onClose={handleCloseUserMenu}
-					>
-						{MENU_OPTIONS.map((menuOption) => (
-							<StyledMenuItem
-								key={menuOption.label}
-								onClick={menuOption.onClick}
+					{!readOnly && (
+						<>
+							<IconButton
+								size="large"
+								edge="start"
+								color="inherit"
+								aria-label="link"
+								sx={{ mr: 2 }}
+								onClick={showShareableLinkPopover}
+							>
+								<Link fontSize="large" />
+							</IconButton>
+							<IconButton
+								data-testid="menu-button"
+								size="large"
+								edge="start"
+								color="inherit"
+								aria-label="menu"
+								onClick={handleOpenUserMenu}
+							>
+								<AccountCircle fontSize="large" />
+							</IconButton>
+							<StyledMenu
 								sx={{
-									':hover': {
-										backgroundColor: theme.palette.primary.light,
+									'& .MuiMenu-paper': {
+										backgroundColor: theme.palette.primary.main,
+										color: '#fff',
 									},
 								}}
+								id="menu-appbar"
+								anchorEl={anchorElUser}
+								anchorOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								keepMounted
+								transformOrigin={{
+									vertical: 'top',
+									horizontal: 'right',
+								}}
+								data-testid="menu"
+								open={Boolean(anchorElUser)}
+								onClose={handleCloseUserMenu}
 							>
-								<Typography textAlign="center">{menuOption.label}</Typography>
-							</StyledMenuItem>
-						))}
-					</StyledMenu>
+								{MENU_OPTIONS.map((menuOption) => (
+									<StyledMenuItem
+										key={menuOption.label}
+										onClick={menuOption.onClick}
+										sx={{
+											':hover': {
+												backgroundColor: theme.palette.primary.light,
+											},
+										}}
+									>
+										<Typography textAlign="center">
+											{menuOption.label}
+										</Typography>
+									</StyledMenuItem>
+								))}
+							</StyledMenu>
+						</>
+					)}
 				</Toolbar>
 			</AppBar>
 			<InformationDialog
@@ -148,6 +169,7 @@ export default ({
 				handleClose={handleLogoutClose}
 				handleAction={logout}
 			/>
+			<ShareableLinkPopover anchor={popoverAnchor} />
 		</>
 	);
 };

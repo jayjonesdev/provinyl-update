@@ -18,12 +18,28 @@ const api = axios.create({
 });
 
 // Add Response failure interceptor and Error Boundary (with refresh button)
-api.interceptors.response.use((response) => response.data);
+api.interceptors.response.use(
+	(response) => response.data,
+	(error) => {
+		switch (error.response.status) {
+			case 401:
+				window.location.href = '/login';
+				break;
+
+			default:
+				break;
+		}
+	},
+);
 
 // User Routes
 export const getUserCollection = async (
 	username: string,
 ): Promise<UserCollection> => api(`/user/${username}/collection`);
+
+export const getPublicUserCollection = async (
+	username: string,
+): Promise<UserCollection> => api(`/public/user/${username}/collection`);
 
 export const getUserWantList = async (
 	username: string,
@@ -72,6 +88,9 @@ export const login = () => {
 // Release Routes
 export const getReleaseDetails = (id: number): Promise<ReleaseDetails> =>
 	api(`/release/details/${id}`);
+
+export const getPublicReleaseDetails = (id: number): Promise<ReleaseDetails> =>
+	api(`/public/release/details/${id}`);
 
 // Database Routes
 export const searchDatabase = (

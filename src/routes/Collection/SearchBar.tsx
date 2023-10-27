@@ -21,10 +21,12 @@ import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 
 export default ({
 	value,
+	readOnly,
 	onChange,
 	onClear,
 }: {
 	value: string;
+	readOnly: boolean;
 	onChange: (value: string) => void;
 	onClear: () => void;
 }) => {
@@ -84,20 +86,22 @@ export default ({
 						value={value}
 					/>
 					<div style={{ display: 'flex' }}>
-						<div
-							style={{
-								display: 'flex',
-								alignItems: 'center',
-								marginRight: 25,
-							}}
-						>
-							<Switch
-								checked={wantList}
-								onChange={toggleWantList}
-								inputProps={{ 'aria-label': 'controlled' }}
-							/>
-							<Typography>View Want List</Typography>
-						</div>
+						{!readOnly && (
+							<div
+								style={{
+									display: 'flex',
+									alignItems: 'center',
+									marginRight: 25,
+								}}
+							>
+								<Switch
+									checked={wantList}
+									onChange={toggleWantList}
+									inputProps={{ 'aria-label': 'controlled' }}
+								/>
+								<Typography>View Want List</Typography>
+							</div>
+						)}
 						<Button
 							data-testid="toggle-view-type-btn"
 							variant="contained"
@@ -108,14 +112,16 @@ export default ({
 						>
 							View {viewType === ViewType.GRID ? 'Table' : 'Grid'}
 						</Button>
-						<Button
-							variant="contained"
-							size="large"
-							onClick={toggleAddReleaseDialog}
-							startIcon={<Add />}
-						>
-							Add Record
-						</Button>
+						{!readOnly && (
+							<Button
+								variant="contained"
+								size="large"
+								onClick={toggleAddReleaseDialog}
+								startIcon={<Add />}
+							>
+								Add Record
+							</Button>
+						)}
 					</div>
 				</ButtonBar>
 			</div>

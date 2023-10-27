@@ -147,6 +147,7 @@ export type AppStateType = {
 export type UIStateType = {
 	viewType: ViewType;
 	wantList: boolean;
+	shareableLinkPopover: boolean;
 };
 
 export type SnackbarType = {
@@ -177,7 +178,8 @@ export type AppActionType =
 	| RemoveReleaseActionType
 	| AddReleaseActionType
 	| UpdateViewActionType
-	| ShowWantListActionType;
+	| ShowWantListActionType
+	| ShowShareableLinkPopoverActionType;
 
 export interface UserInfoActionType {
 	type: AppReducerActions.UpdateUserInfo;
@@ -192,6 +194,11 @@ export interface UpdateViewActionType {
 export interface ShowWantListActionType {
 	type: AppReducerActions.ShowWantList;
 	wantList: boolean;
+}
+
+export interface ShowShareableLinkPopoverActionType {
+	type: AppReducerActions.ShowShareableLinkPopover;
+	shareableLinkPopover: boolean;
 }
 
 export interface UserCollectionActionType {

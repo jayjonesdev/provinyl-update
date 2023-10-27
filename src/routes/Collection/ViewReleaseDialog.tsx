@@ -10,6 +10,7 @@ import {
 
 import {
 	addReleaseToCollection,
+	getPublicReleaseDetails,
 	getReleaseDetails,
 	removeReleaseFromCollection,
 	removeReleaseFromWantlist,
@@ -20,7 +21,15 @@ import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import ReleaseDialogDetails from './ReleaseDialogDetails';
 import { AppReducerActions, ReleaseListType } from '../../helpers/enum';
 
-export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
+export default ({
+	open,
+	readOnly,
+	onClose,
+}: {
+	open: boolean;
+	readOnly: boolean;
+	onClose: () => void;
+}) => {
 	const [details, setDetails] = useState<ReleaseDetails>({} as ReleaseDetails);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [remove, setRemove] = useState<boolean>(false);
@@ -35,9 +44,15 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 		if (open) {
 			(async () => {
 				setIsLoading(true);
-				await getReleaseDetails(currentRelease.releaseId)
-					.then((releaseDetails) => setDetails(releaseDetails))
-					.finally(() => setIsLoading(false));
+				if (!readOnly) {
+					await getReleaseDetails(currentRelease.releaseId)
+						.then((releaseDetails) => setDetails(releaseDetails))
+						.finally(() => setIsLoading(false));
+				} else {
+					await getPublicReleaseDetails(currentRelease.releaseId)
+						.then((releaseDetails) => setDetails(releaseDetails))
+						.finally(() => setIsLoading(false));
+				}
 			})();
 		}
 	}, [open]);
@@ -104,27 +119,6 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 				onClose();
 			},
 		);
-		// await removeReleaseFromWantList(
-		// 	username,
-		// 	currentRelease.releaseId.toString(),
-		// 	currentRelease.instanceId.toString(),
-		// ).then(() => {
-		// 	setIsLoading(false);
-		// 	toggleRemove();
-		// 	onClose();
-		// 	dispatch({
-		// 		type: AppReducerActions.AddRelease,
-		// 		releaseId: currentRelease.releaseId,
-		// 	});
-		// 	dispatch({
-		// 		type: AppReducerActions.SetSnackbar,
-		// 		snackbar: {
-		// 			open: true,
-		// 			message: `${currentRelease.title} has been added to your collection.`,
-		// 			severity: 'success',
-		// 		},
-		// 	});
-		// });
 	};
 
 	return (
@@ -157,9 +151,11 @@ export default ({ open, onClose }: { open: boolean; onClose: () => void }) => {
 								Add
 							</Button>
 						)}
-						<Button onClick={toggleRemove} variant="outlined">
-							Remove
-						</Button>
+						{!readOnly && (
+							<Button onClick={toggleRemove} variant="outlined">
+								Remove
+							</Button>
+						)}
 						<Button onClick={onClose} variant="contained">
 							Close
 						</Button>

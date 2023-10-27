@@ -20,6 +20,7 @@ export enum AppReducerActions {
 	AddRelease = 'ADD_RELEASE',
 	UpdateView = 'UPDATE_VIEW',
 	ShowWantList = 'SHOW_WANT_LIST',
+	ShowShareableLinkPopover = 'SHOW_SHAREABLE_LINK_POPOVER',
 }
 
 export enum ReleaseListType {
