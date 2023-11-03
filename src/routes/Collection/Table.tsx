@@ -109,7 +109,7 @@ export default ({
 	);
 
 	return (
-		<Paper style={{ height: window.screen.height * 0.74 }}>
+		<Paper style={{ height: window.screen.height * 0.85 }}>
 			<TableVirtuoso
 				data={data}
 				components={VirtuosoTableComponents}

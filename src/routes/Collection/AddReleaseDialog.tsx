@@ -116,7 +116,7 @@ export default ({
 					</FormControl>
 				</SearchContainer>
 				{!isLoading ? (
-					<div style={{ maxHeight: 350, overflow: 'scroll', marginTop: 5 }}>
+					<div style={{ maxHeight: 450, overflow: 'scroll', marginTop: 5 }}>
 						{releases.length > 0 &&
 							releases.map((release) => (
 								<SearchResult key={release.releaseId} release={release} />

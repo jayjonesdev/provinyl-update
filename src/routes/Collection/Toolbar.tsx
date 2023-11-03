@@ -92,7 +92,7 @@ export default ({
 						component="div"
 						sx={{ marginLeft: theme.spacing(2), flexGrow: 1 }}
 					>
-						{`${username}'s` ?? 'Your'} Collection
+						{username ? `${username}'s` : 'Your'} Collection
 					</Typography>
 					{!readOnly && (
 						<>
