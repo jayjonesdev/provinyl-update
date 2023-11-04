@@ -72,8 +72,7 @@ export default ({
 	return (
 		<StyledDialog
 			open={open}
-			keepMounted
-			onClose={handleClose}
+			onClose={closeDialog}
 			aria-describedby="add-record-dialog"
 			fullWidth
 		>
