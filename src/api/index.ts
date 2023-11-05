@@ -68,7 +68,7 @@ export const addReleaseToCollection = async (
 
 export const removeReleaseFromWantlist = async (
 	username: string,
-	releaseId: string,
+	releaseId: number,
 ): Promise<UserCollection> =>
 	api.delete(`/user/${username}/wantlist/release/${releaseId}`);
 

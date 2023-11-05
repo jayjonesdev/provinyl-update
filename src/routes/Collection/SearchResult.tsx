@@ -4,6 +4,8 @@ import {
 	Typography,
 	AccordionDetails,
 	Button,
+	Tooltip,
+	IconButton,
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { AlbumArtwork, ViewReleaseContainer } from './styles';
@@ -12,7 +14,12 @@ import Detail from './Detail';
 import { useState } from 'react';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import { AppReducerActions } from '../../helpers/enum';
-import { addReleaseToCollection } from '../../api';
+import {
+	addReleaseToCollection,
+	addReleaseToWantlist,
+	removeReleaseFromWantlist,
+} from '../../api';
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
 
 export default ({ release }: { release: DatabaseSearchResponse }) => {
 	const {
@@ -25,6 +32,7 @@ export default ({ release }: { release: DatabaseSearchResponse }) => {
 		year,
 		country,
 		releaseId,
+		inWantlist,
 	} = release;
 	const releaseTitle = `${artist} - ${title} (${country})`;
 	const [add, setAdd] = useState<boolean>(false);
@@ -57,6 +65,48 @@ export default ({ release }: { release: DatabaseSearchResponse }) => {
 			});
 		});
 	};
+	const toggleWantList = async () => {
+		setIsLoading(true);
+		if (inWantlist) {
+			await removeReleaseFromWantlist(username, releaseId).then(() => {
+				setIsLoading(false);
+				// dispatch({
+				//   type: AppReducerActions.AddRelease,
+				//   release: {
+				//     ...release,
+				//     instanceId,
+				//   },
+				// });
+				dispatch({
+					type: AppReducerActions.SetSnackbar,
+					snackbar: {
+						open: true,
+						message: `${title} has been removed from your want list.`,
+						severity: 'success',
+					},
+				});
+			});
+		} else {
+			await addReleaseToWantlist(username, releaseId).then(() => {
+				setIsLoading(false);
+				// dispatch({
+				//   type: AppReducerActions.AddRelease,
+				//   release: {
+				//     ...release,
+				//     instanceId,
+				//   },
+				// });
+				dispatch({
+					type: AppReducerActions.SetSnackbar,
+					snackbar: {
+						open: true,
+						message: `${title} has been added to your want list.`,
+						severity: 'success',
+					},
+				});
+			});
+		}
+	};
 
 	return (
 		<Accordion style={{ marginBottom: 15, borderRadius: 5 }}>
@@ -83,6 +133,14 @@ export default ({ release }: { release: DatabaseSearchResponse }) => {
 						<Detail title="Genres" desc={genres} />
 						<Detail title="Catalog #" desc={catno} />
 						<Detail title="Country" desc={country} />
+						<Tooltip
+							title={!inWantlist ? 'Add to want list' : 'Remove from want list'}
+							placement="right-start"
+						>
+							<IconButton onClick={toggleWantList} disabled={isLoading}>
+								{inWantlist ? <Favorite color="primary" /> : <FavoriteBorder />}
+							</IconButton>
+						</Tooltip>
 					</div>
 				</ViewReleaseContainer>
 			</AccordionDetails>

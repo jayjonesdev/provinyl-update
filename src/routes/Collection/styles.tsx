@@ -8,7 +8,6 @@ import {
 	FormHelperText,
 	Menu,
 	MenuItem,
-	Popover,
 	Table,
 	TableCell,
 	TableHead,

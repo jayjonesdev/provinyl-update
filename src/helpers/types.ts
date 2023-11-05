@@ -286,4 +286,6 @@ export interface DatabaseSearchResponse {
 	catno: string;
 	releaseId: number;
 	country: string;
+	inCollection: boolean;
+	inWantlist: boolean;
 }

@@ -88,7 +88,7 @@ export default ({
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
-									<IconButton onClick={() => {}}>
+									<IconButton onClick={search}>
 										<Search />
 									</IconButton>
 								</InputAdornment>
@@ -118,7 +118,7 @@ export default ({
 					<div style={{ maxHeight: 450, overflow: 'scroll', marginTop: 5 }}>
 						{releases.length > 0 &&
 							releases.map((release) => (
-								<SearchResult key={release.releaseId} release={release} />
+								<SearchResult key={release.catno} release={release} />
 							))}
 					</div>
 				) : (

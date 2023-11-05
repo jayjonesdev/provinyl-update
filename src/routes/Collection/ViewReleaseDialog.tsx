@@ -106,7 +106,7 @@ export default ({
 
 				await removeReleaseFromWantlist(
 					username,
-					currentRelease.releaseId.toString(),
+					currentRelease.releaseId,
 				).then(() => {
 					dispatch({
 						type: AppReducerActions.RemoveRelease,
@@ -163,6 +163,7 @@ export default ({
 				)}
 				{(add || remove) && (
 					<>
+						{/** TODO: Handle remove from want list */}
 						<Typography variant="body1" marginRight={2} fontWeight={600}>
 							Are you sure you want to {remove ? 'remove' : 'add'} this release?
 						</Typography>
