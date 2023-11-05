@@ -225,6 +225,7 @@ export interface RemoveReleaseActionType {
 export interface AddReleaseActionType {
 	type: AppReducerActions.AddRelease;
 	release: UserCollectionItem;
+	list: ReleaseListType;
 }
 
 export interface UserCollection {

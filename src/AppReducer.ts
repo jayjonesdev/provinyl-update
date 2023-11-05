@@ -104,25 +104,43 @@ export const AppReducer = (
 			};
 
 		case AppReducerActions.AddRelease:
-			const { release: newRelease } = action;
+			const { release: newRelease, list: listType } = action;
 
 			updatedCollection = [...state.collection.releases];
+
+			if (listType === ReleaseListType.Collection) {
+				updatedCollection = [...state.collection.releases];
+			} else {
+				updatedCollection = [...state.collection.wantList];
+			}
 
 			const index = updatedCollection.findIndex(
 				(item) => item.artist > newRelease.artist,
 			);
 
+			const updatedRelease = {
+				...newRelease,
+				wantList: listType === ReleaseListType.WantList,
+			};
+
 			if (index === -1) {
-				updatedCollection.push(newRelease);
+				updatedCollection.push(updatedRelease);
 			} else {
-				updatedCollection.splice(index, 0, newRelease);
+				updatedCollection.splice(index, 0, updatedRelease);
 			}
+
 			return {
 				...state,
-				collection: {
-					...state.collection,
-					releases: updatedCollection,
-				},
+				collection:
+					listType === ReleaseListType.Collection
+						? {
+								...state.collection,
+								releases: updatedCollection,
+						  }
+						: {
+								...state.collection,
+								wantList: updatedCollection,
+						  },
 			};
 
 		case AppReducerActions.UpdateView:

@@ -13,7 +13,7 @@ import { DatabaseSearchResponse } from '../../helpers/types';
 import Detail from './Detail';
 import { useState } from 'react';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
-import { AppReducerActions } from '../../helpers/enum';
+import { AppReducerActions, ReleaseListType } from '../../helpers/enum';
 import {
 	addReleaseToCollection,
 	addReleaseToWantlist,
@@ -37,46 +37,53 @@ export default ({ release }: { release: DatabaseSearchResponse }) => {
 	const releaseTitle = `${artist} - ${title} (${country})`;
 	const [add, setAdd] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
+	const [wantList, setWantList] = useState<boolean>(inWantlist);
 	const {
 		user: { username },
 	} = useAppState();
 	const dispatch = useAppDispatch();
 
 	const toggleAdd = () => setAdd(!add);
+	const addCleanUp = (wantList: boolean, instanceId: number) => {
+		setIsLoading(false);
+		if (!wantList) toggleAdd();
+
+		dispatch({
+			type: AppReducerActions.AddRelease,
+			release: {
+				...release,
+				instanceId,
+			},
+			list: wantList ? ReleaseListType.WantList : ReleaseListType.Collection,
+		});
+		dispatch({
+			type: AppReducerActions.SetSnackbar,
+			snackbar: {
+				open: true,
+				message: `${title} has been added to your ${
+					wantList ? 'want list' : 'collection'
+				}.`,
+				severity: 'success',
+			},
+		});
+	};
 	const addRelease = async () => {
 		setIsLoading(true);
 		await addReleaseToCollection(username, releaseId).then((instanceId) => {
-			setIsLoading(false);
-			toggleAdd();
-			dispatch({
-				type: AppReducerActions.AddRelease,
-				release: {
-					...release,
-					instanceId,
-				},
-			});
-			dispatch({
-				type: AppReducerActions.SetSnackbar,
-				snackbar: {
-					open: true,
-					message: `${title} has been added to your collection.`,
-					severity: 'success',
-				},
-			});
+			addCleanUp(false, instanceId);
 		});
 	};
 	const toggleWantList = async () => {
 		setIsLoading(true);
-		if (inWantlist) {
+		if (wantList) {
 			await removeReleaseFromWantlist(username, releaseId).then(() => {
 				setIsLoading(false);
-				// dispatch({
-				//   type: AppReducerActions.AddRelease,
-				//   release: {
-				//     ...release,
-				//     instanceId,
-				//   },
-				// });
+				dispatch({
+					type: AppReducerActions.RemoveRelease,
+					releaseId,
+					list: ReleaseListType.WantList,
+				});
+				setWantList(false);
 				dispatch({
 					type: AppReducerActions.SetSnackbar,
 					snackbar: {
@@ -87,23 +94,10 @@ export default ({ release }: { release: DatabaseSearchResponse }) => {
 				});
 			});
 		} else {
-			await addReleaseToWantlist(username, releaseId).then(() => {
+			await addReleaseToWantlist(username, releaseId).then((instanceId) => {
 				setIsLoading(false);
-				// dispatch({
-				//   type: AppReducerActions.AddRelease,
-				//   release: {
-				//     ...release,
-				//     instanceId,
-				//   },
-				// });
-				dispatch({
-					type: AppReducerActions.SetSnackbar,
-					snackbar: {
-						open: true,
-						message: `${title} has been added to your want list.`,
-						severity: 'success',
-					},
-				});
+				addCleanUp(true, instanceId);
+				setWantList(true);
 			});
 		}
 	};
@@ -134,11 +128,11 @@ export default ({ release }: { release: DatabaseSearchResponse }) => {
 						<Detail title="Catalog #" desc={catno} />
 						<Detail title="Country" desc={country} />
 						<Tooltip
-							title={!inWantlist ? 'Add to want list' : 'Remove from want list'}
-							placement="right-start"
+							title={!wantList ? 'Add to want list' : 'Remove from want list'}
+							placement="right"
 						>
 							<IconButton onClick={toggleWantList} disabled={isLoading}>
-								{inWantlist ? <Favorite color="primary" /> : <FavoriteBorder />}
+								{wantList ? <Favorite color="primary" /> : <FavoriteBorder />}
 							</IconButton>
 						</Tooltip>
 					</div>

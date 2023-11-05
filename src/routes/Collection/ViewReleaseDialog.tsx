@@ -37,6 +37,7 @@ export default ({
 	const {
 		currentRelease,
 		user: { username },
+		ui: { wantList },
 	} = useAppState();
 	const dispatch = useAppDispatch();
 
@@ -59,30 +60,44 @@ export default ({
 
 	const toggleRemove = () => setRemove(!remove);
 	const toggleAdd = () => setAdd(!add);
+	const cleanUpRemove = () => {
+		setIsLoading(false);
+		toggleRemove();
+		onClose();
+		dispatch({
+			type: AppReducerActions.RemoveRelease,
+			releaseId: currentRelease.releaseId,
+			list: wantList ? ReleaseListType.WantList : ReleaseListType.Collection,
+		});
+		dispatch({
+			type: AppReducerActions.SetSnackbar,
+			snackbar: {
+				open: true,
+				message: `${currentRelease.title} has been removed from your ${
+					wantList ? 'want list' : 'collection'
+				}.`,
+				severity: 'success',
+			},
+		});
+	};
 	const removeRelease = async () => {
 		setIsLoading(true);
-		await removeReleaseFromCollection(
-			username,
-			currentRelease.releaseId.toString(),
-			currentRelease.instanceId.toString(),
-		).then(() => {
-			setIsLoading(false);
-			toggleRemove();
-			onClose();
-			dispatch({
-				type: AppReducerActions.RemoveRelease,
-				releaseId: currentRelease.releaseId,
-				list: ReleaseListType.Collection,
-			});
-			dispatch({
-				type: AppReducerActions.SetSnackbar,
-				snackbar: {
-					open: true,
-					message: `${currentRelease.title} has been removed from your collection.`,
-					severity: 'success',
+
+		if (wantList) {
+			await removeReleaseFromWantlist(username, currentRelease.releaseId).then(
+				() => {
+					cleanUpRemove();
 				},
+			);
+		} else {
+			await removeReleaseFromCollection(
+				username,
+				currentRelease.releaseId.toString(),
+				currentRelease.instanceId.toString(),
+			).then(() => {
+				cleanUpRemove();
 			});
-		});
+		}
 	};
 	const addWantListRelease = async () => {
 		setIsLoading(true);
@@ -94,6 +109,7 @@ export default ({
 						...currentRelease,
 						instanceId,
 					},
+					list: ReleaseListType.Collection,
 				});
 				dispatch({
 					type: AppReducerActions.SetSnackbar,
