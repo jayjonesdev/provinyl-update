@@ -30,7 +30,7 @@ export const getTableData = (data: Release[]): TableData[] =>
 		};
 	});
 
-const binaryHelper = <T extends { [k: string]: any }>(
+const binaryHelper = <T extends { [k: string]: unknown }>(
 	arr: Array<T>,
 	element: T,
 	lBound: number,
@@ -54,7 +54,7 @@ const binaryHelper = <T extends { [k: string]: any }>(
 	}
 };
 
-export const binaryInsertion = <T extends { [k: string]: any }>(
+export const binaryInsertion = <T extends { [k: string]: unknown }>(
 	arr: Array<T>,
 	element: T,
 	iteratee: string,
