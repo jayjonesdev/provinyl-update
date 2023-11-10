@@ -18,6 +18,8 @@ import Grid from './Grid';
 import ViewReleaseDialog from './ViewReleaseDialog';
 import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
+import { isMobile } from 'react-device-detect';
+import MobileGrid from './MobileGrid';
 
 export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -145,6 +147,9 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 
 	const DataViewer = () => {
 		if (data.length !== 0) {
+			if (isMobile) {
+				return <MobileGrid data={filteredData} onItemClick={showInformation} />;
+			}
 			return (
 				<>
 					{viewType === ViewType.TABLE && (

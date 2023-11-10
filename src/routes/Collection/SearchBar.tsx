@@ -18,6 +18,7 @@ import { ButtonBar } from './styles';
 import { useState } from 'react';
 import AddReleaseDialog from './AddReleaseDialog';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
+import { isMobile } from 'react-device-detect';
 
 export default ({
 	value,
@@ -65,7 +66,7 @@ export default ({
 						placeholder="Search collection..."
 						margin="dense"
 						onChange={(e) => onChange(e.target.value)}
-						sx={{ width: '35%' }}
+						sx={{ width: isMobile ? '35%' : '45%' }}
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
@@ -86,7 +87,7 @@ export default ({
 						value={value}
 					/>
 					<div style={{ display: 'flex' }}>
-						{!readOnly && (
+						{!readOnly && !isMobile && (
 							<div
 								style={{
 									display: 'flex',
@@ -102,24 +103,26 @@ export default ({
 								<Typography>View Want List</Typography>
 							</div>
 						)}
-						<Button
-							data-testid="toggle-view-type-btn"
-							variant="contained"
-							size="large"
-							sx={{ mr: 2 }}
-							onClick={toggleView}
-							startIcon={<ViewTypeIcon />}
-						>
-							View {viewType === ViewType.GRID ? 'Table' : 'Grid'}
-						</Button>
+						{!isMobile && (
+							<Button
+								data-testid="toggle-view-type-btn"
+								variant="contained"
+								size="large"
+								sx={{ mr: 2 }}
+								onClick={toggleView}
+								startIcon={<ViewTypeIcon />}
+							>
+								View {viewType === ViewType.GRID ? 'Table' : 'Grid'}
+							</Button>
+						)}
 						{!readOnly && (
 							<Button
 								variant="contained"
-								size="large"
+								size={isMobile ? 'small' : 'large'}
 								onClick={toggleAddReleaseDialog}
 								startIcon={<Add />}
 							>
-								Add Record
+								Add {!isMobile && 'Record'}
 							</Button>
 						)}
 					</div>

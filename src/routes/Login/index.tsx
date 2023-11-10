@@ -2,6 +2,7 @@ import { Container, DiscogsButton, LoginContainer, Logo } from './styles';
 import PrimaryLogo from '../../assets/primary_logo.png';
 import DiscogsIcon from './DiscogsIcon';
 import { login } from '../../api';
+import { isMobile } from 'react-device-detect';
 
 export default () => {
 	return (
@@ -10,9 +11,8 @@ export default () => {
 				<Logo src={PrimaryLogo} />
 				<DiscogsButton
 					startIcon={<DiscogsIcon />}
-					size="large"
+					size={isMobile ? 'small' : 'large'}
 					variant="outlined"
-					// href='/collection'
 					onClick={login}
 				>
 					Login with Discogs
