@@ -177,13 +177,14 @@ export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 
 // 300px is the width of the album artwork
 export const GridContainer = styled('div')`
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	margin-top: 10px;
+	margin: 0;
+	padding: 0;
 `;
 
 export const GridTile = styled('div')`
-	margin-top: 25px;
 	&:hover {
 		cursor: pointer;
 	}

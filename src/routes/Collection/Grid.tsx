@@ -24,6 +24,8 @@ const Grid = ({
 				<Suspense fallback={<img src={PLACEHOLDER_IMG_SRC} />}>
 					<LazyAlbumArtwork
 						src={item.imageUrl}
+						aria-label={`${item.artist} - ${item.title}`}
+						alt={`${item.artist} - ${item.title}`}
 						scrollPosition={scrollPosition}
 						placeholderSrc={PLACEHOLDER_IMG_SRC}
 					/>
