@@ -26,7 +26,15 @@ const Grid = ({
 		}}
 	>
 		{data.map((item) => (
-			<GridTile key={item.instanceId} onClick={() => onItemClick(item)}>
+			<GridTile
+				key={item.instanceId}
+				onClick={() =>
+					window.open(
+						`https://www.discogs.com/release/${item.releaseId}`,
+						'_blank',
+					)
+				}
+			>
 				<Suspense fallback={<img src={PLACEHOLDER_IMG_SRC} />}>
 					<LazyAlbumArtwork
 						src={item.imageUrl}
@@ -34,8 +42,8 @@ const Grid = ({
 						alt={`${item.artist} - ${item.title}`}
 						scrollPosition={scrollPosition}
 						placeholderSrc={PLACEHOLDER_IMG_SRC}
-						width={window.innerWidth - 25}
-						height={window.innerWidth - 25}
+						width={window.innerWidth - 30}
+						height={window.innerWidth - 30}
 					/>
 				</Suspense>
 			</GridTile>

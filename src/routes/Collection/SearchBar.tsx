@@ -63,10 +63,10 @@ export default ({
 				<ButtonBar>
 					<TextField
 						data-testid="collection-search-field"
-						placeholder="Search collection..."
+						placeholder={isMobile ? 'Search...' : 'Search collection...'}
 						margin="dense"
 						onChange={(e) => onChange(e.target.value)}
-						sx={{ width: isMobile ? '35%' : '45%' }}
+						sx={{ width: isMobile ? '50%' : '45%' }}
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
@@ -118,7 +118,7 @@ export default ({
 						{!readOnly && (
 							<Button
 								variant="contained"
-								size={isMobile ? 'small' : 'large'}
+								size="large"
 								onClick={toggleAddReleaseDialog}
 								startIcon={<Add />}
 							>
