@@ -1,5 +1,6 @@
 import {
 	Box,
+	Card,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -8,6 +9,7 @@ import {
 	FormHelperText,
 	Menu,
 	MenuItem,
+	Paper,
 	Table,
 	TableCell,
 	TableHead,
@@ -164,13 +166,18 @@ export const AlbumArtworkSpinnerContainer = styled(Box)`
 `;
 
 export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
-	<LazyLoadImage
-		effect="blur"
-		loading="lazy"
-		width={props.width ?? 300}
-		height={props.height ?? 300}
-		{...props}
-	/>
+	<Card
+		elevation={3}
+		sx={{ width: props.width ?? 300, height: props.height ?? 300 }}
+	>
+		<LazyLoadImage
+			effect="blur"
+			loading="lazy"
+			width={props.width ?? 300}
+			height={props.height ?? 300}
+			{...props}
+		/>
+	</Card>
 ))`
 	border-radius: 5px;
 `;
@@ -185,6 +192,7 @@ export const GridContainer = styled('div')`
 `;
 
 export const GridTile = styled('div')`
+	margin-bottom: 15px;
 	&:hover {
 		cursor: pointer;
 	}

@@ -12,6 +12,7 @@ import {
 	Button,
 	Switch,
 	Typography,
+	Fab,
 } from '@mui/material';
 import { AppReducerActions, ViewType } from '../../helpers/enum';
 import { ButtonBar } from './styles';
@@ -66,7 +67,7 @@ export default ({
 						placeholder={isMobile ? 'Search...' : 'Search collection...'}
 						margin="dense"
 						onChange={(e) => onChange(e.target.value)}
-						sx={{ width: isMobile ? '50%' : '45%' }}
+						sx={{ width: isMobile ? '100%' : '45%' }}
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">
@@ -115,7 +116,7 @@ export default ({
 								View {viewType === ViewType.GRID ? 'Table' : 'Grid'}
 							</Button>
 						)}
-						{!readOnly && (
+						{!readOnly && !isMobile && (
 							<Button
 								variant="contained"
 								size="large"

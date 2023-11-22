@@ -16,10 +16,23 @@ import {
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
 import ViewReleaseDialog from './ViewReleaseDialog';
-import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
+import {
+	Alert,
+	Avatar,
+	CircularProgress,
+	Divider,
+	ListItemIcon,
+	Menu,
+	MenuItem,
+	Snackbar,
+	Typography,
+} from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import MobileGrid from './MobileGrid';
+import Fab from './FloatingActionButton';
+
+import { PersonAdd, Settings, Logout } from '@mui/icons-material';
 
 export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -148,7 +161,12 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const DataViewer = () => {
 		if (data.length !== 0) {
 			if (isMobile) {
-				return <MobileGrid data={filteredData} onItemClick={showInformation} />;
+				return (
+					<>
+						<MobileGrid data={filteredData} />
+						<Fab />
+					</>
+				);
 			}
 			return (
 				<>

@@ -6,17 +6,17 @@ import {
 	trackWindowScroll,
 } from 'react-lazy-load-image-component';
 import { PLACEHOLDER_IMG_SRC } from '../../helpers/constants';
+
 const LazyAlbumArtwork = lazy(() =>
 	import('./styles').then((module) => ({ default: module.AlbumArtwork })),
 );
-const Grid = ({
+
+const MobileGrid = ({
 	data,
 	scrollPosition,
-	onItemClick,
 }: {
 	data: UserCollectionItem[];
 	scrollPosition: ScrollPosition;
-	onItemClick: (item: UserCollectionItem) => void;
 }) => (
 	<div
 		style={{
@@ -51,4 +51,4 @@ const Grid = ({
 	</div>
 );
 
-export default trackWindowScroll(Grid);
+export default trackWindowScroll(MobileGrid);
