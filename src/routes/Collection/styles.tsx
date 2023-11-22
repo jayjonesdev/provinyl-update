@@ -9,7 +9,6 @@ import {
 	FormHelperText,
 	Menu,
 	MenuItem,
-	Paper,
 	Table,
 	TableCell,
 	TableHead,
@@ -273,3 +272,49 @@ export const ViewReleaseContainer = styled('div')`
 export const StyledPopoverContent = styled('div')(({ theme }) => ({
 	padding: theme.spacing(),
 }));
+
+export const AddMenuSlotProps = {
+	paper: {
+		elevation: 1,
+		sx: {
+			overflow: 'visible',
+			filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+			mt: 1.5,
+			'& .MuiAvatar-root': {
+				width: 32,
+				height: 32,
+				ml: -0.5,
+				mr: 1,
+			},
+			'&:before': {
+				content: '""',
+				display: 'block',
+				position: 'absolute',
+				bottom: 0,
+				right: 14,
+				width: 10,
+				height: 10,
+				bgcolor: 'background.paper',
+				transform: 'translateY(50%) rotate(45deg)',
+				zIndex: 0,
+			},
+		},
+	},
+};
+
+export const FabContainer = styled('div')`
+	position: fixed;
+	bottom: 0;
+	right: 0;
+	padding: 10px;
+	z-index: 101;
+	width: 100%;
+	display: flex;
+	justify-content: flex-end;
+	background-image: -webkit-linear-gradient(
+		top,
+		rgba(60, 60, 60, 0) 0%,
+		rgba(60, 60, 60, 0.7) 70%,
+		rgba(60, 60, 60, 1) 100%
+	);
+`;

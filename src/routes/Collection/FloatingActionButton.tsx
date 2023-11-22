@@ -1,15 +1,8 @@
-import { PersonAdd, Settings, Logout, Camera } from '@mui/icons-material';
-import {
-	Fab,
-	Menu,
-	MenuItem,
-	Avatar,
-	Divider,
-	ListItemIcon,
-	Typography,
-} from '@mui/material';
+import { Camera, Pin, TextFields } from '@mui/icons-material';
+import { Fab, Menu, MenuItem, ListItemIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
+import { AddMenuSlotProps, FabContainer } from './styles';
 
 export default () => {
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -21,20 +14,7 @@ export default () => {
 		setAnchorEl(null);
 	};
 	return (
-		<div
-			style={{
-				position: 'fixed',
-				bottom: 0,
-				right: 0,
-				padding: 10,
-				zIndex: 101,
-				width: '100%',
-				display: 'flex',
-				justifyContent: 'flex-end',
-				backgroundImage:
-					'-webkit-linear-gradient(top, rgba(60, 60, 60, 0) 0%, rgba(60, 60, 60, 0.7) 70%, rgba(60, 60, 60, 1.0) 100%)',
-			}}
-		>
+		<FabContainer>
 			<Fab
 				color="primary"
 				aria-label="add"
@@ -50,61 +30,33 @@ export default () => {
 			</Fab>
 			<Menu
 				anchorEl={anchorEl}
-				id="account-menu"
+				id="add-menu"
 				open={open}
 				onClose={handleClose}
 				onClick={handleClose}
-				sx={{ mb: 5 }}
-				slotProps={{
-					paper: {
-						elevation: 1,
-						sx: {
-							overflow: 'visible',
-							filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-							mt: 1.5,
-							'& .MuiAvatar-root': {
-								width: 32,
-								height: 32,
-								ml: -0.5,
-								mr: 1,
-							},
-							// '&:before': {
-							// 	content: '""',
-							// 	display: 'block',
-							// 	position: 'absolute',
-							// 	top: 0,
-							// 	right: 14,
-							// 	width: 10,
-							// 	height: 10,
-							// 	bgcolor: 'background.paper',
-							// 	transform: 'translateY(-50%) rotate(45deg)',
-							// 	zIndex: 0,
-							// },
-						},
-					},
-				}}
-				transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-				anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+				transformOrigin={{ horizontal: 'right', vertical: 180 }}
+				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
+				slotProps={AddMenuSlotProps}
 			>
 				<MenuItem onClick={handleClose}>
 					<ListItemIcon>
-						<Camera fontSize="small" />
+						<Camera />
 					</ListItemIcon>
 					Scan Barcode
 				</MenuItem>
 				<MenuItem onClick={handleClose}>
 					<ListItemIcon>
-						<Settings fontSize="small" />
+						<Pin />
 					</ListItemIcon>
-					Settings
+					Add by Catalog #
 				</MenuItem>
 				<MenuItem onClick={handleClose}>
 					<ListItemIcon>
-						<Logout fontSize="small" />
+						<TextFields />
 					</ListItemIcon>
-					Logout
+					Add by Album Title
 				</MenuItem>
 			</Menu>
-		</div>
+		</FabContainer>
 	);
 };

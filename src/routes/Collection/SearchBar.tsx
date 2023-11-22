@@ -12,7 +12,6 @@ import {
 	Button,
 	Switch,
 	Typography,
-	Fab,
 } from '@mui/material';
 import { AppReducerActions, ViewType } from '../../helpers/enum';
 import { ButtonBar } from './styles';
