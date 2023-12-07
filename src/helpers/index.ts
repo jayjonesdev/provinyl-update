@@ -1,4 +1,5 @@
-import { type Release, type TableData } from './types';
+import { SearchType } from './enum';
+import { ReleaseSearchType, type Release, type TableData } from './types';
 
 export const removeDiacritics = (text: string) =>
 	text
@@ -61,3 +62,8 @@ export const binaryInsertion = <T extends { [k: string]: unknown }>(
 ): Array<T> => {
 	return binaryHelper(arr, element, 0, arr.length - 1, iteratee);
 };
+
+export const getSearchTypeKey = (value: SearchType): ReleaseSearchType =>
+	Object.keys(SearchType)[
+		Object.values(SearchType).indexOf(value)
+	] as ReleaseSearchType;

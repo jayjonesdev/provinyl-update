@@ -3,16 +3,30 @@ import { Fab, Menu, MenuItem, ListItemIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
 import { AddMenuSlotProps, FabContainer } from './styles';
+import { useNavigate } from 'react-router-dom';
+import { SearchType } from '../../helpers/enum';
+import { getSearchTypeKey } from '../../helpers';
 
 export default () => {
+	const navigate = useNavigate();
 	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 	const open = Boolean(anchorEl);
+
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
 	};
+
 	const handleClose = () => {
 		setAnchorEl(null);
 	};
+
+	const getEnumKey = (searchType: SearchType) =>
+		Object.keys(SearchType)[Object.values(SearchType).indexOf(searchType)];
+
+	const onClick = (searchType: SearchType) => {
+		navigate(`/collection/search/${getSearchTypeKey(searchType)}`);
+	};
+
 	return (
 		<FabContainer>
 			<Fab
@@ -38,19 +52,19 @@ export default () => {
 				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 				slotProps={AddMenuSlotProps}
 			>
-				<MenuItem onClick={handleClose}>
+				<MenuItem onClick={() => onClick(SearchType.BARCODE)}>
 					<ListItemIcon>
 						<Camera />
 					</ListItemIcon>
 					Scan Barcode
 				</MenuItem>
-				<MenuItem onClick={handleClose}>
+				<MenuItem onClick={() => onClick(SearchType.CATALOG_NUMBER)}>
 					<ListItemIcon>
 						<Pin />
 					</ListItemIcon>
 					Add by Catalog #
 				</MenuItem>
-				<MenuItem onClick={handleClose}>
+				<MenuItem onClick={() => onClick(SearchType.ALBUM_TITLE)}>
 					<ListItemIcon>
 						<TextFields />
 					</ListItemIcon>

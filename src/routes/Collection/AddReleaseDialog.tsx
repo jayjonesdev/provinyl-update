@@ -23,11 +23,7 @@ import { SearchType } from '../../helpers/enum';
 import { searchDatabase } from '../../api';
 import { DatabaseSearchResponse, ReleaseSearchType } from '../../helpers/types';
 import SearchResult from './SearchResult';
-
-const getSearchTypeKey = (value: SearchType): ReleaseSearchType =>
-	Object.keys(SearchType)[
-		Object.values(SearchType).indexOf(value)
-	] as ReleaseSearchType;
+import { getSearchTypeKey } from '../../helpers';
 
 export default ({
 	open,
