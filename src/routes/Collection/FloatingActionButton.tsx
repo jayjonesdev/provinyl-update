@@ -20,9 +20,6 @@ export default () => {
 		setAnchorEl(null);
 	};
 
-	const getEnumKey = (searchType: SearchType) =>
-		Object.keys(SearchType)[Object.values(SearchType).indexOf(searchType)];
-
 	const onClick = (searchType: SearchType) => {
 		navigate(`/collection/search/${getSearchTypeKey(searchType)}`);
 	};
