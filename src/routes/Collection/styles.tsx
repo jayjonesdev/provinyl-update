@@ -314,6 +314,8 @@ export const FabContainer = styled('div')`
 	background-image: -webkit-linear-gradient(
 		top,
 		rgba(60, 60, 60, 0) 0%,
+		rgba(60, 60, 60, 0.3) 25%,
+		rgba(60, 60, 60, 0.5) 50%,
 		rgba(60, 60, 60, 0.7) 70%,
 		rgba(60, 60, 60, 1) 100%
 	);

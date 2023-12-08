@@ -24,12 +24,14 @@ export default ({
 	value,
 	readOnly,
 	style,
+	disabled,
 	onChange,
 	onClear,
 }: {
 	value: string;
 	readOnly: boolean;
 	style?: CSSProperties;
+	disabled?: boolean;
 	onChange: (value: string) => void;
 	onClear: () => void;
 }) => {
@@ -64,6 +66,7 @@ export default ({
 			<div>
 				<ButtonBar>
 					<TextField
+						disabled={disabled}
 						data-testid="collection-search-field"
 						placeholder={isMobile ? 'Search...' : 'Search collection...'}
 						margin="dense"

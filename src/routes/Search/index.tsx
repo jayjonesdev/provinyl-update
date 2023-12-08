@@ -24,8 +24,6 @@ import {
 	SearchType,
 } from '../../helpers/enum';
 import { getSearchTypeKey } from '../../helpers';
-import SearchResult from '../Collection/SearchResult';
-import MobileGrid from '../Collection/MobileGrid';
 import ReleaseGrid from './ReleaseGrid';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 
@@ -142,10 +140,17 @@ export default () => {
 									color="secondary"
 									fullWidth
 									onClick={clear}
+									disabled={isLoading}
 								>
 									Clear
 								</Button>
-								<ReleaseGrid data={releases} add={addRelease} />
+								{!isLoading ? (
+									<ReleaseGrid data={releases} add={addRelease} />
+								) : (
+									<SpinnerContainer>
+										<CircularProgress />
+									</SpinnerContainer>
+								)}
 							</>
 						)}
 						{!isScanBarcode ? (
@@ -163,12 +168,14 @@ export default () => {
 										onChange={(value: string) => setSearchValue(value)}
 										onClear={() => setSearchValue('')}
 										style={{ maxWidth: '90%' }}
+										disabled={isLoading}
 									/>
 									<Button
 										variant="contained"
 										size="large"
 										style={{ height: '50%' }}
 										onClick={search}
+										disabled={isLoading}
 									>
 										Search
 									</Button>
