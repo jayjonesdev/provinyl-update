@@ -85,42 +85,47 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 			numberOfItems = 0,
 			releases = [] as UserCollectionItem[];
 
-		setIsLoading(true);
 		if (!readOnly) {
 			if (username.length === 0) {
 				getUserInfo().then((userInfo) =>
 					dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }),
 				);
 			} else {
+				if (collection.releases.length === 0) {
+					(async () => {
+						setIsLoading(true);
+						await getUserCollection(username).then((collection) => {
+							releases = collection.items;
+							numberOfItems = collection.items.length;
+						});
+						await getUserCollectionValue(username).then(
+							(collectionValue) => (value = collectionValue),
+						);
+						dispatch({
+							type: AppReducerActions.UpdateCollectionInfo,
+							collection: { value, numberOfItems, releases, wantList: [] },
+						});
+						setIsLoading(false);
+					})();
+				}
+			}
+		} else {
+			if (collection.releases.length === 0) {
 				(async () => {
-					await getUserCollection(username).then((collection) => {
-						releases = collection.items;
-						numberOfItems = collection.items.length;
-					});
-					await getUserCollectionValue(username).then(
-						(collectionValue) => (value = collectionValue),
+					setIsLoading(true);
+					await getPublicUserCollection(readOnlyUsername as string).then(
+						(collection) => {
+							releases = collection.items;
+							numberOfItems = collection.items.length;
+						},
 					);
 					dispatch({
 						type: AppReducerActions.UpdateCollectionInfo,
-						collection: { value, numberOfItems, releases, wantList: [] },
+						collection: { value: '', numberOfItems, releases, wantList: [] },
 					});
 					setIsLoading(false);
 				})();
 			}
-		} else {
-			(async () => {
-				await getPublicUserCollection(readOnlyUsername as string).then(
-					(collection) => {
-						releases = collection.items;
-						numberOfItems = collection.items.length;
-					},
-				);
-				dispatch({
-					type: AppReducerActions.UpdateCollectionInfo,
-					collection: { value: '', numberOfItems, releases, wantList: [] },
-				});
-				setIsLoading(false);
-			})();
 		}
 	}, [username, readOnlyUsername, readOnly]);
 
@@ -184,6 +189,7 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 					readOnly={readOnly}
 					onChange={(value) => setSearchValue(value)}
 					onClear={() => setSearchValue('')}
+					style={{ marginTop: isMobile ? 60 : 'inherit' }}
 				/>
 				<StyledDivider />
 				{isLoading ? (

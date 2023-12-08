@@ -11,6 +11,7 @@ import LogoutDialog from './LogoutDialog';
 import { useAppDispatch } from '../../helpers/hooks/useAppState';
 import { AppReducerActions } from '../../helpers/enum';
 import ShareableLinkPopover from './ShareableLinkPopover';
+import { isMobile } from 'react-device-detect';
 
 export default ({
 	value,
@@ -80,7 +81,7 @@ export default ({
 
 	return (
 		<>
-			<AppBar position="static">
+			<AppBar position={isMobile ? 'fixed' : 'static'}>
 				<Toolbar>
 					<StyledProvinylLogo
 						src={ProvinylLogo}

@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { AppReducerActions, ViewType } from '../../helpers/enum';
 import { ButtonBar } from './styles';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 import AddReleaseDialog from './AddReleaseDialog';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import { isMobile } from 'react-device-detect';
@@ -23,11 +23,13 @@ import { isMobile } from 'react-device-detect';
 export default ({
 	value,
 	readOnly,
+	style,
 	onChange,
 	onClear,
 }: {
 	value: string;
 	readOnly: boolean;
+	style?: CSSProperties;
 	onChange: (value: string) => void;
 	onClear: () => void;
 }) => {
@@ -67,6 +69,7 @@ export default ({
 						margin="dense"
 						onChange={(e) => onChange(e.target.value)}
 						sx={{ width: isMobile ? '100%' : '45%' }}
+						style={style}
 						InputProps={{
 							startAdornment: (
 								<InputAdornment position="start">

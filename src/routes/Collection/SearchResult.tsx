@@ -69,9 +69,20 @@ export default ({ release }: { release: DatabaseSearchResponse }) => {
 	};
 	const addRelease = async () => {
 		setIsLoading(true);
-		await addReleaseToCollection(username, releaseId).then((instanceId) => {
-			addCleanUp(false, instanceId);
-		});
+		await addReleaseToCollection(username, releaseId)
+			.then((instanceId) => {
+				addCleanUp(false, instanceId);
+			})
+			.catch(() => {
+				dispatch({
+					type: AppReducerActions.SetSnackbar,
+					snackbar: {
+						open: true,
+						message: `Unable to add this release to your collection, please try again.`,
+						severity: 'error',
+					},
+				});
+			});
 	};
 	const toggleWantList = async () => {
 		setIsLoading(true);
