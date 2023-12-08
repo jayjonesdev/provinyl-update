@@ -44,7 +44,6 @@ export default () => {
 				id="add-menu"
 				open={open}
 				onClose={handleClose}
-				onClick={handleClose}
 				transformOrigin={{ horizontal: 'right', vertical: 180 }}
 				anchorOrigin={{ horizontal: 'right', vertical: 'top' }}
 				slotProps={AddMenuSlotProps}
