@@ -157,7 +157,7 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 				return (
 					<>
 						<MobileGrid data={filteredData} />
-						<Fab />
+						{!showWantList && <Fab />}
 					</>
 				);
 			}

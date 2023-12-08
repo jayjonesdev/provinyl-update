@@ -8,8 +8,12 @@ import { type MenuOptions } from '../../helpers/types';
 import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
 import InformationDialog from './InformationDialog';
 import LogoutDialog from './LogoutDialog';
-import { useAppDispatch } from '../../helpers/hooks/useAppState';
-import { AppReducerActions } from '../../helpers/enum';
+import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
+import {
+	AppReducerActions,
+	ReleaseListType,
+	ViewType,
+} from '../../helpers/enum';
 import ShareableLinkPopover from './ShareableLinkPopover';
 import { isMobile } from 'react-device-detect';
 
@@ -29,6 +33,9 @@ export default ({
 	const [logoutOpen, setLogoutOpen] = useState<boolean>(false);
 	const [popoverAnchor, setPopoverAnchor] = useState<null | HTMLElement>(null);
 	const dispatch = useAppDispatch();
+	const {
+		ui: { wantList },
+	} = useAppState();
 
 	const handleDialogClose = () => setInformationOpen(false);
 	const handleLogoutClose = () => setLogoutOpen(false);
@@ -93,7 +100,8 @@ export default ({
 						component="div"
 						sx={{ marginLeft: theme.spacing(2), flexGrow: 1 }}
 					>
-						{username ? `${username}'s` : 'Your'} Collection
+						{username ? `${username}'s` : 'Your'}{' '}
+						{!wantList ? 'Collection' : 'Want List'}
 					</Typography>
 					{!readOnly && (
 						<>
