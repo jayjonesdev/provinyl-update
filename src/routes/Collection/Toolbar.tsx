@@ -88,7 +88,7 @@ export default ({
 
 	return (
 		<>
-			<AppBar position={isMobile ? 'fixed' : 'static'}>
+			<AppBar position="fixed">
 				<Toolbar>
 					<StyledProvinylLogo
 						src={ProvinylLogo}

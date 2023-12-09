@@ -188,6 +188,8 @@ export const GridContainer = styled('div')`
 	margin-top: 10px;
 	margin: 0;
 	padding: 0;
+	position: relative;
+	top: 150px;
 `;
 
 export const GridTile = styled('div')`

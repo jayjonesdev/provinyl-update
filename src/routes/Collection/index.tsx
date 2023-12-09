@@ -21,6 +21,7 @@ import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import MobileGrid from './MobileGrid';
 import Fab from './FloatingActionButton';
+import theme from '../../theme';
 
 export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -184,14 +185,25 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 				username={readOnlyUsername}
 			/>
 			<Container>
-				<SearchBar
-					value={searchValue}
-					readOnly={readOnly}
-					onChange={(value) => setSearchValue(value)}
-					onClear={() => setSearchValue('')}
-					style={{ marginTop: isMobile ? 60 : 'inherit' }}
-				/>
-				<StyledDivider />
+				<div
+					style={{
+						position: 'fixed',
+						width: '100%',
+						zIndex: 1,
+						left: 0,
+						padding: '0 20px',
+						backgroundColor: theme.palette.background.default,
+					}}
+				>
+					<SearchBar
+						value={searchValue}
+						readOnly={readOnly}
+						onChange={(value) => setSearchValue(value)}
+						onClear={() => setSearchValue('')}
+						style={{ marginTop: isMobile ? 60 : 'inherit' }}
+					/>
+					<StyledDivider />
+				</div>
 				{isLoading ? (
 					<SpinnerContainer>
 						<CircularProgress />
