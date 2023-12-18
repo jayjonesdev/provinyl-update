@@ -9,13 +9,8 @@ import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
 import InformationDialog from './InformationDialog';
 import LogoutDialog from './LogoutDialog';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
-import {
-	AppReducerActions,
-	ReleaseListType,
-	ViewType,
-} from '../../helpers/enum';
+import { AppReducerActions } from '../../helpers/enum';
 import ShareableLinkPopover from './ShareableLinkPopover';
-import { isMobile } from 'react-device-detect';
 
 export default ({
 	value,

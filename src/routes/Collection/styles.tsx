@@ -151,7 +151,7 @@ line-height: 1.25;
 export const SpinnerContainer = styled(Box)`
 	display: flex;
 	width: 100%;
-	margin-top: 64px;
+	margin-top: 200px;
 	justify-content: center;
 	align-items: center;
 `;

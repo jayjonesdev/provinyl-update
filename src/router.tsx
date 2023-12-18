@@ -5,6 +5,7 @@ import Collection from './routes/Collection';
 import Search from './routes/Search';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { isMobile } from 'react-device-detect';
+import Redirect from './Redirect';
 
 export default createBrowserRouter([
 	{
@@ -25,6 +26,6 @@ export default createBrowserRouter([
 	},
 	{
 		path: '/collection/search/:searchType',
-		element: isMobile ? <Search /> : <Collection />,
+		element: isMobile ? <Search /> : <Redirect to="/collection" />,
 	},
 ]);
