@@ -109,16 +109,16 @@ export default ({
 								<Typography>View Want List</Typography>
 							</div>
 						)}
-						{/* {!readOnly && isMobile && (
+						{!readOnly && isMobile && (
 							<Button
 								variant="contained"
-								style={{ marginLeft: 5, marginTop: 55 }}
+								style={{ marginLeft: 5, marginTop: 65 }}
 								size="small"
 								onClick={toggleWantList}
 							>
 								View {wantList ? 'Collection' : 'Want List'}
 							</Button>
-						)} */}
+						)}
 						{!isMobile && (
 							<Button
 								data-testid="toggle-view-type-btn"

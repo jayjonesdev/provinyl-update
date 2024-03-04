@@ -26,6 +26,7 @@ import {
 import { getSearchTypeKey } from '../../helpers';
 import ReleaseGrid from './ReleaseGrid';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
+import { isMobile } from 'react-device-detect';
 
 export default () => {
 	const navigate = useNavigate();
@@ -130,7 +131,7 @@ export default () => {
 						<Close onClick={close} />
 					</Toolbar>
 				</AppBar>
-				<Container>
+				<Container isMobile={isMobile}>
 					<div style={{ marginTop: 50 }}>
 						{releases.length > 0 && (
 							<>

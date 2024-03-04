@@ -163,14 +163,14 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 				);
 			}
 			return (
-				<>
+				<div style={{ flexGrow: 1 }}>
 					{viewType === ViewType.TABLE && (
 						<Table data={filteredData} onItemClick={showInformation} />
 					)}
 					{viewType === ViewType.GRID && (
 						<Grid data={filteredData} onItemClick={showInformation} />
 					)}
-				</>
+				</div>
 			);
 		}
 		return <Typography variant="h6">There are no releases.</Typography>;
@@ -184,15 +184,15 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 				readOnly={readOnly}
 				username={readOnlyUsername}
 			/>
-			<Container>
+			<Container isMobile={isMobile}>
 				<div
 					style={{
-						position: 'fixed',
 						width: '100%',
 						zIndex: 1,
-						left: 0,
-						padding: '0 20px',
+						// left: 0,
 						backgroundColor: theme.palette.background.default,
+						position: 'sticky',
+						top: !isMobile ? 60 : 0,
 					}}
 				>
 					<SearchBar
@@ -200,7 +200,7 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 						readOnly={readOnly}
 						onChange={(value) => setSearchValue(value)}
 						onClear={() => setSearchValue('')}
-						style={{ marginTop: isMobile ? 60 : 'inherit' }}
+						style={{ marginTop: isMobile ? 70 : 'inherit' }}
 					/>
 					<StyledDivider />
 				</div>

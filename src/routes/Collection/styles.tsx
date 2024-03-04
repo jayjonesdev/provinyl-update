@@ -93,8 +93,8 @@ export const InstagramLink = styled('div')`
 	align-items: center;
 `;
 
-export const Container = styled('div')`
-	padding: 20px 35px;
+export const Container = styled('div')<{ isMobile: boolean }>`
+	padding: ${({ isMobile }) => (!isMobile ? '20px 35px' : '0 10px')};
 `;
 
 export const ButtonBar = styled('div')`
@@ -167,7 +167,11 @@ export const AlbumArtworkSpinnerContainer = styled(Box)`
 export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 	<Card
 		elevation={3}
-		sx={{ width: props.width ?? 300, height: props.height ?? 300 }}
+		sx={{
+			aspectRatio: '1/1',
+			width: props.width ?? 300,
+			height: props.height ?? 300,
+		}}
 	>
 		<LazyLoadImage
 			effect="blur"
@@ -184,12 +188,8 @@ export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 // 300px is the width of the album artwork
 export const GridContainer = styled('div')`
 	display: grid;
-	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-	margin-top: 10px;
-	margin: 0;
-	padding: 0;
-	position: relative;
-	top: 150px;
+	place-items: center;
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 `;
 
 export const GridTile = styled('div')`
