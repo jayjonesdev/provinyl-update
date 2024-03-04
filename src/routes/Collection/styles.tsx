@@ -263,6 +263,7 @@ export const ReleaseDetailsContainer = styled('div')`
 	flex-direction: column;
 	align-items: stretch;
 	margin-left: 10px;
+	flex: 1;
 `;
 
 export const ViewReleaseContainer = styled('div')`
