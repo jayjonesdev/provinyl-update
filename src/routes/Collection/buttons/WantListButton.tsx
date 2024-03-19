@@ -1,4 +1,4 @@
-import { Switch, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import { AppReducerActions } from '../../../helpers/enum';
 import {
 	useAppState,
@@ -15,21 +15,14 @@ export default () => {
 			type: AppReducerActions.ToggleWantList,
 			wantList: !wantList,
 		});
-
 	return (
-		<div
-			style={{
-				display: 'flex',
-				alignItems: 'center',
-				marginRight: 25,
-			}}
+		<Button
+			variant="contained"
+			style={{ marginLeft: 5, marginTop: 65 }}
+			size="small"
+			onClick={toggleWantList}
 		>
-			<Switch
-				checked={wantList}
-				onChange={toggleWantList}
-				inputProps={{ 'aria-label': 'controlled' }}
-			/>
-			<Typography>View Want List</Typography>
-		</div>
+			View {wantList ? 'Collection' : 'Want List'}
+		</Button>
 	);
 };

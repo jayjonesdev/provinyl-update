@@ -16,24 +16,16 @@ import {
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
 import ViewReleaseDialog from './ViewReleaseDialog';
-import {
-	Alert,
-	Button,
-	CircularProgress,
-	Snackbar,
-	Switch,
-	Typography,
-} from '@mui/material';
+import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import MobileGrid from './MobileGrid';
 import Fab from './FloatingActionButton';
 import theme from '../../theme';
-import { Add, ViewDay, ViewList } from '@mui/icons-material';
 import AddRecordButton from './buttons/AddRecordButton';
-import AddReleaseDialog from './AddReleaseDialog';
 import WantListSwitch from './buttons/WantListSwitch';
 import ChangeViewTypeButton from './buttons/ChangeViewTypeButton';
+import WantListButton from './buttons/WantListButton';
 
 export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -217,6 +209,7 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 							{!readOnly && !isMobile && <WantListSwitch />}
 							{!isMobile && <ChangeViewTypeButton />}
 							{!readOnly && !isMobile && <AddRecordButton />}
+							{!readOnly && isMobile && <WantListButton />}
 						</div>
 					</SearchBar>
 					<StyledDivider />

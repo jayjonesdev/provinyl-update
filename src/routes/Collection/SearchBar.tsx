@@ -90,19 +90,7 @@ export default ({
 						variant="outlined"
 						value={value}
 					/>
-					<div style={{ display: 'flex' }}>
-						{children}
-						{/* {!readOnly && isMobile && (
-							<Button
-								variant="contained"
-								style={{ marginLeft: 5, marginTop: 65 }}
-								size="small"
-								onClick={toggleWantList}
-							>
-								View {wantList ? 'Collection' : 'Want List'}
-							</Button>
-						)} */}
-					</div>
+					<div style={{ display: 'flex' }}>{children}</div>
 				</ButtonBar>
 			</div>
 		</>

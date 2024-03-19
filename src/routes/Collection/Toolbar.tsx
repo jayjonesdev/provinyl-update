@@ -1,4 +1,4 @@
-import { AccountCircle, Link } from '@mui/icons-material';
+import { AccountCircle } from '@mui/icons-material';
 import { AppBar, Toolbar, Typography, IconButton } from '@mui/material';
 import theme from '../../theme';
 import { StyledMenuItem, StyledProvinylLogo, StyledMenu } from './styles';
@@ -8,9 +8,8 @@ import { type MenuOptions } from '../../helpers/types';
 import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
 import InformationDialog from './InformationDialog';
 import LogoutDialog from './LogoutDialog';
-import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
-import { AppReducerActions } from '../../helpers/enum';
-import ShareableLinkPopover from './ShareableLinkPopover';
+import { useAppState } from '../../helpers/hooks/useAppState';
+import ShareableLinkButton from './buttons/ShareableLinkButton';
 
 export default ({
 	value,
@@ -26,8 +25,6 @@ export default ({
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 	const [informationOpen, setInformationOpen] = useState<boolean>(false);
 	const [logoutOpen, setLogoutOpen] = useState<boolean>(false);
-	const [popoverAnchor, setPopoverAnchor] = useState<null | HTMLElement>(null);
-	const dispatch = useAppDispatch();
 	const {
 		ui: { wantList },
 	} = useAppState();
@@ -37,13 +34,6 @@ export default ({
 	const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) =>
 		setAnchorElUser(event.currentTarget);
 	const handleCloseUserMenu = () => setAnchorElUser(null);
-	const showShareableLinkPopover = (event: React.MouseEvent<HTMLElement>) => {
-		setPopoverAnchor(event.currentTarget);
-		dispatch({
-			type: AppReducerActions.ToggleShareableLinkPopover,
-			shareableLinkPopover: true,
-		});
-	};
 
 	const logout = () => {
 		setLogoutOpen(false);
@@ -100,16 +90,7 @@ export default ({
 					</Typography>
 					{!readOnly && (
 						<>
-							<IconButton
-								size="large"
-								edge="start"
-								color="inherit"
-								aria-label="link"
-								sx={{ mr: 2 }}
-								onClick={showShareableLinkPopover}
-							>
-								<Link fontSize="large" />
-							</IconButton>
+							<ShareableLinkButton />
 							<IconButton
 								data-testid="menu-button"
 								size="large"
@@ -173,7 +154,6 @@ export default ({
 				handleClose={handleLogoutClose}
 				handleAction={logout}
 			/>
-			<ShareableLinkPopover anchor={popoverAnchor} />
 		</>
 	);
 };

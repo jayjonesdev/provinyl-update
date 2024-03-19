@@ -5,20 +5,21 @@ import { AppReducerActions } from '../../helpers/enum';
 import { DISCOGS_PRIVACY_POLICY } from '../../helpers/constants';
 import { StyledPopoverContent } from './styles';
 
-export default ({ anchor }: { anchor: HTMLElement | null }) => {
+export default ({
+	anchor,
+	open,
+	onClose,
+}: {
+	anchor: HTMLElement | null;
+	open: boolean;
+	onClose: () => void;
+}) => {
 	const {
-		ui: { shareableLinkPopover },
 		user: { username },
 	} = useAppState();
 	const dispatch = useAppDispatch();
 	const USER_COLLECTION_LINK = `${process.env.REACT_APP_CLIENT_URL}/user/collection/${username}`;
 
-	const hideShareableLinkPopover = () => {
-		dispatch({
-			type: AppReducerActions.ToggleShareableLinkPopover,
-			shareableLinkPopover: false,
-		});
-	};
 	const copyShareableLink = () => {
 		navigator.clipboard.writeText(USER_COLLECTION_LINK);
 		dispatch({
@@ -29,14 +30,14 @@ export default ({ anchor }: { anchor: HTMLElement | null }) => {
 				open: true,
 			},
 		});
-		hideShareableLinkPopover();
+		onClose();
 	};
 
 	return (
 		<Popover
 			anchorEl={anchor}
-			open={shareableLinkPopover}
-			onClose={hideShareableLinkPopover}
+			open={open}
+			onClose={onClose}
 			anchorOrigin={{
 				vertical: 'bottom',
 				horizontal: 'center',
