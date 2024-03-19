@@ -192,12 +192,12 @@ export interface UpdateViewActionType {
 }
 
 export interface ShowWantListActionType {
-	type: AppReducerActions.ShowWantList;
+	type: AppReducerActions.ToggleWantList;
 	wantList: boolean;
 }
 
 export interface ShowShareableLinkPopoverActionType {
-	type: AppReducerActions.ShowShareableLinkPopover;
+	type: AppReducerActions.ToggleShareableLinkPopover;
 	shareableLinkPopover: boolean;
 }
 

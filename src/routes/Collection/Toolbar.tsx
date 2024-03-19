@@ -40,7 +40,7 @@ export default ({
 	const showShareableLinkPopover = (event: React.MouseEvent<HTMLElement>) => {
 		setPopoverAnchor(event.currentTarget);
 		dispatch({
-			type: AppReducerActions.ShowShareableLinkPopover,
+			type: AppReducerActions.ToggleShareableLinkPopover,
 			shareableLinkPopover: true,
 		});
 	};

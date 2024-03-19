@@ -154,7 +154,7 @@ export const AppReducer = (
 				},
 			};
 
-		case AppReducerActions.ShowShareableLinkPopover:
+		case AppReducerActions.ToggleShareableLinkPopover:
 			const { shareableLinkPopover } = action;
 
 			return {
@@ -165,7 +165,7 @@ export const AppReducer = (
 				},
 			};
 
-		case AppReducerActions.ShowWantList:
+		case AppReducerActions.ToggleWantList:
 			const { wantList } = action;
 
 			return {

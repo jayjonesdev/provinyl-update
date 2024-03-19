@@ -27,6 +27,7 @@ import { getSearchTypeKey } from '../../helpers';
 import ReleaseGrid from './ReleaseGrid';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import { isMobile } from 'react-device-detect';
+import BarcodeScanner from '../Collection/BarcodeScanner';
 
 export default () => {
 	const navigate = useNavigate();
@@ -184,7 +185,7 @@ export default () => {
 								<StyledDivider />
 							</>
 						) : (
-							<>BARCODE</>
+							<BarcodeScanner />
 						)}
 					</div>
 				</Container>

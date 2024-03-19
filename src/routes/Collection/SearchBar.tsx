@@ -25,6 +25,7 @@ export default ({
 	readOnly,
 	style,
 	disabled,
+	children,
 	onChange,
 	onClear,
 }: {
@@ -32,16 +33,13 @@ export default ({
 	readOnly: boolean;
 	style?: CSSProperties;
 	disabled?: boolean;
+	children?: React.ReactNode;
 	onChange: (value: string) => void;
 	onClear: () => void;
 }) => {
 	const {
 		ui: { viewType, wantList },
 	} = useAppState();
-	const [addReleaseDialogOpen, setAddReleaseDialogOpen] =
-		useState<boolean>(false);
-	const toggleAddReleaseDialog = () =>
-		setAddReleaseDialogOpen(!addReleaseDialogOpen);
 	const dispatch = useAppDispatch();
 
 	const changeView = (viewType: ViewType) =>
@@ -59,7 +57,7 @@ export default ({
 		viewType === ViewType.GRID ? <ViewList /> : <ViewDay />;
 
 	const toggleWantList = () =>
-		dispatch({ type: AppReducerActions.ShowWantList, wantList: !wantList });
+		dispatch({ type: AppReducerActions.ToggleWantList, wantList: !wantList });
 
 	return (
 		<>
@@ -93,23 +91,8 @@ export default ({
 						value={value}
 					/>
 					<div style={{ display: 'flex' }}>
-						{!readOnly && !isMobile && (
-							<div
-								style={{
-									display: 'flex',
-									alignItems: 'center',
-									marginRight: 25,
-								}}
-							>
-								<Switch
-									checked={wantList}
-									onChange={toggleWantList}
-									inputProps={{ 'aria-label': 'controlled' }}
-								/>
-								<Typography>View Want List</Typography>
-							</div>
-						)}
-						{!readOnly && isMobile && (
+						{children}
+						{/* {!readOnly && isMobile && (
 							<Button
 								variant="contained"
 								style={{ marginLeft: 5, marginTop: 65 }}
@@ -118,36 +101,10 @@ export default ({
 							>
 								View {wantList ? 'Collection' : 'Want List'}
 							</Button>
-						)}
-						{!isMobile && (
-							<Button
-								data-testid="toggle-view-type-btn"
-								variant="contained"
-								size="large"
-								sx={{ mr: 2 }}
-								onClick={toggleView}
-								startIcon={<ViewTypeIcon />}
-							>
-								View {viewType === ViewType.GRID ? 'Table' : 'Grid'}
-							</Button>
-						)}
-						{!readOnly && !isMobile && (
-							<Button
-								variant="contained"
-								size="large"
-								onClick={toggleAddReleaseDialog}
-								startIcon={<Add />}
-							>
-								Add {!isMobile && 'Record'}
-							</Button>
-						)}
+						)} */}
 					</div>
 				</ButtonBar>
 			</div>
-			<AddReleaseDialog
-				open={addReleaseDialogOpen}
-				handleClose={toggleAddReleaseDialog}
-			/>
 		</>
 	);
 };

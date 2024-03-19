@@ -15,7 +15,7 @@ export default ({ anchor }: { anchor: HTMLElement | null }) => {
 
 	const hideShareableLinkPopover = () => {
 		dispatch({
-			type: AppReducerActions.ShowShareableLinkPopover,
+			type: AppReducerActions.ToggleShareableLinkPopover,
 			shareableLinkPopover: false,
 		});
 	};

@@ -16,12 +16,24 @@ import {
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
 import ViewReleaseDialog from './ViewReleaseDialog';
-import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
+import {
+	Alert,
+	Button,
+	CircularProgress,
+	Snackbar,
+	Switch,
+	Typography,
+} from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import MobileGrid from './MobileGrid';
 import Fab from './FloatingActionButton';
 import theme from '../../theme';
+import { Add, ViewDay, ViewList } from '@mui/icons-material';
+import AddRecordButton from './buttons/AddRecordButton';
+import AddReleaseDialog from './AddReleaseDialog';
+import WantListSwitch from './buttons/WantListSwitch';
+import ChangeViewTypeButton from './buttons/ChangeViewTypeButton';
 
 export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -189,7 +201,6 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 					style={{
 						width: '100%',
 						zIndex: 1,
-						// left: 0,
 						backgroundColor: theme.palette.background.default,
 						position: 'sticky',
 						top: !isMobile ? 60 : 0,
@@ -201,7 +212,13 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 						onChange={(value) => setSearchValue(value)}
 						onClear={() => setSearchValue('')}
 						style={{ marginTop: isMobile ? 70 : 'inherit' }}
-					/>
+					>
+						<div style={{ display: 'flex' }}>
+							{!readOnly && !isMobile && <WantListSwitch />}
+							{!isMobile && <ChangeViewTypeButton />}
+							{!readOnly && !isMobile && <AddRecordButton />}
+						</div>
+					</SearchBar>
 					<StyledDivider />
 				</div>
 				{isLoading ? (
