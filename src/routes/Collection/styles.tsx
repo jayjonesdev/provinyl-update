@@ -190,6 +190,7 @@ export const GridContainer = styled('div')`
 	display: grid;
 	place-items: center;
 	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	grid-auto-rows: auto;
 `;
 
 export const GridTile = styled('div')`
