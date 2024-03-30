@@ -31,6 +31,7 @@ const MobileGrid = ({
 						'_blank',
 					)
 				}
+				style={{ marginBottom: '15px' }}
 			>
 				<Suspense fallback={<img src={PLACEHOLDER_IMG_SRC} />}>
 					<LazyAlbumArtwork
