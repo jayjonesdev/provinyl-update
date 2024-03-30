@@ -2,7 +2,7 @@ import Toolbar from './Toolbar';
 import { useEffect, useState } from 'react';
 import { AppReducerActions, ViewType } from '../../helpers/enum';
 import SearchBar from './SearchBar';
-import { Container, SpinnerContainer, StyledDivider } from './styles';
+import { Container } from './styles';
 import Table from './Table';
 import { UserCollectionItem } from '../../helpers/types';
 import { removeDiacritics } from '../../helpers';
@@ -16,7 +16,7 @@ import {
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
 import ViewReleaseDialog from './ViewReleaseDialog';
-import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import MobileGrid from './MobileGrid';
@@ -26,6 +26,8 @@ import AddRecordButton from '../shared/AddRecordButton';
 import WantListSwitch from '../shared/WantListSwitch';
 import ChangeViewTypeButton from '../shared/ChangeViewTypeButton';
 import WantListButton from '../shared/WantListButton';
+import LoadingIndicator from '../shared/LoadingIndicator';
+import { StyledDivider } from '../shared/styles';
 
 export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -188,7 +190,6 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 				>
 					<SearchBar
 						value={searchValue}
-						readOnly={readOnly}
 						onChange={(value) => setSearchValue(value)}
 						onClear={() => setSearchValue('')}
 						style={{ marginTop: isMobile ? 70 : 'inherit' }}
@@ -202,13 +203,7 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 					</SearchBar>
 					<StyledDivider />
 				</div>
-				{isLoading ? (
-					<SpinnerContainer>
-						<CircularProgress />
-					</SpinnerContainer>
-				) : (
-					<DataViewer />
-				)}
+				{isLoading ? <LoadingIndicator /> : <DataViewer />}
 				<ViewReleaseDialog
 					open={informationDialog}
 					onClose={toggleInformationDialog}

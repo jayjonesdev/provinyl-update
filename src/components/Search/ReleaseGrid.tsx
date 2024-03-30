@@ -1,14 +1,14 @@
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 import { DatabaseSearchResponse } from '../../helpers/types';
 import {
 	ScrollPosition,
 	trackWindowScroll,
 } from 'react-lazy-load-image-component';
 import { PLACEHOLDER_IMG_SRC } from '../../helpers/constants';
-import { GridTile } from '../Collection/styles';
 import { Button, Card } from '@mui/material';
 import { Info } from '@mui/icons-material';
 import LazyAlbumArtwork from '../shared/LazyAlbumArtwork';
+import { GridTile } from '../shared/styles';
 
 const ReleaseGrid = ({
 	data,

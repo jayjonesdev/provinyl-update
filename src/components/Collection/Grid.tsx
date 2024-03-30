@@ -1,12 +1,13 @@
 import { Suspense } from 'react';
 import { UserCollectionItem } from '../../helpers/types';
-import { GridContainer, GridTile } from './styles';
+import { GridContainer } from './styles';
 import {
 	ScrollPosition,
 	trackWindowScroll,
 } from 'react-lazy-load-image-component';
 import { PLACEHOLDER_IMG_SRC } from '../../helpers/constants';
 import LazyAlbumArtwork from '../shared/LazyAlbumArtwork';
+import { GridTile } from '../shared/styles';
 
 const Grid = ({
 	data,

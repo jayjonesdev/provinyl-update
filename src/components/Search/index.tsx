@@ -1,18 +1,8 @@
 import { Close } from '@mui/icons-material';
-import {
-	AppBar,
-	Button,
-	CircularProgress,
-	Toolbar,
-	Typography,
-} from '@mui/material';
+import { AppBar, Button, Toolbar, Typography } from '@mui/material';
 import SearchBar from '../Collection/SearchBar';
 import { useEffect, useState } from 'react';
-import {
-	Container,
-	SpinnerContainer,
-	StyledDivider,
-} from '../Collection/styles';
+import { Container } from '../Collection/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addReleaseToCollection, searchDatabase } from '../../api';
 import {
@@ -31,6 +21,8 @@ import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import { isMobile } from 'react-device-detect';
 import BarcodeScanner from '../Collection/BarcodeScanner';
 import SnackbarContainer from '../shared/SnackbarContainer';
+import LoadingIndicator from '../shared/LoadingIndicator';
+import { StyledDivider } from '../shared/styles';
 
 export default () => {
 	const navigate = useNavigate();
@@ -139,9 +131,7 @@ export default () => {
 								{!isLoading ? (
 									<ReleaseGrid data={releases} add={addRelease} />
 								) : (
-									<SpinnerContainer>
-										<CircularProgress />
-									</SpinnerContainer>
+									<LoadingIndicator />
 								)}
 							</>
 						)}
@@ -156,7 +146,6 @@ export default () => {
 								>
 									<SearchBar
 										value={searchValue}
-										readOnly={false}
 										onChange={(value: string) => setSearchValue(value)}
 										onClear={() => setSearchValue('')}
 										style={{ maxWidth: '90%' }}

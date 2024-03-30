@@ -6,10 +6,10 @@ import {
 	StyledDialogContent,
 	StyledDialogContentText,
 	StyledDialogTitle,
-	StyledDivider,
 } from './styles';
 import { Instagram } from '@mui/icons-material';
 import { INSTAGRAM_LINK } from '../../helpers/constants';
+import { StyledDivider } from '../shared/styles';
 
 export default ({
 	open,

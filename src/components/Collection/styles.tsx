@@ -4,7 +4,6 @@ import {
 	DialogActions,
 	DialogContent,
 	DialogTitle,
-	Divider,
 	FormHelperText,
 	Menu,
 	MenuItem,
@@ -74,15 +73,6 @@ flex-direction: column;
 `,
 );
 
-export const StyledDivider = styled(Divider)(
-	({ theme, orientation = 'horizontal' }) => `
-background-color: ${theme.palette.primary.main};
-height: ${orientation === 'horizontal' ? '2px' : 'auto'};
-margin: ${orientation === 'horizontal' ? '.5em 0px .5em 0' : '20px 10px'};
-width: ${orientation === 'horizontal' ? 'auto' : '2px'};
-`,
-);
-
 export const InstagramLink = styled('div')`
 	display: flex;
 	align-items: center;
@@ -143,14 +133,6 @@ line-height: 1.25;
 `,
 );
 
-export const SpinnerContainer = styled(Box)`
-	display: flex;
-	width: 100%;
-	margin-top: 200px;
-	justify-content: center;
-	align-items: center;
-`;
-
 export const AlbumArtworkSpinnerContainer = styled(Box)`
 	display: flex;
 	width: 300px;
@@ -165,13 +147,6 @@ export const GridContainer = styled('div')`
 	place-items: center;
 	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 	grid-auto-rows: auto;
-`;
-
-export const GridTile = styled('div')`
-	margin-bottom: 15px;
-	&:hover {
-		cursor: pointer;
-	}
 `;
 
 export const Accordion = styled((props: AccordionProps) => (

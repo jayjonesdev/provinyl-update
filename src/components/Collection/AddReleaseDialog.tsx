@@ -1,6 +1,5 @@
 import {
 	Button,
-	CircularProgress,
 	FormControl,
 	IconButton,
 	InputAdornment,
@@ -10,7 +9,6 @@ import {
 } from '@mui/material';
 import {
 	SearchContainer,
-	SpinnerContainer,
 	StyledDialog,
 	StyledDialogActions,
 	StyledDialogContent,
@@ -24,6 +22,7 @@ import { searchDatabase } from '../../api';
 import { DatabaseSearchResponse, ReleaseSearchType } from '../../helpers/types';
 import SearchResult from './SearchResult';
 import { getSearchTypeKey } from '../../helpers';
+import LoadingIndicator from '../shared/LoadingIndicator';
 
 export default ({
 	open,
@@ -118,9 +117,7 @@ export default ({
 							))}
 					</div>
 				) : (
-					<SpinnerContainer>
-						<CircularProgress />
-					</SpinnerContainer>
+					<LoadingIndicator />
 				)}
 			</StyledDialogContent>
 			<StyledDialogActions>

@@ -1,4 +1,4 @@
-import { Card, styled } from '@mui/material';
+import { Box, Card, Divider, styled } from '@mui/material';
 import {
 	LazyLoadImageProps,
 	LazyLoadImage,
@@ -24,3 +24,27 @@ export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
 ))`
 	border-radius: 5px;
 `;
+
+export const SpinnerContainer = styled(Box)`
+	display: flex;
+	width: 100%;
+	margin-top: 200px;
+	justify-content: center;
+	align-items: center;
+`;
+
+export const GridTile = styled('div')`
+	margin-bottom: 15px;
+	&:hover {
+		cursor: pointer;
+	}
+`;
+
+export const StyledDivider = styled(Divider)(
+	({ theme, orientation = 'horizontal' }) => `
+background-color: ${theme.palette.primary.main};
+height: ${orientation === 'horizontal' ? '2px' : 'auto'};
+margin: ${orientation === 'horizontal' ? '.5em 0px .5em 0' : '20px 10px'};
+width: ${orientation === 'horizontal' ? 'auto' : '2px'};
+`,
+);

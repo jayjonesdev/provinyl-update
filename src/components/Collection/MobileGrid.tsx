@@ -1,12 +1,12 @@
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 import { UserCollectionItem } from '../../helpers/types';
-import { GridTile } from './styles';
 import {
 	ScrollPosition,
 	trackWindowScroll,
 } from 'react-lazy-load-image-component';
 import { PLACEHOLDER_IMG_SRC } from '../../helpers/constants';
 import LazyAlbumArtwork from '../shared/LazyAlbumArtwork';
+import { GridTile } from '../shared/styles';
 
 const MobileGrid = ({
 	data,
