@@ -1,10 +1,8 @@
 import { Close } from '@mui/icons-material';
 import {
-	Alert,
 	AppBar,
 	Button,
 	CircularProgress,
-	Snackbar,
 	Toolbar,
 	Typography,
 } from '@mui/material';
@@ -17,7 +15,11 @@ import {
 } from '../Collection/styles';
 import { useNavigate, useParams } from 'react-router-dom';
 import { addReleaseToCollection, searchDatabase } from '../../api';
-import { DatabaseSearchResponse, ReleaseSearchType } from '../../helpers/types';
+import {
+	DatabaseSearchResponse,
+	ReleaseSearchType,
+	SnackbarType,
+} from '../../helpers/types';
 import {
 	AppReducerActions,
 	ReleaseListType,
@@ -28,6 +30,7 @@ import ReleaseGrid from './ReleaseGrid';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import { isMobile } from 'react-device-detect';
 import BarcodeScanner from '../Collection/BarcodeScanner';
+import SnackbarContainer from '../shared/SnackbarContainer';
 
 export default () => {
 	const navigate = useNavigate();
@@ -39,23 +42,16 @@ export default () => {
 	const dispatch = useAppDispatch();
 	const {
 		user: { username },
-		snackbar,
 	} = useAppState();
-	const {
-		open: showSnackbar,
-		message: snackbarMessage,
-		severity: snackbarSeverity,
-	} = snackbar;
+	const [snackbar, setSnackbar] = useState<SnackbarType>({
+		message: '',
+		open: false,
+		severity: 'success',
+	});
 
 	useEffect(() => {
 		setIsScanBarcode(searchType === getSearchTypeKey(SearchType.BARCODE));
 	}, [searchType]);
-
-	const closeSnackbar = () =>
-		dispatch({
-			type: AppReducerActions.SetSnackbar,
-			snackbar: { ...snackbar, open: false },
-		});
 
 	const close = () => navigate(`/collection`);
 
@@ -86,13 +82,10 @@ export default () => {
 			},
 			list: ReleaseListType.Collection,
 		});
-		dispatch({
-			type: AppReducerActions.SetSnackbar,
-			snackbar: {
-				open: true,
-				message: `${release.title} has been added to your collection.`,
-				severity: 'success',
-			},
+		setSnackbar({
+			open: true,
+			message: `${release.title} has been added to your collection.`,
+			severity: 'success',
 		});
 		clear();
 	};
@@ -103,13 +96,10 @@ export default () => {
 				addCleanUp(release, instanceId);
 			})
 			.catch(() => {
-				dispatch({
-					type: AppReducerActions.SetSnackbar,
-					snackbar: {
-						open: true,
-						message: `Unable to add this release to your collection, please try again.`,
-						severity: 'error',
-					},
+				setSnackbar({
+					open: true,
+					message: `Unable to add this release to your collection, please try again.`,
+					severity: 'error',
 				});
 			});
 	};
@@ -190,21 +180,12 @@ export default () => {
 					</div>
 				</Container>
 			</div>
-			<Snackbar
-				open={showSnackbar}
-				autoHideDuration={6000}
-				onClose={closeSnackbar}
-				anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-			>
-				<Alert
-					onClose={closeSnackbar}
-					severity={snackbarSeverity}
-					variant="filled"
-					sx={{ width: '100%' }}
-				>
-					{snackbarMessage}
-				</Alert>
-			</Snackbar>
+			<SnackbarContainer
+				severity={snackbar.severity}
+				open={snackbar.open}
+				message={snackbar.message}
+				onClose={() => setSnackbar({ ...snackbar, open: false })}
+			/>
 		</>
 	);
 };

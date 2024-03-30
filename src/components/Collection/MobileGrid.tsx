@@ -6,10 +6,7 @@ import {
 	trackWindowScroll,
 } from 'react-lazy-load-image-component';
 import { PLACEHOLDER_IMG_SRC } from '../../helpers/constants';
-
-const LazyAlbumArtwork = lazy(() =>
-	import('./styles').then((module) => ({ default: module.AlbumArtwork })),
-);
+import LazyAlbumArtwork from '../shared/LazyAlbumArtwork';
 
 const MobileGrid = ({
 	data,

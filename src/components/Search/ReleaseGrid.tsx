@@ -8,12 +8,7 @@ import { PLACEHOLDER_IMG_SRC } from '../../helpers/constants';
 import { GridTile } from '../Collection/styles';
 import { Button, Card } from '@mui/material';
 import { Info } from '@mui/icons-material';
-
-const LazyAlbumArtwork = lazy(() =>
-	import('../Collection/styles').then((module) => ({
-		default: module.AlbumArtwork,
-	})),
-);
+import LazyAlbumArtwork from '../shared/LazyAlbumArtwork';
 
 const ReleaseGrid = ({
 	data,

@@ -20,12 +20,12 @@ import { Alert, CircularProgress, Snackbar, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import MobileGrid from './MobileGrid';
-import Fab from './FloatingActionButton';
+import Fab from '../shared/FloatingActionButton';
 import theme from '../../theme';
-import AddRecordButton from './buttons/AddRecordButton';
-import WantListSwitch from './buttons/WantListSwitch';
-import ChangeViewTypeButton from './buttons/ChangeViewTypeButton';
-import WantListButton from './buttons/WantListButton';
+import AddRecordButton from '../shared/AddRecordButton';
+import WantListSwitch from '../shared/WantListSwitch';
+import ChangeViewTypeButton from '../shared/ChangeViewTypeButton';
+import WantListButton from '../shared/WantListButton';
 
 export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -39,14 +39,8 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 		user: { username },
 		collection,
 		ui: { viewType, wantList: showWantList },
-		snackbar,
 	} = useAppState();
 	const { value, numberOfItems, releases, wantList } = collection;
-	const {
-		open: showSnackbar,
-		message: snackbarMessage,
-		severity: snackbarSeverity,
-	} = snackbar;
 	const dispatch = useAppDispatch();
 
 	const toggleInformationDialog = () =>
@@ -56,12 +50,6 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 		dispatch({ type: AppReducerActions.SetCurrentRelease, release: item });
 		toggleInformationDialog();
 	};
-
-	const closeSnackbar = () =>
-		dispatch({
-			type: AppReducerActions.SetSnackbar,
-			snackbar: { ...snackbar, open: false },
-		});
 
 	useEffect(() => {
 		let filteredData = data;
@@ -227,21 +215,6 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 					readOnly={readOnly}
 				/>
 			</Container>
-			<Snackbar
-				open={showSnackbar}
-				autoHideDuration={6000}
-				onClose={closeSnackbar}
-				anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
-			>
-				<Alert
-					onClose={closeSnackbar}
-					severity={snackbarSeverity}
-					variant="filled"
-					sx={{ width: '100%' }}
-				>
-					{snackbarMessage}
-				</Alert>
-			</Snackbar>
 		</div>
 	);
 };

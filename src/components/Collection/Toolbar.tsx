@@ -9,7 +9,7 @@ import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
 import InformationDialog from './InformationDialog';
 import LogoutDialog from './LogoutDialog';
 import { useAppState } from '../../helpers/hooks/useAppState';
-import ShareableLinkButton from './buttons/ShareableLinkButton';
+import ShareableLinkButton from '../shared/ShareableLinkButton';
 
 export default ({
 	value,

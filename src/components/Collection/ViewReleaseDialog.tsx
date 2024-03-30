@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import {
-	AlbumArtwork,
 	StyledDialog,
 	StyledDialogActions,
 	StyledDialogContent,
@@ -16,10 +15,12 @@ import {
 	removeReleaseFromWantlist,
 } from '../../api';
 import { Button, Typography } from '@mui/material';
-import { ReleaseDetails } from '../../helpers/types';
+import { ReleaseDetails, SnackbarType } from '../../helpers/types';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import ReleaseDialogDetails from './ReleaseDialogDetails';
 import { AppReducerActions, ReleaseListType } from '../../helpers/enum';
+import SnackbarContainer from '../shared/SnackbarContainer';
+import { AlbumArtwork } from '../shared/styles';
 
 export default ({
 	open,
@@ -39,6 +40,11 @@ export default ({
 		user: { username },
 		ui: { wantList },
 	} = useAppState();
+	const [snackbar, setSnackbar] = useState<SnackbarType>({
+		message: '',
+		open: false,
+		severity: 'success',
+	});
 	const dispatch = useAppDispatch();
 
 	useEffect(() => {
@@ -69,15 +75,12 @@ export default ({
 			releaseId: currentRelease.releaseId,
 			list: wantList ? ReleaseListType.WantList : ReleaseListType.Collection,
 		});
-		dispatch({
-			type: AppReducerActions.SetSnackbar,
-			snackbar: {
-				open: true,
-				message: `${currentRelease.title} has been removed from your ${
-					wantList ? 'want list' : 'collection'
-				}.`,
-				severity: 'success',
-			},
+		setSnackbar({
+			open: true,
+			message: `${currentRelease.title} has been removed from your ${
+				wantList ? 'want list' : 'collection'
+			}.`,
+			severity: 'success',
 		});
 	};
 	const removeRelease = async () => {
@@ -111,13 +114,10 @@ export default ({
 					},
 					list: ReleaseListType.Collection,
 				});
-				dispatch({
-					type: AppReducerActions.SetSnackbar,
-					snackbar: {
-						open: true,
-						message: `${currentRelease.title} has been added to your collection.`,
-						severity: 'success',
-					},
+				setSnackbar({
+					open: true,
+					message: `${currentRelease.title} has been added to your collection.`,
+					severity: 'success',
 				});
 
 				await removeReleaseFromWantlist(
@@ -138,69 +138,78 @@ export default ({
 	};
 
 	return (
-		<StyledDialog
-			open={open}
-			onClose={onClose}
-			aria-describedby="view-record-dialog"
-			id={`record-information-dialog-${currentRelease.releaseId}`}
-			maxWidth="md"
-		>
-			<StyledDialogTitle>{currentRelease.title}</StyledDialogTitle>
-			<StyledDialogContent>
-				<ViewReleaseContainer style={{ paddingTop: 25 }}>
-					<AlbumArtwork
-						src={currentRelease.imageUrl}
-						height={400}
-						width={400}
-					/>
-					<ReleaseDialogDetails
-						releaseDetails={details}
-						isLoading={isLoading}
-					/>
-				</ViewReleaseContainer>
-			</StyledDialogContent>
-			<StyledDialogActions>
-				{!remove && !add && (
-					<>
-						{currentRelease.wantList && !add && (
-							<Button onClick={toggleAdd} variant="outlined">
-								Add
+		<>
+			<StyledDialog
+				open={open}
+				onClose={onClose}
+				aria-describedby="view-record-dialog"
+				id={`record-information-dialog-${currentRelease.releaseId}`}
+				maxWidth="md"
+			>
+				<StyledDialogTitle>{currentRelease.title}</StyledDialogTitle>
+				<StyledDialogContent>
+					<ViewReleaseContainer style={{ paddingTop: 25 }}>
+						<AlbumArtwork
+							src={currentRelease.imageUrl}
+							height={400}
+							width={400}
+						/>
+						<ReleaseDialogDetails
+							releaseDetails={details}
+							isLoading={isLoading}
+						/>
+					</ViewReleaseContainer>
+				</StyledDialogContent>
+				<StyledDialogActions>
+					{!remove && !add && (
+						<>
+							{currentRelease.wantList && !add && (
+								<Button onClick={toggleAdd} variant="outlined">
+									Add
+								</Button>
+							)}
+							{!readOnly && (
+								<Button onClick={toggleRemove} variant="outlined">
+									Remove
+								</Button>
+							)}
+							<Button onClick={onClose} variant="contained">
+								Close
 							</Button>
-						)}
-						{!readOnly && (
-							<Button onClick={toggleRemove} variant="outlined">
-								Remove
+						</>
+					)}
+					{(add || remove) && (
+						<>
+							<Typography variant="body1" marginRight={2} fontWeight={600}>
+								Are you sure you want to {remove ? 'remove' : 'add'} this
+								release?
+							</Typography>
+							<Button
+								onClick={remove ? removeRelease : addWantListRelease}
+								variant="contained"
+								color="success"
+								disabled={isLoading}
+							>
+								Yes
 							</Button>
-						)}
-						<Button onClick={onClose} variant="contained">
-							Close
-						</Button>
-					</>
-				)}
-				{(add || remove) && (
-					<>
-						<Typography variant="body1" marginRight={2} fontWeight={600}>
-							Are you sure you want to {remove ? 'remove' : 'add'} this release?
-						</Typography>
-						<Button
-							onClick={remove ? removeRelease : addWantListRelease}
-							variant="contained"
-							color="success"
-							disabled={isLoading}
-						>
-							Yes
-						</Button>
-						<Button
-							onClick={remove ? toggleRemove : toggleAdd}
-							variant="contained"
-							color="error"
-							disabled={isLoading}
-						>
-							No
-						</Button>
-					</>
-				)}
-			</StyledDialogActions>
-		</StyledDialog>
+							<Button
+								onClick={remove ? toggleRemove : toggleAdd}
+								variant="contained"
+								color="error"
+								disabled={isLoading}
+							>
+								No
+							</Button>
+						</>
+					)}
+				</StyledDialogActions>
+			</StyledDialog>
+			<SnackbarContainer
+				severity={snackbar.severity}
+				open={snackbar.open}
+				message={snackbar.message}
+				onClose={() => setSnackbar({ ...snackbar, open: false })}
+			/>
+		</>
 	);
 };

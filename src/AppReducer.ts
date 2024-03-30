@@ -2,7 +2,6 @@ import { AppReducerActions, ReleaseListType, ViewType } from './helpers/enum';
 import {
 	AppActionType,
 	AppStateType,
-	SnackbarType,
 	UserCollectionItem,
 } from './helpers/types';
 
@@ -30,7 +29,6 @@ export const initialState: AppStateType = {
 		imageUrl: '',
 		instanceId: 0,
 	},
-	snackbar: {} as SnackbarType,
 	ui: {
 		viewType: ViewType.GRID,
 		wantList: false,
@@ -67,13 +65,6 @@ export const AppReducer = (
 			return {
 				...state,
 				currentRelease: release,
-			};
-
-		case AppReducerActions.SetSnackbar:
-			const { snackbar } = action;
-			return {
-				...state,
-				snackbar,
 			};
 
 		case AppReducerActions.RemoveRelease:

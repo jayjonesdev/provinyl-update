@@ -1,6 +1,6 @@
 import { Link } from '@mui/icons-material';
 import { IconButton } from '@mui/material';
-import ShareableLinkPopover from '../ShareableLinkPopover';
+import ShareableLinkPopover from '../Collection/ShareableLinkPopover';
 import { useState } from 'react';
 
 export default () => {

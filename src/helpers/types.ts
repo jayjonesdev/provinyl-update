@@ -140,7 +140,6 @@ export type AppStateType = {
 	user: UserInfoType;
 	collection: CollectionInfoType;
 	currentRelease: UserCollectionItem;
-	snackbar: SnackbarType;
 	ui: UIStateType;
 };
 
@@ -150,17 +149,17 @@ export type UIStateType = {
 	shareableLinkPopover: boolean;
 };
 
-export type SnackbarType = {
-	message: string;
-	open: boolean;
-	severity: AlertColor;
-};
-
 export type UserInfoType = {
 	id: number;
 	username: string;
 	resource_url: string;
 	consumer_name: string;
+};
+
+export type SnackbarType = {
+	message: string;
+	open: boolean;
+	severity: AlertColor;
 };
 
 export type CollectionInfoType = {
@@ -174,7 +173,6 @@ export type AppActionType =
 	| UserInfoActionType
 	| UserCollectionActionType
 	| CurrentReleaseActionType
-	| SetSnackbarActionType
 	| RemoveReleaseActionType
 	| AddReleaseActionType
 	| UpdateViewActionType
@@ -209,11 +207,6 @@ export interface UserCollectionActionType {
 export interface CurrentReleaseActionType {
 	type: AppReducerActions.SetCurrentRelease;
 	release: UserCollectionItem;
-}
-
-export interface SetSnackbarActionType {
-	type: AppReducerActions.SetSnackbar;
-	snackbar: SnackbarType;
 }
 
 export interface RemoveReleaseActionType {

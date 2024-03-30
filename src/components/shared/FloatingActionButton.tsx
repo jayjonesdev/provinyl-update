@@ -2,7 +2,7 @@ import { Camera, Pin, TextFields } from '@mui/icons-material';
 import { Fab, Menu, MenuItem, ListItemIcon, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import AddIcon from '@mui/icons-material/Add';
-import { AddMenuSlotProps, FabContainer } from './styles';
+import { AddMenuSlotProps, FabContainer } from '../Collection/styles';
 import { useNavigate } from 'react-router-dom';
 import { SearchType } from '../../helpers/enum';
 import { getSearchTypeKey } from '../../helpers';

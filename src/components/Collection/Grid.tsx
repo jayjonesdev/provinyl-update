@@ -1,4 +1,4 @@
-import { Suspense, lazy } from 'react';
+import { Suspense } from 'react';
 import { UserCollectionItem } from '../../helpers/types';
 import { GridContainer, GridTile } from './styles';
 import {
@@ -6,9 +6,8 @@ import {
 	trackWindowScroll,
 } from 'react-lazy-load-image-component';
 import { PLACEHOLDER_IMG_SRC } from '../../helpers/constants';
-const LazyAlbumArtwork = lazy(() =>
-	import('./styles').then((module) => ({ default: module.AlbumArtwork })),
-);
+import LazyAlbumArtwork from '../shared/LazyAlbumArtwork';
+
 const Grid = ({
 	data,
 	scrollPosition,

@@ -1,9 +1,6 @@
 import { Switch, Typography } from '@mui/material';
-import { AppReducerActions } from '../../../helpers/enum';
-import {
-	useAppState,
-	useAppDispatch,
-} from '../../../helpers/hooks/useAppState';
+import { AppReducerActions } from '../../helpers/enum';
+import { useAppState, useAppDispatch } from '../../helpers/hooks/useAppState';
 
 export default () => {
 	const {

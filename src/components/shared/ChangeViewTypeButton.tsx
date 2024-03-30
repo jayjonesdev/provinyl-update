@@ -1,10 +1,7 @@
 import { Button } from '@mui/material';
-import { AppReducerActions, ViewType } from '../../../helpers/enum';
+import { AppReducerActions, ViewType } from '../../helpers/enum';
 import { ViewList, ViewDay } from '@mui/icons-material';
-import {
-	useAppState,
-	useAppDispatch,
-} from '../../../helpers/hooks/useAppState';
+import { useAppState, useAppDispatch } from '../../helpers/hooks/useAppState';
 
 export default () => {
 	const {

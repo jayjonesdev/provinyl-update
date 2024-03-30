@@ -15,7 +15,6 @@ export enum AppReducerActions {
 	UpdateUserInfo = 'UPDATE_USER_INFO',
 	UpdateCollectionInfo = 'UPDATE_COLLECTION_INFO',
 	SetCurrentRelease = 'SET_CURRENT_RELEASE',
-	SetSnackbar = 'SET_SNACKBAR',
 	RemoveRelease = 'REMOVE_RELEASE',
 	AddRelease = 'ADD_RELEASE',
 	UpdateView = 'UPDATE_VIEW',

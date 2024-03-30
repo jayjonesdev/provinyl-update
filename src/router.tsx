@@ -1,8 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from './App';
-import Login from './routes/Login';
-import Collection from './routes/Collection';
-import Search from './routes/Search';
+import Login from './components/Login';
+import Collection from './components/Collection';
+import Search from './components/Search';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { isMobile } from 'react-device-detect';
 import Redirect from './Redirect';

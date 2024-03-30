@@ -2,7 +2,7 @@ import { Add } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { useState } from 'react';
 import { isMobile } from 'react-device-detect';
-import AddReleaseDialog from '../AddReleaseDialog';
+import AddReleaseDialog from '../Collection/AddReleaseDialog';
 
 export default () => {
 	const [showDialog, setShowDialog] = useState(false);

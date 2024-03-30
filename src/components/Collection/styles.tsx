@@ -1,6 +1,5 @@
 import {
 	Box,
-	Card,
 	Dialog,
 	DialogActions,
 	DialogContent,
@@ -21,10 +20,6 @@ import MuiAccordionSummary, {
 	AccordionSummaryProps,
 } from '@mui/material/AccordionSummary';
 import MuiAccordionDetails from '@mui/material/AccordionDetails';
-import {
-	LazyLoadImage,
-	LazyLoadImageProps,
-} from 'react-lazy-load-image-component';
 import { IframeHTMLAttributes } from 'react';
 
 export const StyledProvinylLogo = styled('img')`
@@ -162,27 +157,6 @@ export const AlbumArtworkSpinnerContainer = styled(Box)`
 	height: 300px;
 	justify-content: center;
 	align-items: center;
-`;
-
-export const AlbumArtwork = styled((props: LazyLoadImageProps) => (
-	<Card
-		elevation={3}
-		sx={{
-			aspectRatio: '1/1',
-			width: props.width ?? 300,
-			height: props.height ?? 300,
-		}}
-	>
-		<LazyLoadImage
-			effect="blur"
-			loading="lazy"
-			width={props.width ?? 300}
-			height={props.height ?? 300}
-			{...props}
-		/>
-	</Card>
-))`
-	border-radius: 5px;
 `;
 
 // 300px is the width of the album artwork
