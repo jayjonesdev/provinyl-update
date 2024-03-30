@@ -112,87 +112,85 @@ export default ({ release }: { release: DatabaseSearchResponse }) => {
 	};
 
 	return (
-		<>
-			<Accordion style={{ marginBottom: 15, borderRadius: 5 }}>
-				<AccordionSummary
-					expandIcon={<ExpandMoreIcon />}
-					aria-controls={`${releaseTitle}-content`}
-					id={`${releaseTitle}-header`}
-				>
-					<Typography>{releaseTitle}</Typography>
-				</AccordionSummary>
-				<AccordionDetails style={{ paddingTop: 0 }}>
-					<ViewReleaseContainer style={{ minHeight: 210 }}>
-						<AlbumArtwork
-							style={{ alignSelf: 'center' }}
-							src={imageUrl}
-							height={200}
-							width={200}
-						/>
-						<div style={{ marginLeft: 10 }}>
-							<Detail title="Artist" desc={artist} />
-							<Detail title="Title" desc={title} />
-							<Detail title="Year" desc={year === 0 ? 'N/A' : year} />
-							<Detail title="Labels" desc={labels} />
-							<Detail title="Genres" desc={genres} />
-							<Detail title="Catalog #" desc={catno} />
-							<Detail title="Country" desc={country} />
-							<Tooltip
-								title={!wantList ? 'Add to want list' : 'Remove from want list'}
-								placement="right"
-							>
-								<IconButton onClick={toggleWantList} disabled={isLoading}>
-									{wantList ? <Favorite color="primary" /> : <FavoriteBorder />}
-								</IconButton>
-							</Tooltip>
-						</div>
-					</ViewReleaseContainer>
-				</AccordionDetails>
-				<div
-					style={{
-						display: 'flex',
-						justifyContent: 'flex-end',
-						width: '100%',
-						padding: '1em 1em',
-						alignItems: 'center',
-					}}
-				>
-					{!add ? (
-						<Button variant="outlined" onClick={toggleAdd}>
-							Add
+		<Accordion style={{ marginBottom: 15, borderRadius: 5 }}>
+			<AccordionSummary
+				expandIcon={<ExpandMoreIcon />}
+				aria-controls={`${releaseTitle}-content`}
+				id={`${releaseTitle}-header`}
+			>
+				<Typography>{releaseTitle}</Typography>
+			</AccordionSummary>
+			<AccordionDetails style={{ paddingTop: 0 }}>
+				<ViewReleaseContainer style={{ minHeight: 210 }}>
+					<AlbumArtwork
+						style={{ alignSelf: 'center' }}
+						src={imageUrl}
+						height={200}
+						width={200}
+					/>
+					<div style={{ marginLeft: 10 }}>
+						<Detail title="Artist" desc={artist} />
+						<Detail title="Title" desc={title} />
+						<Detail title="Year" desc={year === 0 ? 'N/A' : year} />
+						<Detail title="Labels" desc={labels} />
+						<Detail title="Genres" desc={genres} />
+						<Detail title="Catalog #" desc={catno} />
+						<Detail title="Country" desc={country} />
+						<Tooltip
+							title={!wantList ? 'Add to want list' : 'Remove from want list'}
+							placement="right"
+						>
+							<IconButton onClick={toggleWantList} disabled={isLoading}>
+								{wantList ? <Favorite color="primary" /> : <FavoriteBorder />}
+							</IconButton>
+						</Tooltip>
+					</div>
+				</ViewReleaseContainer>
+			</AccordionDetails>
+			<div
+				style={{
+					display: 'flex',
+					justifyContent: 'flex-end',
+					width: '100%',
+					padding: '1em 1em',
+					alignItems: 'center',
+				}}
+			>
+				{!add ? (
+					<Button variant="outlined" onClick={toggleAdd}>
+						Add
+					</Button>
+				) : (
+					<>
+						<Typography variant="body1" marginRight={2} fontWeight={600}>
+							Are you sure you want to add this release?
+						</Typography>
+						<Button
+							onClick={addRelease}
+							variant="contained"
+							color="success"
+							disabled={isLoading}
+						>
+							Yes
 						</Button>
-					) : (
-						<>
-							<Typography variant="body1" marginRight={2} fontWeight={600}>
-								Are you sure you want to add this release?
-							</Typography>
-							<Button
-								onClick={addRelease}
-								variant="contained"
-								color="success"
-								disabled={isLoading}
-							>
-								Yes
-							</Button>
-							<Button
-								style={{ marginLeft: 5 }}
-								onClick={toggleAdd}
-								variant="contained"
-								color="error"
-								disabled={isLoading}
-							>
-								No
-							</Button>
-						</>
-					)}
-				</div>
-			</Accordion>
+						<Button
+							style={{ marginLeft: 5 }}
+							onClick={toggleAdd}
+							variant="contained"
+							color="error"
+							disabled={isLoading}
+						>
+							No
+						</Button>
+					</>
+				)}
+			</div>
 			<SnackbarContainer
 				severity={snackbar.severity}
 				open={snackbar.open}
 				message={snackbar.message}
 				onClose={() => setSnackbar({ ...snackbar, open: false })}
 			/>
-		</>
+		</Accordion>
 	);
 };

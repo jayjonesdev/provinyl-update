@@ -34,7 +34,6 @@ export const SpinnerContainer = styled(Box)`
 `;
 
 export const GridTile = styled('div')`
-	margin-bottom: 15px;
 	&:hover {
 		cursor: pointer;
 	}

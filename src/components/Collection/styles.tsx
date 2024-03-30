@@ -144,9 +144,7 @@ export const AlbumArtworkSpinnerContainer = styled(Box)`
 // 300px is the width of the album artwork
 export const GridContainer = styled('div')`
 	display: grid;
-	place-items: center;
-	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-	grid-auto-rows: auto;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 `;
 
 export const Accordion = styled((props: AccordionProps) => (
