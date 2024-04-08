@@ -28,6 +28,7 @@ import ChangeViewTypeButton from '../shared/ChangeViewTypeButton';
 import WantListButton from '../shared/WantListButton';
 import LoadingIndicator from '../shared/LoadingIndicator';
 import { StyledDivider } from '../shared/styles';
+import LoadingPopup from './LoadingPopup';
 
 export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	const [searchValue, setSearchValue] = useState<string>('');
@@ -209,6 +210,7 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 					onClose={toggleInformationDialog}
 					readOnly={readOnly}
 				/>
+				<LoadingPopup />
 			</Container>
 		</div>
 	);

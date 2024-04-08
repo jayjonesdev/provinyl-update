@@ -273,3 +273,20 @@ export const FabContainer = styled('div')`
 		rgba(60, 60, 60, 1) 100%
 	);
 `;
+
+export const LoadingIndicatorContainer = styled(Box)(({ theme }) => ({
+	position: 'fixed',
+	bottom: 0,
+	left: 0,
+	padding: 15,
+	zIndex: 101,
+	width: '30%',
+	maxHeight: '150px',
+	backgroundColor: theme.palette.secondary.light,
+	marginLeft: '20px',
+	marginBottom: '15px',
+	borderRadius: '5px',
+	boxShadow:
+		'0px 3px 3px -2px rgba(0,0,0,0.2),0px 3px 4px 0px rgba(0,0,0,0.14),0px 1px 8px 0px rgba(0,0,0,0.12)',
+	color: 'white',
+}));

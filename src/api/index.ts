@@ -36,14 +36,11 @@ api.interceptors.response.use(
 export const getUserCollection = async (
 	username: string,
 	page: number,
-	query?: string,
-): Promise<UserCollection> =>
-	api(`/user/${username}/collection/${page}/${query}`);
+): Promise<UserCollection> => api(`/user/${username}/collection/${page}`);
 
 export const getPublicUserCollection = async (
 	username: string,
 	page: number,
-	query?: string,
 ): Promise<UserCollection> =>
 	api(`/public/user/${username}/collection/${page}`);
 
