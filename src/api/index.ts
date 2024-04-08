@@ -35,11 +35,17 @@ api.interceptors.response.use(
 // User Routes
 export const getUserCollection = async (
 	username: string,
-): Promise<UserCollection> => api(`/user/${username}/collection`);
+	page: number,
+	query?: string,
+): Promise<UserCollection> =>
+	api(`/user/${username}/collection/${page}/${query}`);
 
 export const getPublicUserCollection = async (
 	username: string,
-): Promise<UserCollection> => api(`/public/user/${username}/collection`);
+	page: number,
+	query?: string,
+): Promise<UserCollection> =>
+	api(`/public/user/${username}/collection/${page}`);
 
 export const getUserWantList = async (
 	username: string,

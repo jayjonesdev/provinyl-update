@@ -89,7 +89,7 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 				if (collection.releases.length === 0) {
 					(async () => {
 						setIsLoading(true);
-						await getUserCollection(username).then((collection) => {
+						await getUserCollection(username, 1).then((collection) => {
 							releases = collection.items;
 							numberOfItems = collection.items.length;
 						});
@@ -108,7 +108,7 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 			if (collection.releases.length === 0) {
 				(async () => {
 					setIsLoading(true);
-					await getPublicUserCollection(readOnlyUsername as string).then(
+					await getPublicUserCollection(readOnlyUsername as string, 1).then(
 						(collection) => {
 							releases = collection.items;
 							numberOfItems = collection.items.length;

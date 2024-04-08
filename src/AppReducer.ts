@@ -34,6 +34,10 @@ export const initialState: AppStateType = {
 		wantList: false,
 		shareableLinkPopover: false,
 	},
+	pagination: {
+		totalPages: 1,
+		page: 1,
+	},
 };
 
 let updatedCollection: UserCollectionItem[] = [];

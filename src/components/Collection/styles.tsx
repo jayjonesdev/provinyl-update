@@ -145,6 +145,8 @@ export const AlbumArtworkSpinnerContainer = styled(Box)`
 export const GridContainer = styled('div')`
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+	grid-auto-rows: auto;
+	grid-row-gap: 20px;
 `;
 
 export const Accordion = styled((props: AccordionProps) => (

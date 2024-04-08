@@ -141,6 +141,12 @@ export type AppStateType = {
 	collection: CollectionInfoType;
 	currentRelease: UserCollectionItem;
 	ui: UIStateType;
+	pagination: PaginationType;
+};
+
+export type PaginationType = {
+	page: number;
+	totalPages: number;
 };
 
 export type UIStateType = {
