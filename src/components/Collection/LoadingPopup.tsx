@@ -15,8 +15,9 @@ const ProgressBar = () => {
 			} else {
 				const diff = Math.random() * 10;
 				const diff2 = Math.random() * 10;
-				setProgress(progress + diff);
-				setBuffer(progress + diff + diff2);
+				const progressVal = progress + diff;
+				setProgress(progressVal <= 100 ? progressVal : 100);
+				setBuffer(progressVal >= 100 ? 100 : progressVal + diff2);
 			}
 		};
 	});
@@ -33,7 +34,11 @@ const ProgressBar = () => {
 
 	return (
 		<Box sx={{ width: '100%' }}>
-			Your collection is loading... please wait!
+			<Typography variant="body1" fontWeight={500} color="text.secondary">
+				{progress !== 100
+					? 'The rest of your collection is currently loading.'
+					: 'Your collection has finished loading.'}
+			</Typography>
 			<Box sx={{ display: 'flex', alignItems: 'center' }}>
 				<LinearProgress
 					variant="buffer"
