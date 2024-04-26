@@ -63,6 +63,27 @@ export const AppReducer = (
 				collection,
 			};
 
+		case AppReducerActions.UpdateCollection:
+			const { collection: collectionItems, listType: collectionType } = action;
+
+			return {
+				...state,
+				collection:
+					collectionType === ReleaseListType.Collection
+						? {
+								...state.collection,
+								releases: [...state.collection.releases, ...collectionItems],
+								numberOfItems:
+									state.collection.releases.length + collectionItems.length,
+						  }
+						: {
+								...state.collection,
+								wantList: [...state.collection.wantList, ...collectionItems],
+								numberOfItems:
+									state.collection.wantList.length + collectionItems.length,
+						  },
+			};
+
 		case AppReducerActions.SetCurrentRelease:
 			const { release } = action;
 

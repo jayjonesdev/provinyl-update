@@ -1,18 +1,16 @@
 import { Button } from '@mui/material';
-import { AppReducerActions, ViewType } from '../../helpers/enum';
+import { ViewType } from '../../helpers/enum';
 import { ViewList, ViewDay } from '@mui/icons-material';
-import { useAppState, useAppDispatch } from '../../helpers/hooks/useAppState';
+import { useRecoilState } from 'recoil';
+import { uiState } from '../../helpers/atoms';
 
 export default () => {
-	const {
-		ui: { viewType },
-	} = useAppState();
-	const dispatch = useAppDispatch();
-	const changeView = (viewType: ViewType) =>
-		dispatch({
-			type: AppReducerActions.UpdateView,
-			viewType,
-		});
+	const [ui, setUiState] = useRecoilState(uiState);
+	const { viewType } = ui;
+
+	const changeView = (viewType: ViewType) => {
+		setUiState({ ...ui, viewType });
+	};
 
 	const toggleView = () => {
 		if (viewType === ViewType.GRID) changeView(ViewType.TABLE);

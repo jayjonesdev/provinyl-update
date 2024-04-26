@@ -183,7 +183,8 @@ export type AppActionType =
 	| AddReleaseActionType
 	| UpdateViewActionType
 	| ShowWantListActionType
-	| ShowShareableLinkPopoverActionType;
+	| ShowShareableLinkPopoverActionType
+	| UpdateUserCollectionActionType;
 
 export interface UserInfoActionType {
 	type: AppReducerActions.UpdateUserInfo;
@@ -210,6 +211,12 @@ export interface UserCollectionActionType {
 	collection: CollectionInfoType;
 }
 
+export interface UpdateUserCollectionActionType {
+	type: AppReducerActions.UpdateCollection;
+	collection: UserCollectionItem[];
+	listType: ReleaseListType;
+}
+
 export interface CurrentReleaseActionType {
 	type: AppReducerActions.SetCurrentRelease;
 	release: UserCollectionItem;
@@ -228,6 +235,7 @@ export interface AddReleaseActionType {
 }
 
 export interface UserCollection {
+	page: number;
 	pages: number;
 	items: UserCollectionItem[];
 }

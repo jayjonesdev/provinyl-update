@@ -46,7 +46,8 @@ export const getPublicUserCollection = async (
 
 export const getUserWantList = async (
 	username: string,
-): Promise<UserCollectionItem[]> => api(`/user/${username}/wantlist`);
+	page: number,
+): Promise<UserCollection> => api(`/user/${username}/wantlist/${page}`);
 
 export const getUserCollectionValue = async (
 	username: string,

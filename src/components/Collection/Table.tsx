@@ -5,6 +5,7 @@ import {
 	TableContainer,
 	TableRow,
 	Paper,
+	Box,
 } from '@mui/material';
 import { TableVirtuoso, type TableComponents } from 'react-virtuoso';
 import { UserCollectionItem, type TableColumn } from '../../helpers/types';
@@ -109,13 +110,13 @@ export default ({
 	);
 
 	return (
-		<Paper style={{ height: screen.height * 0.75 }}>
+		<Box style={{ height: screen.height * 0.75 }}>
 			<TableVirtuoso
 				data={data}
 				components={VirtuosoTableComponents}
 				fixedHeaderContent={fixedHeaderContent}
 				itemContent={rowContent}
 			/>
-		</Paper>
+		</Box>
 	);
 };

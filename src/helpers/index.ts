@@ -1,5 +1,11 @@
+import { getPublicUserCollection, getUserWantList } from '../api';
 import { SearchType } from './enum';
-import { ReleaseSearchType, type Release, type TableData } from './types';
+import {
+	ReleaseSearchType,
+	type Release,
+	type TableData,
+	UserCollectionItem,
+} from './types';
 
 export const removeDiacritics = (text: string) =>
 	text

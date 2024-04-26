@@ -1,9 +1,12 @@
 import { CloseOutlined, Search } from '@mui/icons-material';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import { ButtonBar } from './styles';
-import { CSSProperties } from 'react';
+import { CSSProperties, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { useAppState } from '../../helpers/hooks/useAppState';
+import { uiState } from '../../helpers/atoms';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import { ReleaseListType } from '../../helpers/enum';
 
 export default ({
 	value,
@@ -20,9 +23,7 @@ export default ({
 	onChange: (value: string) => void;
 	onClear: () => void;
 }) => {
-	const {
-		ui: { wantList },
-	} = useAppState();
+	const { currentTab } = useRecoilValue(uiState);
 	return (
 		<>
 			<div style={{ marginTop: isMobile ? 5 : 75 }}>
@@ -33,7 +34,11 @@ export default ({
 						placeholder={
 							isMobile
 								? 'Search...'
-								: `Search ${!wantList ? 'collection' : 'want list'}...`
+								: `Search ${
+										currentTab !== ReleaseListType.Collection
+											? 'collection'
+											: 'want list'
+								  }...`
 						}
 						margin="dense"
 						onChange={(e) => onChange(e.target.value)}

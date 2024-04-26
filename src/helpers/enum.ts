@@ -14,6 +14,7 @@ export enum SearchType {
 export enum AppReducerActions {
 	UpdateUserInfo = 'UPDATE_USER_INFO',
 	UpdateCollectionInfo = 'UPDATE_COLLECTION_INFO',
+	UpdateCollection = 'UPDATE_COLLECTION',
 	SetCurrentRelease = 'SET_CURRENT_RELEASE',
 	RemoveRelease = 'REMOVE_RELEASE',
 	AddRelease = 'ADD_RELEASE',

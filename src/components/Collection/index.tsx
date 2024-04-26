@@ -1,10 +1,14 @@
 import Toolbar from './Toolbar';
 import { useEffect, useState } from 'react';
-import { AppReducerActions, ViewType } from '../../helpers/enum';
+import {
+	AppReducerActions,
+	ReleaseListType,
+	ViewType,
+} from '../../helpers/enum';
 import SearchBar from './SearchBar';
 import { Container } from './styles';
 import Table from './Table';
-import { UserCollectionItem } from '../../helpers/types';
+import { UserCollection, UserCollectionItem } from '../../helpers/types';
 import { removeDiacritics } from '../../helpers';
 import {
 	getPublicUserCollection,
@@ -16,36 +20,51 @@ import {
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import Grid from './Grid';
 import ViewReleaseDialog from './ViewReleaseDialog';
-import { Typography } from '@mui/material';
+import { Box, Tab, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import MobileGrid from './MobileGrid';
 import Fab from '../shared/FloatingActionButton';
 import theme from '../../theme';
 import AddRecordButton from '../shared/AddRecordButton';
-import WantListSwitch from '../shared/WantListSwitch';
 import ChangeViewTypeButton from '../shared/ChangeViewTypeButton';
-import WantListButton from '../shared/WantListButton';
 import LoadingIndicator from '../shared/LoadingIndicator';
 import { StyledDivider } from '../shared/styles';
 import LoadingPopup from './LoadingPopup';
+import { useRecoilState } from 'recoil';
+import {
+	collectionState,
+	loadingProgressState,
+	uiState,
+} from '../../helpers/atoms';
+import { TabContext, TabList } from '@mui/lab';
+import CollectionTabPanel from './CollectionTabPanel';
 
-export default ({ readOnly = false }: { readOnly?: boolean }) => {
+// TODO: Check path to determine if readOnly or not
+export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
 	const [data, setData] = useState<UserCollectionItem[]>([]);
 	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
 	const [informationDialog, setInformationDialog] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { username: readOnlyUsername } = useParams();
-
 	const {
 		user: { username },
-		collection,
-		ui: { viewType, wantList: showWantList },
+		ui: { wantList: showWantList },
 	} = useAppState();
-	const { value, numberOfItems, releases, wantList } = collection;
 	const dispatch = useAppDispatch();
+	const [, setLoadingProgress] = useRecoilState(loadingProgressState);
+	const [collection, setCollection] = useRecoilState(collectionState);
+	const { releases, wantList } = collection;
+	const [ui, setUiState] = useRecoilState(uiState);
+	const { currentTab, showLoadingPopup, readOnly } = ui;
 
+	const changeTab = (
+		_event: React.SyntheticEvent,
+		releaseListType: ReleaseListType,
+	) => {
+		setUiState({ ...ui, currentTab: releaseListType });
+	};
 	const toggleInformationDialog = () =>
 		setInformationDialog(!informationDialog);
 
@@ -53,6 +72,99 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 		dispatch({ type: AppReducerActions.SetCurrentRelease, release: item });
 		toggleInformationDialog();
 	};
+
+	const load = async () => {
+		let currentPage = 0,
+			totalPages = 1,
+			userReleases = [] as UserCollectionItem[];
+		// userWantList = [] as UserCollectionItem[];
+
+		setIsLoading(true);
+		setLoadingProgress(10);
+
+		const parseResponse = (resp: UserCollection) => {
+			const progress =
+				currentPage >= totalPages ? 100 : (resp.page / resp.pages) * 100;
+			currentPage++;
+			totalPages = resp.pages;
+			setLoadingProgress(progress);
+			return resp.items;
+		};
+
+		if (readOnly) {
+			while (currentPage < totalPages) {
+				const items = await getPublicUserCollection(
+					readOnlyUsername as string,
+					currentPage + 1,
+				).then(parseResponse);
+				userReleases = userReleases.concat(items);
+				setIsLoading(false);
+				setCollection({
+					...collection,
+					releases: userReleases,
+				});
+			}
+		} else {
+			while (currentPage < totalPages) {
+				const items = await getUserCollection(username, currentPage + 1).then(
+					parseResponse,
+				);
+				userReleases = userReleases.concat(items);
+				setIsLoading(false);
+				setCollection({
+					...collection,
+					releases: userReleases,
+				});
+			}
+		}
+	};
+
+	// const loadCollection = async () => {
+	// 	let currentPage = 0,
+	// 		totalPages = 1,
+	// 		userItems = [] as UserCollectionItem[];
+
+	// 	const parseCollectionResponse = (resp: UserCollection) => {
+	// 		userItems = userItems.concat(resp.items);
+	// 		setCollection({
+	// 			...collection,
+	// 			releases: !showWantList ? userItems : releases,
+	// 			wantList: showWantList ? userItems : wantList,
+	// 		});
+	// 		setIsLoading(false);
+	// 		const progress =
+	// 			currentPage >= totalPages ? 100 : (resp.page / resp.pages) * 100;
+	// 		currentPage++;
+	// 		totalPages = resp.pages;
+	// 		setLoadingProgress(progress);
+	// 	};
+
+	// 	if (showWantList && wantList.length === 0) {
+	// 		setLoadingProgress(10);
+	// 		while (currentPage < totalPages) {
+	// 			await getUserWantList(username, currentPage + 1).then(
+	// 				parseCollectionResponse,
+	// 			);
+	// 		}
+	// 	} else if (!showWantList && collection.releases.length === 0) {
+	// 		setLoadingProgress(10);
+	// 		if (readOnly) {
+	// 			while (currentPage < totalPages) {
+	// 				await getPublicUserCollection(
+	// 					readOnlyUsername as string,
+	// 					currentPage + 1,
+	// 				).then(parseCollectionResponse);
+	// 			}
+	// 		} else {
+	// 			setLoadingProgress(10);
+	// 			while (currentPage < totalPages) {
+	// 				await getUserCollection(username, currentPage + 1).then(
+	// 					parseCollectionResponse,
+	// 				);
+	// 			}
+	// 		}
+	// 	}
+	// };
 
 	useEffect(() => {
 		let filteredData = data;
@@ -69,113 +181,24 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 	}, [searchValue, data]);
 
 	useEffect(() => {
-		if (showWantList) {
-			setData(wantList);
-		} else {
-			setData(releases);
-		}
-	}, [releases, wantList]);
-
-	useEffect(() => {
-		let value = '',
-			numberOfItems = 0,
-			releases = [] as UserCollectionItem[];
-
-		if (!readOnly) {
-			if (username.length === 0) {
-				getUserInfo().then((userInfo) =>
-					dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }),
-				);
-			} else {
-				if (collection.releases.length === 0) {
-					(async () => {
-						setIsLoading(true);
-						await getUserCollection(username, 1).then((collection) => {
-							releases = collection.items;
-							numberOfItems = collection.items.length;
-						});
-						await getUserCollectionValue(username).then(
-							(collectionValue) => (value = collectionValue),
-						);
-						dispatch({
-							type: AppReducerActions.UpdateCollectionInfo,
-							collection: { value, numberOfItems, releases, wantList: [] },
-						});
-						setIsLoading(false);
-					})();
-				}
-			}
-		} else {
-			if (collection.releases.length === 0) {
-				(async () => {
-					setIsLoading(true);
-					await getPublicUserCollection(readOnlyUsername as string, 1).then(
-						(collection) => {
-							releases = collection.items;
-							numberOfItems = collection.items.length;
-						},
-					);
-					dispatch({
-						type: AppReducerActions.UpdateCollectionInfo,
-						collection: { value: '', numberOfItems, releases, wantList: [] },
-					});
-					setIsLoading(false);
-				})();
-			}
-		}
-	}, [username, readOnlyUsername, readOnly]);
-
-	useEffect(() => {
-		if (showWantList) {
-			if (wantList.length === 0) {
-				(async () => {
-					setIsLoading(true);
-					await getUserWantList(username)
-						.then((items) => {
-							dispatch({
-								type: AppReducerActions.UpdateCollectionInfo,
-								collection: { ...collection, wantList: items },
-							});
-						})
-						.finally(() => setIsLoading(false));
-				})();
-			} else {
-				setData(wantList);
-			}
-		} else {
-			setData(releases);
-		}
-	}, [showWantList]);
-
-	const DataViewer = () => {
-		if (data.length !== 0) {
-			if (isMobile) {
-				return (
-					<>
-						<MobileGrid data={filteredData} />
-						{!showWantList && !readOnly && <Fab />}
-					</>
-				);
-			}
-			return (
-				<div style={{ flexGrow: 1 }}>
-					{viewType === ViewType.TABLE && (
-						<Table data={filteredData} onItemClick={showInformation} />
-					)}
-					{viewType === ViewType.GRID && (
-						<Grid data={filteredData} onItemClick={showInformation} />
-					)}
-				</div>
+		if (!readOnly && username.length === 0) {
+			getUserInfo().then((userInfo) =>
+				dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }),
 			);
 		}
-		return <Typography variant="h6">There are no releases.</Typography>;
-	};
+
+		if (username.length > 0) {
+			(async () => {
+				await load();
+			})();
+		}
+	}, [username, readOnly, showWantList]);
 
 	return (
 		<div>
 			<Toolbar
-				value={value}
-				numOfItems={numberOfItems.toString()}
+				value={''}
+				numOfItems={releases.length.toString()}
 				readOnly={readOnly}
 				username={readOnlyUsername}
 			/>
@@ -185,8 +208,8 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 						width: '100%',
 						zIndex: 1,
 						backgroundColor: theme.palette.background.default,
-						position: 'sticky',
-						top: !isMobile ? 60 : 0,
+						// position: 'sticky',
+						// top: !isMobile ? 60 : 0,
 					}}
 				>
 					<SearchBar
@@ -196,21 +219,52 @@ export default ({ readOnly = false }: { readOnly?: boolean }) => {
 						style={{ marginTop: isMobile ? 70 : 'inherit' }}
 					>
 						<div style={{ display: 'flex' }}>
-							{!readOnly && !isMobile && <WantListSwitch />}
 							{!isMobile && <ChangeViewTypeButton />}
 							{!readOnly && !isMobile && <AddRecordButton />}
-							{!readOnly && isMobile && <WantListButton />}
 						</div>
 					</SearchBar>
 					<StyledDivider />
 				</div>
-				{isLoading ? <LoadingIndicator /> : <DataViewer />}
+				{isLoading ? (
+					<LoadingIndicator />
+				) : (
+					<TabContext value={currentTab}>
+						{!readOnly && (
+							<Box
+								sx={{
+									borderBottom: 1,
+									borderColor: 'divider',
+									marginBottom: isMobile ? 3 : 0,
+								}}
+							>
+								<TabList
+									onChange={changeTab}
+									aria-label="Your Collection and Want List"
+								>
+									<Tab label="Collection" value={ReleaseListType.Collection} />
+									<Tab label="WantList" value={ReleaseListType.WantList} />
+								</TabList>
+							</Box>
+						)}
+						<CollectionTabPanel
+							type={ReleaseListType.Collection}
+							onItemClick={showInformation}
+						/>
+						{!readOnly && (
+							<CollectionTabPanel
+								type={ReleaseListType.WantList}
+								onItemClick={showInformation}
+							/>
+						)}
+					</TabContext>
+				)}
+
 				<ViewReleaseDialog
 					open={informationDialog}
 					onClose={toggleInformationDialog}
 					readOnly={readOnly}
 				/>
-				<LoadingPopup />
+				{showLoadingPopup && <LoadingPopup />}
 			</Container>
 		</div>
 	);

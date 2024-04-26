@@ -7,6 +7,7 @@ import router from './router';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './theme';
 import { AppContextProvider } from './AppContext';
+import { RecoilRoot } from 'recoil';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
@@ -19,12 +20,14 @@ const Parent = ({ children }: { children: ReactNode }) =>
 
 root.render(
 	<Parent>
-		<AppContextProvider>
-			<ThemeProvider theme={theme}>
-				<CssBaseline />
-				<RouterProvider router={router} />
-			</ThemeProvider>
-		</AppContextProvider>
+		<RecoilRoot>
+			<AppContextProvider>
+				<ThemeProvider theme={theme}>
+					<CssBaseline />
+					<RouterProvider router={router} />
+				</ThemeProvider>
+			</AppContextProvider>
+		</RecoilRoot>
 	</Parent>,
 );
 

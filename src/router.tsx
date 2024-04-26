@@ -6,6 +6,17 @@ import Search from './components/Search';
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { isMobile } from 'react-device-detect';
 import Redirect from './Redirect';
+import { useRecoilState } from 'recoil';
+import { uiState } from './helpers/atoms';
+import { useEffect } from 'react';
+
+const PublicCollection = () => {
+	const [ui, setUiState] = useRecoilState(uiState);
+
+	useEffect(() => setUiState({ ...ui, readOnly: true }), []);
+
+	return <Collection />;
+};
 
 export default createBrowserRouter([
 	{
@@ -21,8 +32,8 @@ export default createBrowserRouter([
 		element: <Collection />,
 	},
 	{
-		path: '/user/collection/:username',
-		element: <Collection readOnly />,
+		path: '/user/:username/collection',
+		element: <PublicCollection />,
 	},
 	{
 		path: '/collection/search/:searchType',
