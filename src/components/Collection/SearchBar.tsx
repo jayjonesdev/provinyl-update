@@ -1,11 +1,10 @@
 import { CloseOutlined, Search } from '@mui/icons-material';
 import { TextField, InputAdornment, IconButton } from '@mui/material';
 import { ButtonBar } from './styles';
-import { CSSProperties, useState } from 'react';
+import { CSSProperties } from 'react';
 import { isMobile } from 'react-device-detect';
-import { useAppState } from '../../helpers/hooks/useAppState';
 import { uiState } from '../../helpers/atoms';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import { useRecoilValue } from 'recoil';
 import { ReleaseListType } from '../../helpers/enum';
 
 export default ({

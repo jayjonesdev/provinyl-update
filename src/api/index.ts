@@ -46,12 +46,11 @@ export const getPublicUserCollection = async (
 
 export const getUserWantList = async (
 	username: string,
-	page: number,
-): Promise<UserCollection> => api(`/user/${username}/wantlist/${page}`);
+): Promise<UserCollection> => api(`/user/${username}/wantlist`);
 
 export const getUserCollectionValue = async (
 	username: string,
-): Promise<string> => api(`/user/${username}/collection/value`);
+): Promise<string> => api(`/users/${username}/collection/value`);
 
 export const getUserInfo = async (): Promise<UserInfoType> => api('/user/info');
 

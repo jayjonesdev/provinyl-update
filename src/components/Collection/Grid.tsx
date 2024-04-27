@@ -1,16 +1,11 @@
 /* eslint-disable react/prop-types */
-import { DetailedHTMLProps, Suspense, forwardRef } from 'react';
+import { Suspense, forwardRef } from 'react';
 import { UserCollectionItem } from '../../helpers/types';
 import { GridContainer } from './styles';
-import {
-	ScrollPosition,
-	trackWindowScroll,
-} from 'react-lazy-load-image-component';
 import { PLACEHOLDER_IMG_SRC } from '../../helpers/constants';
 import LazyAlbumArtwork from '../shared/LazyAlbumArtwork';
 import { GridTile } from '../shared/styles';
-import { GridComponents, GridListProps, VirtuosoGrid } from 'react-virtuoso';
-import { Paper } from '@mui/material';
+import { GridComponents, VirtuosoGrid } from 'react-virtuoso';
 
 const Grid = ({
 	data,
@@ -25,7 +20,7 @@ const Grid = ({
 				{props.children}
 			</GridContainer>
 		)),
-		Item: GridTile,
+		Item: (props) => <GridTile {...props} />,
 	};
 
 	return (
@@ -33,7 +28,7 @@ const Grid = ({
 			style={{
 				height: screen.height * 0.75,
 			}}
-			totalCount={100000}
+			totalCount={data.length}
 			components={VirtuosoGridComponents}
 			itemContent={(index) => {
 				const item = data[index];

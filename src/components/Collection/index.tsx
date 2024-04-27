@@ -1,13 +1,8 @@
 import Toolbar from './Toolbar';
 import { useEffect, useState } from 'react';
-import {
-	AppReducerActions,
-	ReleaseListType,
-	ViewType,
-} from '../../helpers/enum';
+import { AppReducerActions, ReleaseListType } from '../../helpers/enum';
 import SearchBar from './SearchBar';
 import { Container } from './styles';
-import Table from './Table';
 import { UserCollection, UserCollectionItem } from '../../helpers/types';
 import { removeDiacritics } from '../../helpers';
 import {
@@ -18,13 +13,10 @@ import {
 	getUserWantList,
 } from '../../api';
 import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
-import Grid from './Grid';
 import ViewReleaseDialog from './ViewReleaseDialog';
 import { Box, Tab, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
-import MobileGrid from './MobileGrid';
-import Fab from '../shared/FloatingActionButton';
 import theme from '../../theme';
 import AddRecordButton from '../shared/AddRecordButton';
 import ChangeViewTypeButton from '../shared/ChangeViewTypeButton';
@@ -40,11 +32,8 @@ import {
 import { TabContext, TabList } from '@mui/lab';
 import CollectionTabPanel from './CollectionTabPanel';
 
-// TODO: Check path to determine if readOnly or not
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
-	const [data, setData] = useState<UserCollectionItem[]>([]);
-	const [filteredData, setFilteredData] = useState<UserCollectionItem[]>([]);
 	const [informationDialog, setInformationDialog] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { username: readOnlyUsername } = useParams();
@@ -64,7 +53,9 @@ export default () => {
 		releaseListType: ReleaseListType,
 	) => {
 		setUiState({ ...ui, currentTab: releaseListType });
+		setSearchValue('');
 	};
+
 	const toggleInformationDialog = () =>
 		setInformationDialog(!informationDialog);
 
@@ -76,8 +67,9 @@ export default () => {
 	const load = async () => {
 		let currentPage = 0,
 			totalPages = 1,
+			numOfItems = 0,
+			value = '',
 			userReleases = [] as UserCollectionItem[];
-		// userWantList = [] as UserCollectionItem[];
 
 		setIsLoading(true);
 		setLoadingProgress(10);
@@ -87,6 +79,7 @@ export default () => {
 				currentPage >= totalPages ? 100 : (resp.page / resp.pages) * 100;
 			currentPage++;
 			totalPages = resp.pages;
+			numOfItems = resp.numOfItems;
 			setLoadingProgress(progress);
 			return resp.items;
 		};
@@ -105,68 +98,31 @@ export default () => {
 				});
 			}
 		} else {
+			await getUserCollectionValue(username).then((data) => (value = data));
+
 			while (currentPage < totalPages) {
 				const items = await getUserCollection(username, currentPage + 1).then(
 					parseResponse,
+				);
+				const wantList = await getUserWantList(username).then(
+					(resp) => resp.items,
 				);
 				userReleases = userReleases.concat(items);
 				setIsLoading(false);
 				setCollection({
 					...collection,
+					numOfItems,
+					value,
 					releases: userReleases,
+					wantList,
 				});
 			}
 		}
 	};
 
-	// const loadCollection = async () => {
-	// 	let currentPage = 0,
-	// 		totalPages = 1,
-	// 		userItems = [] as UserCollectionItem[];
-
-	// 	const parseCollectionResponse = (resp: UserCollection) => {
-	// 		userItems = userItems.concat(resp.items);
-	// 		setCollection({
-	// 			...collection,
-	// 			releases: !showWantList ? userItems : releases,
-	// 			wantList: showWantList ? userItems : wantList,
-	// 		});
-	// 		setIsLoading(false);
-	// 		const progress =
-	// 			currentPage >= totalPages ? 100 : (resp.page / resp.pages) * 100;
-	// 		currentPage++;
-	// 		totalPages = resp.pages;
-	// 		setLoadingProgress(progress);
-	// 	};
-
-	// 	if (showWantList && wantList.length === 0) {
-	// 		setLoadingProgress(10);
-	// 		while (currentPage < totalPages) {
-	// 			await getUserWantList(username, currentPage + 1).then(
-	// 				parseCollectionResponse,
-	// 			);
-	// 		}
-	// 	} else if (!showWantList && collection.releases.length === 0) {
-	// 		setLoadingProgress(10);
-	// 		if (readOnly) {
-	// 			while (currentPage < totalPages) {
-	// 				await getPublicUserCollection(
-	// 					readOnlyUsername as string,
-	// 					currentPage + 1,
-	// 				).then(parseCollectionResponse);
-	// 			}
-	// 		} else {
-	// 			setLoadingProgress(10);
-	// 			while (currentPage < totalPages) {
-	// 				await getUserCollection(username, currentPage + 1).then(
-	// 					parseCollectionResponse,
-	// 				);
-	// 			}
-	// 		}
-	// 	}
-	// };
-
 	useEffect(() => {
+		const data =
+			currentTab === ReleaseListType.Collection ? releases : wantList;
 		let filteredData = data;
 		if (searchValue.length > 0) {
 			filteredData = data.filter(
@@ -177,8 +133,8 @@ export default () => {
 					removeDiacritics(row.title).includes(removeDiacritics(searchValue)),
 			);
 		}
-		setFilteredData(filteredData);
-	}, [searchValue, data]);
+		setUiState({ ...ui, filteredData });
+	}, [searchValue, releases, wantList]);
 
 	useEffect(() => {
 		if (!readOnly && username.length === 0) {
@@ -196,12 +152,7 @@ export default () => {
 
 	return (
 		<div>
-			<Toolbar
-				value={''}
-				numOfItems={releases.length.toString()}
-				readOnly={readOnly}
-				username={readOnlyUsername}
-			/>
+			<Toolbar readOnly={readOnly} username={readOnlyUsername} />
 			<Container isMobile={isMobile}>
 				<div
 					style={{
@@ -232,8 +183,6 @@ export default () => {
 						{!readOnly && (
 							<Box
 								sx={{
-									borderBottom: 1,
-									borderColor: 'divider',
 									marginBottom: isMobile ? 3 : 0,
 								}}
 							>
@@ -241,8 +190,22 @@ export default () => {
 									onChange={changeTab}
 									aria-label="Your Collection and Want List"
 								>
-									<Tab label="Collection" value={ReleaseListType.Collection} />
-									<Tab label="WantList" value={ReleaseListType.WantList} />
+									<Tab
+										label={
+											<Typography variant="body1" fontWeight={500}>
+												Collection
+											</Typography>
+										}
+										value={ReleaseListType.Collection}
+									/>
+									<Tab
+										label={
+											<Typography variant="body1" fontWeight={500}>
+												Want List
+											</Typography>
+										}
+										value={ReleaseListType.WantList}
+									/>
 								</TabList>
 							</Box>
 						)}

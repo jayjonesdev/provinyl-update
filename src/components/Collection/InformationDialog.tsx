@@ -10,18 +10,18 @@ import {
 import { Instagram } from '@mui/icons-material';
 import { INSTAGRAM_LINK } from '../../helpers/constants';
 import { StyledDivider } from '../shared/styles';
+import { useRecoilValue } from 'recoil';
+import { collectionState } from '../../helpers/atoms';
 
 export default ({
 	open,
-	value,
-	numOfItems,
 	handleClose,
 }: {
 	open: boolean;
-	value: string;
-	numOfItems: string;
 	handleClose: () => void;
 }) => {
+	const { value, numOfItems } = useRecoilValue(collectionState);
+
 	return (
 		<StyledDialog
 			open={open}

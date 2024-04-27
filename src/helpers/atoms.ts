@@ -13,6 +13,7 @@ export const collectionState = atom({
 		releases: [] as UserCollectionItem[],
 		wantList: [] as UserCollectionItem[],
 		value: '',
+		numOfItems: 0,
 	},
 });
 

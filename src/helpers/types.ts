@@ -238,6 +238,7 @@ export interface UserCollection {
 	page: number;
 	pages: number;
 	items: UserCollectionItem[];
+	numOfItems: number;
 }
 
 export interface UserCollectionItem {

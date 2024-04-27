@@ -8,26 +8,22 @@ import { type MenuOptions } from '../../helpers/types';
 import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
 import InformationDialog from './InformationDialog';
 import LogoutDialog from './LogoutDialog';
-import { useAppState } from '../../helpers/hooks/useAppState';
 import ShareableLinkButton from '../shared/ShareableLinkButton';
+import { useRecoilValue } from 'recoil';
+import { uiState } from '../../helpers/atoms';
+import { ReleaseListType } from '../../helpers/enum';
 
 export default ({
-	value,
-	numOfItems,
 	readOnly,
 	username,
 }: {
-	value: string;
-	numOfItems: string;
 	readOnly: boolean;
 	username?: string;
 }) => {
 	const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 	const [informationOpen, setInformationOpen] = useState<boolean>(false);
 	const [logoutOpen, setLogoutOpen] = useState<boolean>(false);
-	const {
-		ui: { wantList },
-	} = useAppState();
+	const { currentTab } = useRecoilValue(uiState);
 
 	const handleDialogClose = () => setInformationOpen(false);
 	const handleLogoutClose = () => setLogoutOpen(false);
@@ -86,7 +82,9 @@ export default ({
 						sx={{ marginLeft: theme.spacing(2), flexGrow: 1 }}
 					>
 						{username ? `${username}'s` : 'Your'}{' '}
-						{!wantList ? 'Collection' : 'Want List'}
+						{currentTab !== ReleaseListType.WantList
+							? 'Collection'
+							: 'Want List'}
 					</Typography>
 					{!readOnly && (
 						<>
@@ -144,8 +142,6 @@ export default ({
 				</Toolbar>
 			</AppBar>
 			<InformationDialog
-				value={value}
-				numOfItems={numOfItems}
 				open={informationOpen}
 				handleClose={handleDialogClose}
 			/>
