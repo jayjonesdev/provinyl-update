@@ -1,7 +1,5 @@
 import * as React from 'react';
 import Typography from '@mui/material/Typography';
-import { ReleaseDetails } from '../../helpers/types';
-import { useAppState } from '../../helpers/hooks/useAppState';
 import { Button } from '@mui/material';
 import {
 	Accordion,
@@ -12,16 +10,12 @@ import {
 	ReleaseDetailsContainer,
 } from './styles';
 import Detail from './Detail';
+import { useRecoilValue } from 'recoil';
+import { releaseDialogState } from '../../helpers/atoms';
 
-export default ({
-	releaseDetails,
-	isLoading,
-}: {
-	releaseDetails: ReleaseDetails;
-	isLoading: boolean;
-}) => {
+export default ({ isLoading }: { isLoading: boolean }) => {
 	const [expanded, setExpanded] = React.useState<string | false>('albumInfo');
-	const { currentRelease: release } = useAppState();
+	const { release, releaseDetails } = useRecoilValue(releaseDialogState);
 
 	const handleChange =
 		(panel: string) => (_event: React.SyntheticEvent, newExpanded: boolean) => {

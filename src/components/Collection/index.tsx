@@ -1,6 +1,6 @@
 import Toolbar from './Toolbar';
 import { useEffect, useState } from 'react';
-import { AppReducerActions, ReleaseListType } from '../../helpers/enum';
+import { ReleaseListType } from '../../helpers/enum';
 import SearchBar from './SearchBar';
 import { Container } from './styles';
 import { UserCollection, UserCollectionItem } from '../../helpers/types';
@@ -12,7 +12,6 @@ import {
 	getUserInfo,
 	getUserWantList,
 } from '../../api';
-import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
 import ViewReleaseDialog from './ViewReleaseDialog';
 import { Box, Tab, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
@@ -27,25 +26,23 @@ import { useRecoilState } from 'recoil';
 import {
 	collectionState,
 	loadingProgressState,
+	releaseDialogState,
 	uiState,
+	userInfoState,
 } from '../../helpers/atoms';
 import { TabContext, TabList } from '@mui/lab';
 import CollectionTabPanel from './CollectionTabPanel';
 
 export default () => {
 	const [searchValue, setSearchValue] = useState<string>('');
-	const [informationDialog, setInformationDialog] = useState<boolean>(false);
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { username: readOnlyUsername } = useParams();
-	const {
-		user: { username },
-		ui: { wantList: showWantList },
-	} = useAppState();
-	const dispatch = useAppDispatch();
+	const [{ username }, setUserInfo] = useRecoilState(userInfoState);
 	const [, setLoadingProgress] = useRecoilState(loadingProgressState);
 	const [collection, setCollection] = useRecoilState(collectionState);
-	const { releases, wantList } = collection;
 	const [ui, setUiState] = useRecoilState(uiState);
+	const [releaseDialog, setReleaseDialog] = useRecoilState(releaseDialogState);
+	const { releases, wantList } = collection;
 	const { currentTab, showLoadingPopup, readOnly } = ui;
 
 	const changeTab = (
@@ -56,12 +53,12 @@ export default () => {
 		setSearchValue('');
 	};
 
-	const toggleInformationDialog = () =>
-		setInformationDialog(!informationDialog);
-
-	const showInformation = (item: UserCollectionItem) => {
-		dispatch({ type: AppReducerActions.SetCurrentRelease, release: item });
-		toggleInformationDialog();
+	const showInformation = (release: UserCollectionItem) => {
+		setReleaseDialog({
+			...releaseDialog,
+			release,
+			showReleaseDialog: true,
+		});
 	};
 
 	const load = async () => {
@@ -98,15 +95,16 @@ export default () => {
 				});
 			}
 		} else {
+			const wantList = await getUserWantList(username).then(
+				(resp) => resp.items,
+			);
 			await getUserCollectionValue(username).then((data) => (value = data));
 
 			while (currentPage < totalPages) {
 				const items = await getUserCollection(username, currentPage + 1).then(
 					parseResponse,
 				);
-				const wantList = await getUserWantList(username).then(
-					(resp) => resp.items,
-				);
+
 				userReleases = userReleases.concat(items);
 				setIsLoading(false);
 				setCollection({
@@ -138,9 +136,7 @@ export default () => {
 
 	useEffect(() => {
 		if (!readOnly && username.length === 0) {
-			getUserInfo().then((userInfo) =>
-				dispatch({ type: AppReducerActions.UpdateUserInfo, user: userInfo }),
-			);
+			getUserInfo().then((userInfo) => setUserInfo(userInfo));
 		}
 
 		if (username.length > 0) {
@@ -148,7 +144,7 @@ export default () => {
 				await load();
 			})();
 		}
-	}, [username, readOnly, showWantList]);
+	}, [username, readOnly]);
 
 	return (
 		<div>
@@ -222,11 +218,7 @@ export default () => {
 					</TabContext>
 				)}
 
-				<ViewReleaseDialog
-					open={informationDialog}
-					onClose={toggleInformationDialog}
-					readOnly={readOnly}
-				/>
+				<ViewReleaseDialog />
 				{showLoadingPopup && <LoadingPopup />}
 			</Container>
 		</div>

@@ -34,7 +34,7 @@ export default ({
 							isMobile
 								? 'Search...'
 								: `Search ${
-										currentTab !== ReleaseListType.Collection
+										currentTab === ReleaseListType.Collection
 											? 'collection'
 											: 'want list'
 								  }...`

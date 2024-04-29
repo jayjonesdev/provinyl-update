@@ -16,36 +16,41 @@ import {
 } from '../../api';
 import { Button, Typography } from '@mui/material';
 import { ReleaseDetails, SnackbarType } from '../../helpers/types';
-import { useAppDispatch, useAppState } from '../../helpers/hooks/useAppState';
+import { useAppDispatch } from '../../helpers/hooks/useAppState';
 import ReleaseDialogDetails from './ReleaseDialogDetails';
 import { AppReducerActions, ReleaseListType } from '../../helpers/enum';
 import SnackbarContainer from '../shared/SnackbarContainer';
 import { AlbumArtwork } from '../shared/styles';
+import { useRecoilState, useRecoilValue } from 'recoil';
+import {
+	releaseDialogState,
+	uiState,
+	userInfoState,
+} from '../../helpers/atoms';
 
-export default ({
-	open,
-	readOnly,
-	onClose,
-}: {
-	open: boolean;
-	readOnly: boolean;
-	onClose: () => void;
-}) => {
-	const [details, setDetails] = useState<ReleaseDetails>({} as ReleaseDetails);
+export default () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const [remove, setRemove] = useState<boolean>(false);
 	const [add, setAdd] = useState<boolean>(false);
-	const {
-		currentRelease,
-		user: { username },
-		ui: { wantList },
-	} = useAppState();
+	const [releaseDialog, setReleaseDialog] = useRecoilState(releaseDialogState);
+	const { readOnly, currentTab } = useRecoilValue(uiState);
+	const { username } = useRecoilValue(userInfoState);
+	const wantList = currentTab === ReleaseListType.Collection;
 	const [snackbar, setSnackbar] = useState<SnackbarType>({
 		message: '',
 		open: false,
 		severity: 'success',
 	});
+	const { release: currentRelease, showReleaseDialog: open } = releaseDialog;
 	const dispatch = useAppDispatch();
+
+	const onClose = () => {
+		setReleaseDialog({ ...releaseDialog, showReleaseDialog: false });
+	};
+
+	const setReleaseDetails = (details: ReleaseDetails) => {
+		setReleaseDialog({ ...releaseDialog, releaseDetails: details });
+	};
 
 	useEffect(() => {
 		if (open) {
@@ -53,11 +58,11 @@ export default ({
 				setIsLoading(true);
 				if (!readOnly) {
 					await getReleaseDetails(currentRelease.releaseId)
-						.then((releaseDetails) => setDetails(releaseDetails))
+						.then(setReleaseDetails)
 						.finally(() => setIsLoading(false));
 				} else {
 					await getPublicReleaseDetails(currentRelease.releaseId)
-						.then((releaseDetails) => setDetails(releaseDetails))
+						.then(setReleaseDetails)
 						.finally(() => setIsLoading(false));
 				}
 			})();
@@ -154,10 +159,7 @@ export default ({
 							height={400}
 							width={400}
 						/>
-						<ReleaseDialogDetails
-							releaseDetails={details}
-							isLoading={isLoading}
-						/>
+						<ReleaseDialogDetails isLoading={isLoading} />
 					</ViewReleaseContainer>
 				</StyledDialogContent>
 				<StyledDialogActions>

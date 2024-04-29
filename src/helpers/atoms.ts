@@ -1,5 +1,10 @@
 import { atom } from 'recoil';
-import { UserCollectionItem } from './types';
+import {
+	Release,
+	ReleaseDetails,
+	UserCollectionItem,
+	UserInfoType,
+} from './types';
 import { ReleaseListType, ViewType } from './enum';
 
 export const loadingProgressState = atom({
@@ -25,5 +30,24 @@ export const uiState = atom({
 		filteredData: [] as UserCollectionItem[],
 		currentTab: ReleaseListType.Collection,
 		showLoadingPopup: true,
+	},
+});
+
+export const userInfoState = atom({
+	key: 'userInfoState',
+	default: {
+		id: 0,
+		username: '',
+		resource_url: '',
+		consumer_name: '',
+	} as UserInfoType,
+});
+
+export const releaseDialogState = atom({
+	key: 'releaseDialogState',
+	default: {
+		release: {} as UserCollectionItem,
+		releaseDetails: {} as ReleaseDetails,
+		showReleaseDialog: false,
 	},
 });
