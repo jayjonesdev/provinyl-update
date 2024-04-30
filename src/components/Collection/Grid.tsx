@@ -7,6 +7,15 @@ import LazyAlbumArtwork from '../shared/LazyAlbumArtwork';
 import { GridTile } from '../shared/styles';
 import { GridComponents, VirtuosoGrid } from 'react-virtuoso';
 
+const VirtuosoGridComponents: GridComponents<UserCollectionItem> = {
+	List: forwardRef((props, ref) => (
+		<GridContainer {...props} ref={ref}>
+			{props.children}
+		</GridContainer>
+	)),
+	Item: (props) => <GridTile {...props} />,
+};
+
 const Grid = ({
 	data,
 	onItemClick,
@@ -14,15 +23,6 @@ const Grid = ({
 	data: UserCollectionItem[];
 	onItemClick: (item: UserCollectionItem) => void;
 }) => {
-	const VirtuosoGridComponents: GridComponents<UserCollectionItem> = {
-		List: forwardRef((props, ref) => (
-			<GridContainer {...props} ref={ref}>
-				{props.children}
-			</GridContainer>
-		)),
-		Item: (props) => <GridTile {...props} />,
-	};
-
 	return (
 		<VirtuosoGrid
 			style={{
@@ -40,7 +40,6 @@ const Grid = ({
 							src={item.imageUrl}
 							aria-label={`${item.artist} - ${item.title}`}
 							alt={`${item.artist} - ${item.title}`}
-							// scrollPosition={scrollPosition}
 							placeholderSrc={PLACEHOLDER_IMG_SRC}
 						/>
 					</Suspense>
