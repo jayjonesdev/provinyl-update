@@ -22,9 +22,10 @@ import ChangeViewTypeButton from '../shared/ChangeViewTypeButton';
 import LoadingIndicator from '../shared/LoadingIndicator';
 import { StyledDivider } from '../shared/styles';
 import LoadingPopup from './LoadingPopup';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
 import {
 	collectionState,
+	currentTabData,
 	loadingProgressState,
 	releaseDialogState,
 	uiState,
@@ -39,10 +40,10 @@ export default () => {
 	const { username: readOnlyUsername } = useParams();
 	const [{ username }, setUserInfo] = useRecoilState(userInfoState);
 	const [, setLoadingProgress] = useRecoilState(loadingProgressState);
-	const [collection, setCollection] = useRecoilState(collectionState);
+	const setCollection = useSetRecoilState(collectionState);
 	const [ui, setUiState] = useRecoilState(uiState);
 	const [releaseDialog, setReleaseDialog] = useRecoilState(releaseDialogState);
-	const { releases, wantList } = collection;
+	const tabData = useRecoilValue(currentTabData);
 	const { currentTab, showLoadingPopup, readOnly } = ui;
 
 	const changeTab = (
@@ -63,64 +64,67 @@ export default () => {
 
 	const load = async () => {
 		let currentPage = 0,
-			totalPages = 1,
-			numOfItems = 0,
-			value = '',
-			userReleases = [] as UserCollectionItem[];
+			totalPages = 1;
 
 		setIsLoading(true);
 		setLoadingProgress(10);
 
-		const parseResponse = (resp: UserCollection) => {
+		const parseResponse = (
+			resp: UserCollection,
+		): { items: UserCollectionItem[]; numOfItems: number } => {
 			const progress =
 				currentPage >= totalPages ? 100 : (resp.page / resp.pages) * 100;
 			currentPage++;
 			totalPages = resp.pages;
-			numOfItems = resp.numOfItems;
 			setLoadingProgress(progress);
-			return resp.items;
+			return { items: resp.items, numOfItems: resp.numOfItems };
 		};
 
 		if (readOnly) {
+			const releases = [] as UserCollectionItem[];
+
 			while (currentPage < totalPages) {
-				const items = await getPublicUserCollection(
+				const { items } = await getPublicUserCollection(
 					readOnlyUsername as string,
 					currentPage + 1,
 				).then(parseResponse);
-				userReleases = userReleases.concat(items);
+				releases.push(...items);
+				setCollection((current) => ({
+					...current,
+					releases,
+				}));
 				setIsLoading(false);
-				setCollection({
-					...collection,
-					releases: userReleases,
-				});
 			}
 		} else {
 			const wantList = await getUserWantList(username).then(
 				(resp) => resp.items,
 			);
-			await getUserCollectionValue(username).then((data) => (value = data));
+			const value = await getUserCollectionValue(username);
+
+			setCollection((current) => ({
+				...current,
+				wantList,
+				value,
+			}));
 
 			while (currentPage < totalPages) {
-				const items = await getUserCollection(username, currentPage + 1).then(
-					parseResponse,
-				);
+				const { items, numOfItems } = await getUserCollection(
+					username,
+					currentPage + 1,
+				).then(parseResponse);
 
-				userReleases = userReleases.concat(items);
 				setIsLoading(false);
-				setCollection({
-					...collection,
+				setCollection((current) => ({
+					...current,
 					numOfItems,
-					value,
-					releases: userReleases,
-					wantList,
-				});
+					releases: current.releases.concat(items),
+				}));
 			}
 		}
 	};
 
 	useEffect(() => {
-		const data =
-			currentTab === ReleaseListType.Collection ? releases : wantList;
+		const data = tabData;
 		let filteredData = data;
 		if (searchValue.length > 0) {
 			filteredData = data.filter(
@@ -132,7 +136,7 @@ export default () => {
 			);
 		}
 		setUiState({ ...ui, filteredData });
-	}, [searchValue, releases, wantList]);
+	}, [searchValue, tabData]);
 
 	useEffect(() => {
 		if (!readOnly && username.length === 0) {

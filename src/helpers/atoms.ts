@@ -1,4 +1,4 @@
-import { atom } from 'recoil';
+import { atom, selector } from 'recoil';
 import {
 	Release,
 	ReleaseDetails,
@@ -49,5 +49,21 @@ export const releaseDialogState = atom({
 		release: {} as UserCollectionItem,
 		releaseDetails: {} as ReleaseDetails,
 		showReleaseDialog: false,
+	},
+});
+
+export const currentTabData = selector({
+	key: 'currentTabData',
+	get: ({ get }) => {
+		const tab = get(uiState).currentTab;
+
+		switch (tab) {
+			case ReleaseListType.WantList:
+				return get(collectionState).wantList;
+
+			case ReleaseListType.Collection:
+			default:
+				return get(collectionState).releases;
+		}
 	},
 });

@@ -35,6 +35,13 @@ const ProgressBar = () => {
 		};
 	}, []);
 
+	React.useEffect(() => {
+		// Add transition, framer-motion?
+		if (progress >= 100) {
+			setTimeout(() => hidePopup(), 2000);
+		}
+	}, [progress]);
+
 	return (
 		<Box sx={{ width: '100%' }}>
 			<Box
