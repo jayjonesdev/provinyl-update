@@ -1,5 +1,9 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { collectionState, uiState } from '../../helpers/atoms';
+import {
+	collectionState,
+	releaseDialogState,
+	uiState,
+} from '../../helpers/atoms';
 import { TabPanel } from '@mui/lab';
 import { Typography } from '@mui/material';
 import { isMobile } from 'react-device-detect';
@@ -11,23 +15,26 @@ import Grid from './Grid';
 import { UserCollectionItem } from '../../helpers/types';
 import { useEffect } from 'react';
 
-export default ({
-	type,
-	onItemClick,
-}: {
-	type: ReleaseListType;
-	onItemClick: (item: UserCollectionItem) => void;
-}) => {
+export default ({ type }: { type: ReleaseListType }) => {
 	const { releases, wantList } = useRecoilValue(collectionState);
-	const [ui, setUiState] = useRecoilState(uiState);
-	const { viewType, readOnly, filteredData, currentTab } = ui;
+	const [{ viewType, readOnly, filteredData, currentTab }, setUiState] =
+		useRecoilState(uiState);
+	const [releaseDialog, setReleaseDialog] = useRecoilState(releaseDialogState);
+
+	const onItemClick = (release: UserCollectionItem) => {
+		setReleaseDialog({
+			...releaseDialog,
+			release,
+			showReleaseDialog: true,
+		});
+	};
 
 	useEffect(() => {
-		setUiState({
-			...ui,
+		setUiState((prev) => ({
+			...prev,
 			filteredData:
 				currentTab === ReleaseListType.Collection ? releases : wantList,
-		});
+		}));
 	}, [releases, currentTab, wantList]);
 
 	if (currentTab !== type) {

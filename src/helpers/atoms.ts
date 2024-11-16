@@ -30,6 +30,7 @@ export const uiState = atom({
 		filteredData: [] as UserCollectionItem[],
 		currentTab: ReleaseListType.Collection,
 		showLoadingPopup: true,
+		searchString: '',
 	},
 });
 

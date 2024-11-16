@@ -4,25 +4,32 @@ import { ButtonBar } from './styles';
 import { CSSProperties } from 'react';
 import { isMobile } from 'react-device-detect';
 import { uiState } from '../../helpers/atoms';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState } from 'recoil';
 import { ReleaseListType } from '../../helpers/enum';
 
 export default ({
-	value,
 	style,
 	disabled,
 	children,
-	onChange,
-	onClear,
 }: {
-	value: string;
 	style?: CSSProperties;
 	disabled?: boolean;
 	children?: React.ReactNode;
-	onChange: (value: string) => void;
-	onClear: () => void;
 }) => {
-	const { currentTab } = useRecoilValue(uiState);
+	const [{ currentTab, searchString }, setUiState] = useRecoilState(uiState);
+
+	const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setUiState((prev) => ({ ...prev, searchString: e.target.value }));
+	};
+	const onClear = () => {
+		setUiState((prev) => ({ ...prev, searchString: '' }));
+	};
+	const renderTabString = () => {
+		return currentTab === ReleaseListType.Collection
+			? 'collection'
+			: 'want list';
+	};
+
 	return (
 		<>
 			<div style={{ marginTop: isMobile ? 5 : 75 }}>
@@ -31,16 +38,10 @@ export default ({
 						disabled={disabled}
 						data-testid="collection-search-field"
 						placeholder={
-							isMobile
-								? 'Search...'
-								: `Search ${
-										currentTab === ReleaseListType.Collection
-											? 'collection'
-											: 'want list'
-								  }...`
+							isMobile ? 'Search...' : `Search ${renderTabString()}...`
 						}
 						margin="dense"
-						onChange={(e) => onChange(e.target.value)}
+						onChange={onChange}
 						sx={{ width: isMobile ? '100%' : '45%' }}
 						style={style}
 						InputProps={{
@@ -51,7 +52,7 @@ export default ({
 									</IconButton>
 								</InputAdornment>
 							),
-							endAdornment: value.length > 0 && (
+							endAdornment: searchString.length > 0 && (
 								<InputAdornment position="end">
 									<IconButton onClick={onClear}>
 										<CloseOutlined />
@@ -60,7 +61,7 @@ export default ({
 							),
 						}}
 						variant="outlined"
-						value={value}
+						value={searchString}
 					/>
 					<div style={{ display: 'flex' }}>{children}</div>
 				</ButtonBar>

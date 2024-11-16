@@ -1,6 +1,5 @@
 import Toolbar from './Toolbar';
 import { useEffect, useState } from 'react';
-import { ReleaseListType } from '../../helpers/enum';
 import SearchBar from './SearchBar';
 import { Container } from './styles';
 import { UserCollection, UserCollectionItem } from '../../helpers/types';
@@ -13,7 +12,6 @@ import {
 	getUserWantList,
 } from '../../api';
 import ViewReleaseDialog from './ViewReleaseDialog';
-import { Box, Tab, Typography } from '@mui/material';
 import { useParams } from 'react-router-dom';
 import { isMobile } from 'react-device-detect';
 import theme from '../../theme';
@@ -31,28 +29,18 @@ import {
 	uiState,
 	userInfoState,
 } from '../../helpers/atoms';
-import { TabContext, TabList } from '@mui/lab';
-import CollectionTabPanel from './CollectionTabPanel';
+import { TabList } from '@mui/lab';
 
 export default () => {
-	const [searchValue, setSearchValue] = useState<string>('');
 	const [isLoading, setIsLoading] = useState<boolean>(false);
 	const { username: readOnlyUsername } = useParams();
 	const [{ username }, setUserInfo] = useRecoilState(userInfoState);
 	const [, setLoadingProgress] = useRecoilState(loadingProgressState);
 	const setCollection = useSetRecoilState(collectionState);
-	const [ui, setUiState] = useRecoilState(uiState);
+	const [{ showLoadingPopup, readOnly, searchString }, setUiState] =
+		useRecoilState(uiState);
 	const [releaseDialog, setReleaseDialog] = useRecoilState(releaseDialogState);
 	const tabData = useRecoilValue(currentTabData);
-	const { currentTab, showLoadingPopup, readOnly } = ui;
-
-	const changeTab = (
-		_event: React.SyntheticEvent,
-		releaseListType: ReleaseListType,
-	) => {
-		setUiState({ ...ui, currentTab: releaseListType });
-		setSearchValue('');
-	};
 
 	const showInformation = (release: UserCollectionItem) => {
 		setReleaseDialog({
@@ -126,17 +114,17 @@ export default () => {
 	useEffect(() => {
 		const data = tabData;
 		let filteredData = data;
-		if (searchValue.length > 0) {
+		if (searchString.length > 0) {
 			filteredData = data.filter(
 				(row) =>
 					removeDiacritics(row.artist).includes(
-						removeDiacritics(searchValue),
+						removeDiacritics(searchString),
 					) ||
-					removeDiacritics(row.title).includes(removeDiacritics(searchValue)),
+					removeDiacritics(row.title).includes(removeDiacritics(searchString)),
 			);
 		}
-		setUiState({ ...ui, filteredData });
-	}, [searchValue, tabData]);
+		setUiState((prev) => ({ ...prev, filteredData }));
+	}, [searchString, tabData]);
 
 	useEffect(() => {
 		if (!readOnly && username.length === 0) {
@@ -163,12 +151,7 @@ export default () => {
 						// top: !isMobile ? 60 : 0,
 					}}
 				>
-					<SearchBar
-						value={searchValue}
-						onChange={(value) => setSearchValue(value)}
-						onClear={() => setSearchValue('')}
-						style={{ marginTop: isMobile ? 70 : 'inherit' }}
-					>
+					<SearchBar style={{ marginTop: isMobile ? 70 : 'inherit' }}>
 						<div style={{ display: 'flex' }}>
 							{!isMobile && <ChangeViewTypeButton />}
 							{!readOnly && !isMobile && <AddRecordButton />}
@@ -176,52 +159,7 @@ export default () => {
 					</SearchBar>
 					<StyledDivider />
 				</div>
-				{isLoading ? (
-					<LoadingIndicator />
-				) : (
-					<TabContext value={currentTab}>
-						{!readOnly && (
-							<Box
-								sx={{
-									marginBottom: isMobile ? 3 : 0,
-								}}
-							>
-								<TabList
-									onChange={changeTab}
-									aria-label="Your Collection and Want List"
-								>
-									<Tab
-										label={
-											<Typography variant="body1" fontWeight={500}>
-												Collection
-											</Typography>
-										}
-										value={ReleaseListType.Collection}
-									/>
-									<Tab
-										label={
-											<Typography variant="body1" fontWeight={500}>
-												Want List
-											</Typography>
-										}
-										value={ReleaseListType.WantList}
-									/>
-								</TabList>
-							</Box>
-						)}
-						<CollectionTabPanel
-							type={ReleaseListType.Collection}
-							onItemClick={showInformation}
-						/>
-						{!readOnly && (
-							<CollectionTabPanel
-								type={ReleaseListType.WantList}
-								onItemClick={showInformation}
-							/>
-						)}
-					</TabContext>
-				)}
-
+				{isLoading ? <LoadingIndicator /> : <TabList />}
 				<ViewReleaseDialog />
 				{showLoadingPopup && <LoadingPopup />}
 			</Container>
