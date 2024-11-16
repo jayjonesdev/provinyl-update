@@ -38,16 +38,8 @@ export default () => {
 					</TabList>
 				</Box>
 			)}
-			<CollectionTabPanel
-				type={ReleaseListType.Collection}
-				onItemClick={showInformation}
-			/>
-			{!readOnly && (
-				<CollectionTabPanel
-					type={ReleaseListType.WantList}
-					onItemClick={showInformation}
-				/>
-			)}
+			<CollectionTabPanel type={ReleaseListType.Collection} />
+			{!readOnly && <CollectionTabPanel type={ReleaseListType.WantList} />}
 		</TabContext>
 	);
 };

@@ -25,7 +25,6 @@ import {
 	collectionState,
 	currentTabData,
 	loadingProgressState,
-	releaseDialogState,
 	uiState,
 	userInfoState,
 } from '../../helpers/atoms';
@@ -39,16 +38,7 @@ export default () => {
 	const setCollection = useSetRecoilState(collectionState);
 	const [{ showLoadingPopup, readOnly, searchString }, setUiState] =
 		useRecoilState(uiState);
-	const [releaseDialog, setReleaseDialog] = useRecoilState(releaseDialogState);
 	const tabData = useRecoilValue(currentTabData);
-
-	const showInformation = (release: UserCollectionItem) => {
-		setReleaseDialog({
-			...releaseDialog,
-			release,
-			showReleaseDialog: true,
-		});
-	};
 
 	const load = async () => {
 		let currentPage = 0,
