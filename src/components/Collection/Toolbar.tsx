@@ -6,12 +6,12 @@ import ProvinylLogo from '../../assets/secondary_logo_small.png';
 import { useState } from 'react';
 import { type MenuOptions } from '../../helpers/types';
 import { EMAIL, PAYPAL_LINK } from '../../helpers/constants';
-import InformationDialog from './InformationDialog';
 import LogoutDialog from './LogoutDialog';
 import ShareableLinkButton from '../shared/ShareableLinkButton';
 import { useRecoilValue } from 'recoil';
 import { uiState } from '../../helpers/atoms';
 import { ReleaseListType } from '../../helpers/enum';
+import InformationDialog from './InformationDialog';
 
 export default ({
 	readOnly,
