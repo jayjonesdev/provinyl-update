@@ -1,4 +1,3 @@
-import React, { ReactNode } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
 import reportWebVitals from './reportWebVitals';
@@ -8,18 +7,14 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import theme from './theme';
 import { AppContextProvider } from './AppContext';
 import { RecoilRoot } from 'recoil';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
 const root = createRoot(document.getElementById('root') as HTMLElement);
 
-const Parent = ({ children }: { children: ReactNode }) =>
-	!process.env.NODE_ENV || process.env.NODE_ENV === 'development' ? (
-		<React.Fragment>{children}</React.Fragment>
-	) : (
-		<React.StrictMode>{children}</React.StrictMode>
-	);
+const queryClient = new QueryClient();
 
 root.render(
-	<Parent>
+	<QueryClientProvider client={queryClient}>
 		<RecoilRoot>
 			<AppContextProvider>
 				<ThemeProvider theme={theme}>
@@ -28,7 +23,7 @@ root.render(
 				</ThemeProvider>
 			</AppContextProvider>
 		</RecoilRoot>
-	</Parent>,
+	</QueryClientProvider>,
 );
 
 // If you want to start measuring performance in your app, pass a function

@@ -28,7 +28,10 @@ import {
 	uiState,
 	userInfoState,
 } from '../../helpers/atoms';
-import { TabList } from '@mui/lab';
+import { TabContext, TabList } from '@mui/lab';
+import { Box, Typography, Tab } from '@mui/material';
+import { ReleaseListType } from '../../helpers/enum';
+import CollectionTabPanel from './CollectionTabPanel';
 
 export default () => {
 	const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -36,7 +39,7 @@ export default () => {
 	const [{ username }, setUserInfo] = useRecoilState(userInfoState);
 	const [, setLoadingProgress] = useRecoilState(loadingProgressState);
 	const setCollection = useSetRecoilState(collectionState);
-	const [{ showLoadingPopup, readOnly, searchString }, setUiState] =
+	const [{ showLoadingPopup, readOnly, searchString, currentTab }, setUiState] =
 		useRecoilState(uiState);
 	const tabData = useRecoilValue(currentTabData);
 
@@ -128,6 +131,17 @@ export default () => {
 		}
 	}, [username, readOnly]);
 
+	const onChange = (
+		_event: React.SyntheticEvent,
+		releaseListType: ReleaseListType,
+	) => {
+		setUiState((prev) => ({
+			...prev,
+			currentTab: releaseListType,
+			searchString: '',
+		}));
+	};
+
 	return (
 		<div>
 			<Toolbar readOnly={readOnly} username={readOnlyUsername} />
@@ -149,7 +163,45 @@ export default () => {
 					</SearchBar>
 					<StyledDivider />
 				</div>
-				{isLoading ? <LoadingIndicator /> : <TabList />}
+				{isLoading ? (
+					<LoadingIndicator />
+				) : (
+					<TabContext value={currentTab}>
+						{!readOnly && (
+							<Box
+								sx={{
+									marginBottom: isMobile ? 3 : 0,
+								}}
+							>
+								<TabList
+									onChange={onChange}
+									aria-label="Your Collection and Want List"
+								>
+									<Tab
+										label={
+											<Typography variant="body1" fontWeight={500}>
+												Collection
+											</Typography>
+										}
+										value={ReleaseListType.Collection}
+									/>
+									<Tab
+										label={
+											<Typography variant="body1" fontWeight={500}>
+												Want List
+											</Typography>
+										}
+										value={ReleaseListType.WantList}
+									/>
+								</TabList>
+							</Box>
+						)}
+						<CollectionTabPanel type={ReleaseListType.Collection} />
+						{!readOnly && (
+							<CollectionTabPanel type={ReleaseListType.WantList} />
+						)}
+					</TabContext>
+				)}
 				<ViewReleaseDialog />
 				{showLoadingPopup && <LoadingPopup />}
 			</Container>

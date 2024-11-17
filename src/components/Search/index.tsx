@@ -144,13 +144,7 @@ export default () => {
 										alignItems: 'center',
 									}}
 								>
-									<SearchBar
-										value={searchValue}
-										onChange={(value: string) => setSearchValue(value)}
-										onClear={() => setSearchValue('')}
-										style={{ maxWidth: '90%' }}
-										disabled={isLoading}
-									/>
+									<SearchBar style={{ maxWidth: '90%' }} disabled={isLoading} />
 									<Button
 										variant="contained"
 										size="large"
